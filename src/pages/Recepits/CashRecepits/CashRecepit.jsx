@@ -9,6 +9,7 @@ import { MdEdit, MdOutlineRemoveRedEye } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import moment from "moment";
 import { Spinner } from "@material-tailwind/react";
+import { EditDonationReceipt, ViewDonationReceipt } from "../../../components/ButtonComponents";
 const RecepitCashRecepit = () => {
   const [pendingRListData, setPendingRListData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -116,16 +117,21 @@ const RecepitCashRecepit = () => {
         customBodyRender: (id) => {
           return (
             <div className="flex items-center space-x-2">
-              <Link
-                to={`/recepit-view/${id}`}
-                // style={{ display: userType === "4" ? "none" : "" }}
+              {/* <div
+                
+                onClick={() => navigate(`/recepit-view/${id}`)}
+                style={{ display: userType === "4" ? "none" : "" }}
               >
                 <MdOutlineRemoveRedEye
                   title="View"
                   className="h-5 w-5 cursor-pointer text-blue-500"
                 />
-              </Link>
-              <Link
+              </div> */}
+              <ViewDonationReceipt
+                onClick={() => navigate(`/recepit-view/${id}`)}
+              className="h-5 w-5 cursor-pointer text-blue-500"
+              />
+              {/* <Link
                 to={`/recepit-edit/${id}`}
                 style={{ display: userType === "2" ? "" : "none" }}
               >
@@ -133,7 +139,11 @@ const RecepitCashRecepit = () => {
                   title="Edit"
                   className="h-5 w-5 cursor-pointer text-blue-500"
                 />
-              </Link>
+              </Link> */}
+              <EditDonationReceipt
+               onClick={() => navigate(`/recepit-edit/${id}`)}
+              className="h-5 w-5 cursor-pointer text-blue-500"
+              />
             </div>
           );
         },

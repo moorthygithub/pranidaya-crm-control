@@ -11,6 +11,7 @@ import { PiNotebook } from "react-icons/pi";
 import { FaUsers } from "react-icons/fa";
 import CommonListing from "./CommonListing";
 import { Spinner } from "@material-tailwind/react";
+import { AddCashReceipt, AddDonor, CashReceiptDonor, EditDonor, FamilyMemberDonor, MaterialReceiptDonor, ViewDonor } from "../../components/ButtonComponents";
 
 const DonorList = () => {
   const [donorListData, setDonorListData] = useState(null);
@@ -85,30 +86,57 @@ const DonorList = () => {
         customBodyRender: (id) => {
           return (
             <div className="flex items-center space-x-2">
-              <IoEye
+              {/* <IoEye
                 onClick={() => navigate(`/viewdonor-list/${id}`)}
                 title="View "
                 className="h-5 w-5 cursor-pointer text-blue-500 "
+              /> */}
+              <ViewDonor
+                 onClick={() => navigate(`/viewdonor-list/${id}`)}
+            
+                 className="h-5 w-5 cursor-pointer text-blue-500 "
               />
-              <MdEdit
+              {/* <MdEdit
                 onClick={() => navigate(`/edit-donor/${id}`)}
                 title="Edit"
                 className="h-5 w-5 cursor-pointer text-blue-500 "
+              /> */}
+              <EditDonor
+          
+              onClick={() => navigate(`/edit-donor/${id}`)}
+           
+              className="h-5 w-5 cursor-pointer text-blue-500 "
               />
-              <PiNotebook
+              {/* <PiNotebook
                 onClick={() => navigate(`/createrecepit-donor/${id}`)}
                 title="Cash Recepit"
                 className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
+              /> */}
+              <CashReceiptDonor
+              onClick={() => navigate(`/createrecepit-donor/${id}`)}
+           
+              className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
               />
-              <MdOutlineStickyNote2
+              {/* <MdOutlineStickyNote2
                 onClick={() => navigate(`/create-donor/${id}`)}
                 title="Material Recepit"
                 className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
+              /> */}
+              <MaterialReceiptDonor
+              
+              onClick={() => navigate(`/create-donor/${id}`)}
+             
+                className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
               />
-              <FaUsers
+              {/* <FaUsers
                 onClick={() => navigate(`/create-family/${id}`)}
                 title="Family Members"
                 className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
+              /> */}
+              <FamilyMemberDonor
+               onClick={() => navigate(`/create-family/${id}`)}
+             
+               className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
               />
             </div>
           );
@@ -143,24 +171,48 @@ const DonorList = () => {
         </h3>
 
         <div className="md:space-x-5 space-y-5 md:space-y-0  flex flex-col md:flex-row ">
-          <Link
+          {/* <Link
             to="/cashrecepitall"
             className="btn btn-primary text-center text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg shadow-md w-full md:w-auto"
           >
             + CashRecepit
-          </Link>
+          </Link> */}
+          {/* <button
+onClick={()=>navigate('/cashrecepitall')}
+  className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+
+>
++ CashRecepit
+</button> */}
+<AddCashReceipt
+onClick={()=>navigate('/cashrecepitall')}
+  className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+/>
+
           {/* <Link
             to="/materialrecepitall"
             className="btn btn-primary text-center text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg shadow-md w-full md:w-auto"
           >
             + DirectMaterialRecepit{" "}
           </Link> */}
-          <Link
+          {/* <Link
             to="/add-donor"
             className="btn btn-primary text-center text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg shadow-md w-full md:w-auto"
           >
             + Add Donor
-          </Link>
+          </Link> */}
+          {/* <button
+onClick={()=>navigate('/add-donor')}
+  className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+
+>
++ Add Donor
+</button> */}
+<AddDonor
+onClick={()=>navigate('/add-donor')}
+  className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+/>
+
         </div>
       </div>
 

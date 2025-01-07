@@ -10,10 +10,12 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import moment from "moment";
 import { Spinner } from "@material-tailwind/react";
+import { EditMaterialReceipt, ViewMaterialReceipt } from "../../../components/ButtonComponents";
 
 const MaterialReceipts = () => {
   const [materialdata, setMaterialData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchApprovedRData = async () => {
@@ -91,19 +93,20 @@ const MaterialReceipts = () => {
         customBodyRender: (id) => {
           return (
             <div className="flex items-center space-x-2">
-              <Link
+              {/* <Link
                 to={`/material-view/${id}`}
-                // style={{
-                //   display:
-                //     localStorage.getItem("user_type_id") == 2 ? "" : "none",
-                // }}
               >
                 <MdOutlineRemoveRedEye
                   title="View"
                   className="h-5 w-5 cursor-pointer text-blue-500"
                 />
-              </Link>
-              <Link
+              </Link> */}
+
+              <ViewMaterialReceipt
+                onClick={() => navigate(`/material-view/${id}`)}
+              className="h-5 w-5 cursor-pointer text-blue-500"
+              />
+              {/* <Link
                 to={`/material-edit/${id}`}
                 style={{
                   display:
@@ -114,7 +117,11 @@ const MaterialReceipts = () => {
                   title="Edit"
                   className="h-5 w-5 cursor-pointer text-blue-500"
                 />
-              </Link>
+              </Link> */}
+              <EditMaterialReceipt
+               onClick={() => navigate(`/material-edit/${id}`)}
+              className="h-5 w-5 cursor-pointer text-blue-500"
+              />
             </div>
           );
         },

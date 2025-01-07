@@ -8,6 +8,7 @@ import { BaseUrl } from "../../../base/BaseUrl";
 import { MdEdit } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import { Spinner } from "@material-tailwind/react";
+import { AddVendorItem, EditVendorItem } from "../../../components/ButtonComponents";
 
 const VendorList = () => {
   const [overdueListData, setOverdueListData] = useState([]);
@@ -112,7 +113,7 @@ const VendorList = () => {
         customBodyRender: (id) => {
           return (
             <div className="flex items-center space-x-2">
-              <MdEdit
+              {/* <MdEdit
                 style={{
                   display:
                     localStorage.getItem("user_type_id") == 1 ? "none" : "",
@@ -120,6 +121,11 @@ const VendorList = () => {
                 onClick={() => navigate(`/EditVendors/${id}`)}
                 title="Edit Vendor"
                 className="h-5 w-5 cursor-pointer text-blue-500"
+              /> */}
+              <EditVendorItem
+              onClick={() => navigate(`/EditVendors/${id}`)}
+             
+              className="h-5 w-5 cursor-pointer text-blue-500"
               />
             </div>
           );
@@ -151,12 +157,23 @@ const VendorList = () => {
           Vendors List
         </h3>
 
-        <Link
+        {/* <Link
           to="/addVendor"
           className="btn btn-primary text-center md:text-right text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg shadow-md"
         >
           + Add Vendors
-        </Link>
+        </Link> */}
+        {/* <button
+              onClick={()=>navigate('/addVendor')}
+                className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+              
+              >
+                 + Add Vendors
+              </button> */}
+              <AddVendorItem
+               onClick={()=>navigate('/addVendor')}
+                className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+              />
       </div>
 
       {loading ? (

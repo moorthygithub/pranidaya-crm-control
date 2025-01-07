@@ -8,6 +8,7 @@ import { MdEdit } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import EnquiryFilter from "../../../components/EnquiryFilter";
 import { Spinner } from "@material-tailwind/react";
+import { AddOccassionItem, EditOccassionItem } from "../../../components/ButtonComponents";
 
 const ListOccasion = () => {
   const [openListData, setOpenListData] = useState([]);
@@ -84,10 +85,15 @@ const ListOccasion = () => {
         customBodyRender: (id) => {
           return (
             <div className="flex items-center space-x-2">
-              <MdEdit
+              {/* <MdEdit
                 onClick={() => navigate(`/edit-occasion/${id}`)}
                 title="edit item"
                 className="h-5 w-5 cursor-pointer text-blue-500"
+              /> */}
+              <EditOccassionItem
+               onClick={() => navigate(`/edit-occasion/${id}`)}
+              
+               className="h-5 w-5 cursor-pointer text-blue-500"
               />
             </div>
           );
@@ -119,13 +125,24 @@ const ListOccasion = () => {
         <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
           Occasions List
         </h3>
-        <Link
+        {/* <Link
           to="/add-occasion"
           className="btn btn-primary text-center md:text-right text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg shadow-md"
           style={{ display: usertype == 2 ? "inline-block" : "none" }}
         >
           + Add Occasion
-        </Link>
+        </Link> */}
+        {/* <button
+              onClick={()=>navigate('/add-occasion')}
+                className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+              
+              >
+                 + Add Occasion
+              </button> */}
+              <AddOccassionItem
+                            onClick={()=>navigate('/add-occasion')}
+                className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+              />
       </div>
 
       {loading ? (

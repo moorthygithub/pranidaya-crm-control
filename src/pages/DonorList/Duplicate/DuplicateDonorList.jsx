@@ -9,6 +9,7 @@ import { Spinner, Button } from "@material-tailwind/react";
 import CommonListing from "../CommonListing";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { toast } from "react-toastify";
+import { DeleteDuplicateDonor, EditDuplicateDonor } from "../../../components/ButtonComponents";
 
 const DuplicateDonorList = () => {
   const [duplicate, setDuplicate] = useState([]);
@@ -120,7 +121,8 @@ const DuplicateDonorList = () => {
           return (
             <div style={{ minWidth: "150px" }}>
               {!value.startsWith(0) ? (
-                <MdEdit
+                <>
+                {/* <MdEdit
                 className="h-5 w-5 cursor-pointer text-blue-500 "
                   onClick={() => {
                     navigate(
@@ -130,14 +132,34 @@ const DuplicateDonorList = () => {
                       )}`
                     );
                   }}
+                /> */}
+                <EditDuplicateDonor
+                  className="h-5 w-5 cursor-pointer text-blue-500 "
+                  onClick={() => {
+                    navigate(
+                      `/edit-duplicate/${value.substr(
+                        value.indexOf("#") + 1,
+                        value.length - 1
+                      )}`
+                    );
+                  }}
                 />
+                </>
               ) : (
-                <MdDelete
+                <>
+                {/* <MdDelete
                 className="h-5 w-5 cursor-pointer text-blue-500"
                   onClick={() =>
                     updateData(value.substr(value.indexOf("#") + 1))
                   }
+                /> */}
+                <DeleteDuplicateDonor
+                 className="h-5 w-5 cursor-pointer text-blue-500"
+                 onClick={() =>
+                   updateData(value.substr(value.indexOf("#") + 1))
+                 }
                 />
+                </>
               )}
             </div>
           );

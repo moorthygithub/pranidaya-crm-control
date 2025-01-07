@@ -9,6 +9,7 @@ import { MdEdit } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import moment from "moment";
 import { Spinner } from "@material-tailwind/react";
+import { AddConsumption, EditConsumption } from "../../../components/ButtonComponents";
 
 const Consumption = () => {
   const [consumptionList, setConsumptionList] = useState(null);
@@ -81,7 +82,7 @@ const Consumption = () => {
         customBodyRender: (id) => {
           return (
             <div className="flex items-center space-x-2">
-              <MdEdit
+              {/* <MdEdit
                 style={{
                   display:
                     localStorage.getItem("user_type_id") == 1 ? "none" : "",
@@ -89,6 +90,11 @@ const Consumption = () => {
                 onClick={() => navigate(`/edit-consumption/${id}`)}
                 title="edit country list"
                 className="h-5 w-5 cursor-pointer text-blue-500"
+              /> */}
+              <EditConsumption
+               onClick={() => navigate(`/edit-consumption/${id}`)}
+              
+               className="h-5 w-5 cursor-pointer text-blue-500"
               />
             </div>
           );
@@ -120,12 +126,23 @@ const Consumption = () => {
           Consumption List
         </h3>
 
-        <Link
+        {/* <Link
           to="/add-consumption"
           className="btn btn-primary text-center md:text-right text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg shadow-md"
         >
           + Add Consumption
-        </Link>
+        </Link> */}
+        {/* <button
+onClick={()=>navigate('/add-consumption')}
+  className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+
+>
++ Add Consumption
+</button> */}
+<AddConsumption
+onClick={()=>navigate('/add-consumption')}
+  className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+/>
       </div>
 
       {loading ? (

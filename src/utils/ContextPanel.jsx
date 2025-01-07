@@ -6,8 +6,11 @@ import axios from "axios";
 export const ContextPanel = createContext();
 
 const AppProvider = ({ children }) => {
+  const userTypeId = localStorage.getItem("user_type_id");
   const [isPanelUp, setIsPanelUp] = useState(true);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const token = localStorage.getItem("token");
+  const [isError, setIsError] = useState(false);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -38,6 +41,7 @@ const AppProvider = ({ children }) => {
       if (token) {
         const allowedPaths = [
           "/home",
+          "/create-createMTest",
           "/profile",
           "/webdonation",
           "/add-country",
@@ -138,6 +142,7 @@ const AppProvider = ({ children }) => {
           "/cashrecepitall",
           "/test",
           "/materialrecepitall",
+          "/userManagement"
         ];
         const isAllowedPath = allowedPaths.some((path) =>
           currentPath.startsWith(path)
@@ -169,8 +174,59 @@ const AppProvider = ({ children }) => {
     return () => clearInterval(intervalId);
   }, []);
 
+
+  const fetchPagePermission = async () => {
+    setIsLoading(true);
+    setIsError(false);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${BaseUrl}/panel-fetch-usercontrol-new`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+     
+      // array in local storage
+      localStorage.setItem("pageControl", JSON.stringify(response.data?.usercontrol));
+
+      
+    } catch (error) {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+  const fetchPermissions = async () => {
+    setIsLoading(true);
+    setIsError(false);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${BaseUrl}/panel-fetch-usercontrol`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // Store the entire `usercontrol` array in localStorage
+      localStorage.setItem("userControl", JSON.stringify(response.data?.usercontrol));
+
+      
+    } catch (error) {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if(token){
+      fetchPermissions();
+      fetchPagePermission()
+    }
+  
+}, []);
+
+
   return (
-    <ContextPanel.Provider value={{ isPanelUp, setIsPanelUp }}>
+    <ContextPanel.Provider value={{ isPanelUp, setIsPanelUp ,fetchPermissions,fetchPagePermission}}>
       {children}
     </ContextPanel.Provider>
   );
