@@ -8,6 +8,8 @@ import { MdEdit } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import EnquiryFilter from "../../../components/EnquiryFilter";
 import { Spinner } from "@material-tailwind/react";
+import { PlusIcon } from "@heroicons/react/24/outline";
+import { AddListItem, EditListItem } from "../../../components/ButtonComponents";
 
 const OpenListEnquiry = () => {
   const [openListData, setOpenListData] = useState([]);
@@ -84,10 +86,15 @@ const OpenListEnquiry = () => {
         customBodyRender: (id) => {
           return (
             <div className="flex items-center space-x-2">
-              <MdEdit
+              {/* <MdEdit
                 onClick={() => navigate(`/edit-enquiry/${id}`)}
                 title="edit item"
                 className="h-5 w-5 cursor-pointer text-blue-500"
+              /> */}
+              <EditListItem
+              onClick={() => navigate(`/edit-enquiry/${id}`)}
+             
+              className="h-5 w-5 cursor-pointer text-blue-500"
               />
             </div>
           );
@@ -119,13 +126,25 @@ const OpenListEnquiry = () => {
         <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
           Items List
         </h3>
-        <Link
+        {/* <Link
           to="/add-enquiry"
           className="btn btn-primary text-center md:text-right text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg shadow-md"
           style={{ display: usertype == 2 ? "inline-block" : "none" }}
         >
           + Add Item
-        </Link>
+        </Link> */}
+           {/* <button
+              onClick={()=>navigate('/add-enquiry')}
+                className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+              
+              >
+                 + Add Item
+              </button> */}
+           
+             <AddListItem
+                 onClick={()=>navigate('/add-enquiry')}
+                className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+             />
       </div>
       {/* <div className="mt-5">
         <MUIDataTable data={openListData} columns={columns} options={options} />

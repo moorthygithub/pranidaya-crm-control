@@ -19,7 +19,7 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { isPanelUp } = useContext(ContextPanel);
+  const { isPanelUp ,fetchPermissions,fetchPagePermission} = useContext(ContextPanel);
   const navigate = useNavigate();
 
   const handleSumbit = async (e) => {
@@ -41,16 +41,18 @@ const SignIn = () => {
 
       if (res.status === 200) {
         const token = res.data.UserInfo?.token;
-        console.log(token, "Token");
+        localStorage.setItem("token", token);
         localStorage.setItem("full_name", res.data.UserInfo.user.full_name);
         localStorage.setItem("username", res.data.UserInfo.user.name);
         localStorage.setItem(
           "user_type_id",
           res.data.UserInfo.user.user_type_id
         );
+        await fetchPagePermission()
+        await fetchPermissions()
+        
         if (token) {
-          // Store the token in localStorage
-          localStorage.setItem("token", token);
+          
           navigate("/master");
           toast.success("User Logged In Successfully");
         } else {

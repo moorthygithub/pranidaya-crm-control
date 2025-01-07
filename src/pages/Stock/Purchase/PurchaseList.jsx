@@ -9,6 +9,10 @@ import { MdEdit, MdOutlineRemoveRedEye } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import moment from "moment";
 import { Spinner } from "@material-tailwind/react";
+import {
+  AddPurchase,
+  EditPurchase,
+} from "../../../components/ButtonComponents";
 
 const PurchaseList = () => {
   const [pendingDListData, setPendingDListData] = useState(null);
@@ -112,13 +116,17 @@ const PurchaseList = () => {
         customBodyRender: (id) => {
           return (
             <div className="flex items-center space-x-2">
-              <MdEdit
+              {/* <MdEdit
                 style={{
                   display:
                     localStorage.getItem("user_type_id") == 1 ? "none" : "",
                 }}
                 onClick={() => navigate(`/edit-purchase/${id}`)}
                 title="edit purchase"
+                className="h-5 w-5 cursor-pointer text-blue-500"
+              /> */}
+              <EditPurchase
+                onClick={() => navigate(`/edit-purchase/${id}`)}
                 className="h-5 w-5 cursor-pointer text-blue-500"
               />
             </div>
@@ -154,18 +162,30 @@ const PurchaseList = () => {
           Purchase List
         </h3>
 
-        <Link
+        {/* <Link
           to="/add-purchase"
           className="btn btn-primary text-center md:text-right text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg shadow-md"
           // style={{ display: usertype == 2 ? "inline-block" : "none" }}
         >
           + Add Purchase
-        </Link>
+        </Link> */}
+        {/* <button
+              onClick={()=>navigate('/add-purchase')}
+                className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+              
+              >
+                 + Add Purchase
+              </button> */}
+
+        <AddPurchase
+          onClick={() => navigate("/add-purchase")}
+          className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+        />
       </div>
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
-          <Spinner className="h-6 w-6"/>
+          <Spinner className="h-6 w-6" />
         </div>
       ) : (
         <div className="mt-5">

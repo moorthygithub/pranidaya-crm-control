@@ -57,6 +57,8 @@ import EditDuplicate from "./pages/DonorList/Duplicate/EditDuplicate";
 import Test from "./pages/test";
 import MaterialRecepitAll from "./pages/DonorList/MaterialRecepitAll";
 import CashRecepitAll from "./pages/DonorList/CashRecepitAll";
+import TabIndex from "./pages/userManagement/TabIndex";
+import CreateButton from "./pages/userManagement/CreateButton";
 const App = () => {
   return (
     <>
@@ -179,6 +181,8 @@ const App = () => {
         />
         <Route path="/webdonation" element={<WebDonation />} />
         <Route path="/test" element={<Test />} />
+        <Route path="/userManagement" element={<TabIndex />} />
+        <Route path="/create-createMTest" element={<CreateButton />} />
       </Routes>
     </>
   );

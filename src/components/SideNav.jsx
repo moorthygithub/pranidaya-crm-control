@@ -13,6 +13,8 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { FaCodePullRequest } from "react-icons/fa6";
 import { GrTasks } from "react-icons/gr";
 import { PiDownloadSimpleBold } from "react-icons/pi";
+import { GrUserSettings } from "react-icons/gr";
+
 
 const SideNav = ({ openSideNav, setOpenSideNav }) => {
   const sidenavRef = useRef(null);
@@ -26,7 +28,29 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
     white: "bg-white shadow-sm",
     transparent: "bg-transparent",
   };
+  const isMenuItemAllowed = (url) => {
+    const pageControl = JSON.parse(localStorage.getItem("pageControl") || "[]");
+    const userTypeId = localStorage.getItem("user_type_id");
+    
+    const routeData = pageControl.find(route => route.url === url);
+    if (!routeData) return false;
+    
+    const allowedUsers = routeData.usertype.split(",").map(id => id.trim());
+    return allowedUsers.includes(userTypeId) && routeData.status === "Active";
+  };
 
+  // Menu items configuration
+  const menuItems = [
+    { path: "/home", icon: MdDashboard, label: "Dashboard" },
+    { path: "/master-list", icon: FaUserGroup, label: "Master" },
+    { path: "/purchase", icon: FaRegUserCircle, label: "Stock" },
+    { path: "/donor-list", icon: MdClass, label: "Donor" },
+    { path: "/cashrecepit", icon: FaCodePullRequest, label: "Receipts" },
+    { path: "/webdonation", icon: MdOutlineWebhook, label: "Website Donation" },
+    { path: "/stock-summary", icon: GrTasks, label: "Reports" },
+    { path: "/donor", icon: PiDownloadSimpleBold, label: "Download" },
+    { path: "/userManagement", icon: GrUserSettings, label: "User Management" }
+  ];
   // close sidebar when clicking outside
 
   useEffect(() => {
@@ -74,10 +98,10 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
         </IconButton>
       </div>
 
-      {localStorage.getItem("user_type_id") == 2 ||
+      {/* {localStorage.getItem("user_type_id") == 2 ||
       localStorage.getItem("user_type_id") == 3 ? (
         <div className="m-4">
-          <ul className="mb-4 flex flex-col gap-">
+          <ul className="mb-4 flex flex-col ">
             <li>
               <NavLink to="/home">
                 {({ isActive }) => (
@@ -242,13 +266,61 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
                 )}
               </NavLink>
             </li>
+            <li>
+              <NavLink to="/userManagement">
+                {({ isActive }) => (
+                  <Button
+                    variant={isActive ? "gradient" : "text"}
+                    color="white"
+                    className="flex items-center gap-4 px-4 capitalize"
+                    fullWidth
+                  >
+                    <PiDownloadSimpleBold className="w-5 h-5 text-inherit" />
+                    <Typography
+                      color="inherit"
+                      className="font-medium capitalize"
+                    >
+                      User Management
+                    </Typography>
+                  </Button>
+                )}
+              </NavLink>
+            </li>
 
-            {/* Add more hardcoded routes here as needed */}
           </ul>
         </div>
       ) : (
         ""
-      )}
+      )} */}
+  <div className="m-4">
+        <ul className="mb-4 flex flex-col ">
+          {menuItems.map((item, index) => (
+            isMenuItemAllowed(item.path) && (
+              <li key={index}>
+                <NavLink to={item.path}>
+                  {({ isActive }) => (
+                    <Button
+                      variant={isActive ? "gradient" : "text"}
+                      color="white"
+                      className="flex items-center gap-4 px-4 capitalize"
+                      fullWidth
+                    >
+                      <item.icon className="w-5 h-5 text-inherit" />
+                      <Typography
+                        color="inherit"
+                        className="font-medium capitalize"
+                      >
+                        {item.label}
+                      </Typography>
+                    </Button>
+                  )}
+                </NavLink>
+              </li>
+            )
+          ))}
+        </ul>
+      </div>
+
     </aside>
   );
 };
