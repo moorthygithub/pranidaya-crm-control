@@ -194,7 +194,7 @@ const Fields = (props) => {
           </ToggleButtonGroup>
         </FormControl>
       )}
-      
+
       {props.type === "PurposeDropdown" && (
         <FormControl
           fullWidth
@@ -437,7 +437,7 @@ const Fields = (props) => {
       )}
 
       {/* //Family DROP DOWN  */}
-      {props.type === "familyDropdown" && (
+      {/* {props.type === "maleDropdown" && (
         <>
           <FormControl fullWidth sx={props.sx}>
             <InputLabel id="service-select-label" className="mt-2">
@@ -458,6 +458,34 @@ const Fields = (props) => {
               label={props.title}
               onChange={props.onChange}
               {...props}
+              required={props.required === true || props.required === "true"}
+            >
+              {props.options?.map((data, key) => (
+                <MenuItem key={key} value={data.animal_type_no}>
+                  {data.animal_type_no}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </>
+      )} */}
+      {props.type === "familyDropdown" && (
+        <>
+          <FormControl fullWidth>
+            <InputLabel id="service-select-label">
+              <span className="text-sm relative bottom-[6px]">
+                {props.title} <span className="text-red-700">*</span>
+              </span>
+            </InputLabel>
+
+            <Select
+              sx={{ height: "40px", borderRadius: "5px" }}
+              labelId="service-select-label"
+              id="service-select"
+              name={props.name} // Ensure the name is passed
+              value={props.value}
+              label={props.title}
+              onChange={(event) => props.onChange(event)} // Pass event correctly
               required={props.required === true || props.required === "true"}
             >
               {props.options?.map((data, key) => (

@@ -9,11 +9,13 @@ import { MdEdit, MdOutlineRemoveRedEye } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import moment from "moment";
 import { Spinner } from "@material-tailwind/react";
-import { EditDonationReceipt, ViewDonationReceipt } from "../../../components/ButtonComponents";
+import {
+  EditDonationReceipt,
+  ViewDonationReceipt,
+} from "../../../components/ButtonComponents";
 const RecepitCashRecepit = () => {
   const [pendingRListData, setPendingRListData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { isPanelUp } = useContext(ContextPanel);
   const navigate = useNavigate();
   const [userType, setUserType] = useState(null);
 
@@ -129,7 +131,7 @@ const RecepitCashRecepit = () => {
               </div> */}
               <ViewDonationReceipt
                 onClick={() => navigate(`/recepit-view/${id}`)}
-              className="h-5 w-5 cursor-pointer text-blue-500"
+                className="h-5 w-5 cursor-pointer text-blue-500"
               />
               {/* <Link
                 to={`/recepit-edit/${id}`}
@@ -141,8 +143,8 @@ const RecepitCashRecepit = () => {
                 />
               </Link> */}
               <EditDonationReceipt
-               onClick={() => navigate(`/recepit-edit/${id}`)}
-              className="h-5 w-5 cursor-pointer text-blue-500"
+                onClick={() => navigate(`/recepit-edit/${id}`)}
+                className="h-5 w-5 cursor-pointer text-blue-500"
               />
             </div>
           );

@@ -10,6 +10,7 @@ import moment from "moment/moment";
 import { Button, ButtonGroup, Input } from "@material-tailwind/react";
 import { FormLabel } from "@mui/material";
 import Dropdown from "../../components/common/DropDown";
+import FamilyDropDown from "../../components/common/TextField/FamilyDropDown";
 
 const unitOptions = [
   { value: "Kg", label: "Kg" },
@@ -156,7 +157,7 @@ const DonorDonationReceipt = () => {
   const { id } = useParams();
   const [userdata, setUserdata] = useState("");
 
-  const [userfamilydata, setUserfFamilydata] = useState("");
+  const [userfamilydata, setUserfFamilydata] = useState([]);
 
   // console.log(id);
   var today = new Date();
@@ -321,6 +322,16 @@ const DonorDonationReceipt = () => {
       });
     }
   };
+
+  const onInputChange1 = (value) => {
+    console.log("Selected Value:", value);
+
+    setDonor((prevDonor) => ({
+      ...prevDonor,
+      family_full_name: value, // Tailwind Select provides value directly
+    }));
+  };
+
   const validateOnlyNumber = (inputtxt) => {
     var phoneno = /^\d*\.?\d*$/;
     if (inputtxt.match(phoneno) || inputtxt.length == 0) {
@@ -797,12 +808,12 @@ const DonorDonationReceipt = () => {
 
                 {donor.family_full_check === "Yes" && (
                   <div className="flex flex-1 mt-5">
-                    <Dropdown
+                    <FamilyDropDown
                       select
                       label="Family Member"
                       name="family_full_name"
                       value={donor.family_full_name}
-                      onChange={(e) => onInputChange(e)}
+                      onChange={(e) => onInputChange1(e)}
                       options={userfamilydata}
                       className="flex-1"
                       size="small"

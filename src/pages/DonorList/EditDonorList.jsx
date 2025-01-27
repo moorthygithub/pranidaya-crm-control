@@ -539,7 +539,7 @@ const EditDonorList = () => {
               >
                 Update
               </button>
-              {donor.donor_related_id == donor.donor_fts_id ? (
+              {/* {donor.donor_related_id == donor.donor_fts_id ? (
                 <Button color="blue" onClick={openModal}>
                   Attach to Group
                 </Button>
@@ -547,7 +547,7 @@ const EditDonorList = () => {
                 <Button color="blue" onClick={openModal} disabled>
                   Attach to Group
                 </Button>
-              )}
+              )} */}
 
               <div>
                 <FamilyGroupModal
@@ -557,7 +557,7 @@ const EditDonorList = () => {
                   id={donor.donor_fts_id}
                 />
               </div>
-              {donor.donor_related_id == donor.donor_fts_id ? (
+              {/* {donor.donor_related_id == donor.donor_fts_id ? (
                 <Button
                   color="red"
                   disabled
@@ -572,7 +572,7 @@ const EditDonorList = () => {
                 >
                   Leave Group
                 </Button>
-              )}
+              )} */}
 
               <Link to="/donor-list">
                 <button className="bg-green-500 text-white px-4 py-2 rounded-md">

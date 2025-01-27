@@ -12,7 +12,7 @@ import {
 } from "@material-tailwind/react";
 import moment from "moment";
 import { BaseUrl } from "../../base/BaseUrl";
-const TABLE_HEAD = ["PDS", "Name", "DOB", "Mobile"];
+const TABLE_HEAD = ["Full Name", "Relation"];
 
 const ViewDonorDetails = () => {
   const navigate = useNavigate();
@@ -33,11 +33,11 @@ const ViewDonorDetails = () => {
         });
 
         setDonor(res.data.donor);
-        setDonorFam(res.data.family_details || []);
+        setDonorFam(res.data.family_member || []);
         setCompany(res.data.company_details);
         setFamGroup(res.data.related_group);
 
-        console.log(res.data.family_details);
+        console.log(res.data.family_member);
       } catch (error) {
         console.error("Error fetching donor data:", error);
       } finally {
@@ -274,7 +274,7 @@ const ViewDonorDetails = () => {
                 <div className="text-xl md:text-2xl font-bold">
                   Family Details
                 </div>
-                <button
+                {/* <button
                   class="bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded inline-flex items-center"
                   onClick={() => {
                     navigate(`/add-donor/${id}`);
@@ -283,15 +283,15 @@ const ViewDonorDetails = () => {
                   <MdAdd />
 
                   <span>Add Family</span>
-                </button>
+                </button> */}
               </div>
-              <table className="min-w-full text-left">
+              <table className="min-w-full table-auto text-left">
                 <thead>
-                  <tr>
+                  <tr className="bg-blue-gray-50 border-b border-blue-gray-100">
                     {TABLE_HEAD.map((head) => (
                       <th
                         key={head}
-                        className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+                        className="px-4 py-3 text-sm font-medium text-blue-gray-600 uppercase tracking-wider"
                       >
                         <Typography
                           variant="small"
@@ -306,53 +306,31 @@ const ViewDonorDetails = () => {
                 </thead>
                 <tbody>
                   {donorfam.length > 0 ? (
-                    donorfam.map((stockItem, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {stockItem.donor_fts_id}{" "}
-                            </Typography>
-                          </td>
-                          <td className="bg-blue-gray-50/50">
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {stockItem.donor_full_name}{" "}
-                            </Typography>
-                          </td>
-                          <td>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {moment(stockItem.donor_dob_annualday).format(
-                                "DD-MM-YYYY"
-                              )}
-                            </Typography>
-                          </td>
-                          <td className={` bg-blue-gray-50/50`}>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {stockItem.donor_mobile}{" "}
-                            </Typography>
-                          </td>
-                        </tr>
-                      );
-                    })
+                    donorfam.map((stockItem, index) => (
+                      <tr
+                        key={index}
+                        className={`${
+                          index % 2 === 0 ? "bg-white" : "bg-blue-gray-50/50"
+                        } hover:bg-blue-gray-100`}
+                      >
+                        <td className="px-4 py-3 text-sm font-normal text-blue-gray-700">
+                          <Typography variant="small" color="blue-gray">
+                            {stockItem.family_full_name}
+                          </Typography>
+                        </td>
+                        <td className="px-4 py-3 text-sm font-normal text-blue-gray-700 bg-blue-gray-50/50">
+                          <Typography variant="small" color="blue-gray">
+                            {stockItem.family_relation}
+                          </Typography>
+                        </td>
+                      </tr>
+                    ))
                   ) : (
                     <tr>
-                      <td colSpan={5} className="p-4 text-center">
+                      <td
+                        colSpan={5}
+                        className="p-4 text-center text-blue-gray-500"
+                      >
                         No data available
                       </td>
                     </tr>
@@ -366,7 +344,7 @@ const ViewDonorDetails = () => {
 
       {/* //COMPANY  */}
 
-      <div className="flex justify-center mt-4">
+      {/* <div className="flex justify-center mt-4">
         <Card className="p-4 w-full overflow-x-auto">
           {loader ? (
             <div className="flex justify-center items-center h-64">
@@ -467,7 +445,7 @@ const ViewDonorDetails = () => {
             </div>
           )}
         </Card>
-      </div>
+      </div> */}
     </Layout>
   );
 };

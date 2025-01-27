@@ -1,63 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MdKeyboardBackspace } from "react-icons/md";
 import axios from "axios";
 import Layout from "../../../layout/Layout";
 import Fields from "../../../components/common/TextField/TextField";
 import { toast } from "react-toastify";
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { BaseUrl } from "../../../base/BaseUrl";
-import { Input, Option, Select, Spinner } from "@material-tailwind/react";
+import {
+  Button,
+  Input,
+  Option,
+  Select,
+  Spinner,
+} from "@material-tailwind/react";
 import { useQuery } from "@tanstack/react-query";
 import Dropdown from "../../../components/common/DropDown";
 import moment from "moment";
 
-const EditAnimalMeat = () => {
+// Unit options for dropdown
+const AnimalGender = [
+  { value: "Male", label: "Male" },
+  { value: "Female", label: "Female" },
+];
+
+const CreateAnimalMeat = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const todayDate = moment().format("YYYY-MM-DD");
 
   const [animalmeet, setAnimalMeet] = useState({
     animal_male_no: "",
     animal_female_no: "",
-    animal_meet_date: "",
-    animal_baby_no: "",
-    animal_baby_date: "",
+    animal_meet_date: todayDate,
   });
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const fetchAnimalById = async () => {
-    const token = localStorage.getItem("token");
-    const response = await axios.get(
-      `${BaseUrl}/fetch-animalMeet-by-id/${id}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    return response.data?.animalType ?? {};
-  };
-
-  const {
-    data: fetchedAnimal,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["AnimalListId", id],
-    queryFn: fetchAnimalById,
-    enabled: !!id, // Ensure the query only runs if id exists
-  });
-  useEffect(() => {
-    if (fetchedAnimal) {
-      setAnimalMeet({
-        ...fetchedAnimal,
-        animal_meet_date: moment(fetchedAnimal.animal_meet_date).format(
-          "YYYY-MM-DD"
-        ),
-        animal_baby_date: moment(fetchedAnimal.animal_baby_date).format(
-          "YYYY-MM-DD"
-        ),
-      });
-    }
-  }, [fetchedAnimal]);
 
   const fetchAnimalMeetMaleList = async () => {
     const token = localStorage.getItem("token");
@@ -111,8 +88,8 @@ const EditAnimalMeat = () => {
       animal_male_no: animalmeet.animal_male_no,
       animal_female_no: animalmeet.animal_female_no,
       animal_meet_date: animalmeet.animal_meet_date,
-      animal_baby_no: animalmeet.animal_baby_no,
-      animal_baby_date: animalmeet.animal_baby_date,
+      // animal_baby_no: animalmeet.animal_baby_no,
+      // animal_baby_date: animalmeet.animal_baby_date,
     };
 
     const isValid = document.getElementById("addIndiv").checkValidity();
@@ -166,7 +143,7 @@ const EditAnimalMeat = () => {
             className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
           />
           <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
-            Edit Animal Meet Stock
+            Create Animal Meet Stock
           </h1>
         </div>
 
@@ -180,7 +157,6 @@ const EditAnimalMeat = () => {
                   className="required"
                   name="animal_male_no"
                   value={animalmeet.animal_male_no}
-                  disabled={true}
                   options={
                     AnimalMeetMaleData?.map((animal, index) => ({
                       value: animal.animal_type_no,
@@ -205,7 +181,6 @@ const EditAnimalMeat = () => {
                   onChange={(value) =>
                     onInputChangeN("animal_female_no", value)
                   }
-                  disabled
                 />
               </div>
 
@@ -217,31 +192,6 @@ const EditAnimalMeat = () => {
                   value={animalmeet.animal_meet_date}
                   onChange={onInputChange}
                   name="animal_meet_date"
-                  disabled
-                  labelProps={{
-                    className: "!text-gray-500",
-                  }}
-                />
-              </div>
-
-              <div className="mb-4">
-                <Fields
-                  required
-                  type="textField"
-                  label="Animal Baby No"
-                  value={animalmeet.animal_baby_no}
-                  onChange={onInputChange}
-                  name="animal_baby_no"
-                />
-              </div>
-              <div className="mb-4">
-                <Input
-                  required
-                  type="date"
-                  label="Animal Date"
-                  value={animalmeet.animal_baby_date}
-                  onChange={onInputChange}
-                  name="animal_baby_date"
                 />
               </div>
             </div>
@@ -249,19 +199,12 @@ const EditAnimalMeat = () => {
             <div className="flex justify-center mt-4 space-x-4">
               <Button
                 type="submit"
-                variant="contained"
-                color="primary"
                 disabled={isButtonDisabled}
-                className="mt-4"
+                className="mt-4  bg-blue-400"
               >
                 Submit
               </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                className="mt-4"
-                onClick={handleBackButton}
-              >
+              <Button className="mt-4 bg-red-400" onClick={handleBackButton}>
                 Back
               </Button>
             </div>
@@ -272,4 +215,4 @@ const EditAnimalMeat = () => {
   );
 };
 
-export default EditAnimalMeat;
+export default CreateAnimalMeat;

@@ -12,7 +12,6 @@ import moment from "moment/moment";
 const CashRecepitList = () => {
   const [cashListData, setCashListData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { isPanelUp } = useContext(ContextPanel);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchOpenData = async () => {

@@ -1,9 +1,16 @@
 import React from "react";
-import { MdDelete, MdEdit, MdOutlineRemoveRedEye, MdOutlineStickyNote2 } from "react-icons/md";
+import {
+  MdDelete,
+  MdEdit,
+  MdGroups,
+  MdOutlineRemoveRedEye,
+  MdOutlineStickyNote2,
+} from "react-icons/md";
 import { IoEye } from "react-icons/io5";
 import { PiNotebook } from "react-icons/pi";
 import { FaUsers } from "react-icons/fa6";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
+import { GrGroup } from "react-icons/gr";
 
 const getUserControlData = () => {
   const userControl = localStorage.getItem("userControl");
@@ -130,77 +137,74 @@ export const EditOccassionItem = ({ onClick, className }) => {
 };
 EditOccassionItem.page = "Master";
 
-// stock- purchase list 
-
+// stock- purchase list
 
 export const AddPurchase = ({ onClick, className }) => {
-    const userType = localStorage.getItem("user_type_id");
-  
-    if (!shouldRenderButton("AddPurchase", userType, "active")) return null;
-  
-    return (
-      <button onClick={onClick} className={` ${className}`}>
-        + Add Purchase
-      </button>
-    );
-  };
-  AddPurchase.page = "Stock";
-  
-  export const EditPurchase = ({ onClick, className }) => {
-    const userType = localStorage.getItem("user_type_id");
-  
-    if (!shouldRenderButton("EditPurchase", userType, "active")) return null;
-  
-    return (
-      <button
-        variant="ghost"
-        size="icon"
-        onClick={onClick}
-        className={className}
-        title="Edit Purchase"
-      >
-        <MdEdit className="h-4 w-4" />
-      </button>
-    );
-  };
-  EditPurchase.page = "Stock";
-//   stock- consumption list 
+  const userType = localStorage.getItem("user_type_id");
 
+  if (!shouldRenderButton("AddPurchase", userType, "active")) return null;
 
+  return (
+    <button onClick={onClick} className={` ${className}`}>
+      + Add Purchase
+    </button>
+  );
+};
+AddPurchase.page = "Stock";
+
+export const EditPurchase = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("EditPurchase", userType, "active")) return null;
+
+  return (
+    <button
+      variant="ghost"
+      size="icon"
+      onClick={onClick}
+      className={className}
+      title="Edit Purchase"
+    >
+      <MdEdit className="h-4 w-4" />
+    </button>
+  );
+};
+EditPurchase.page = "Stock";
+//   stock- consumption list
 
 export const AddConsumption = ({ onClick, className }) => {
-    const userType = localStorage.getItem("user_type_id");
-  
-    if (!shouldRenderButton("AddConsumption", userType, "active")) return null;
-  
-    return (
-      <button onClick={onClick} className={` ${className}`}>
-        + Add Consumption
-      </button>
-    );
-  };
-  AddConsumption.page = "Stock";
-  
-  export const EditConsumption = ({ onClick, className }) => {
-    const userType = localStorage.getItem("user_type_id");
-  
-    if (!shouldRenderButton("EditConsumption", userType, "active")) return null;
-  
-    return (
-      <button
-        variant="ghost"
-        size="icon"
-        onClick={onClick}
-        className={className}
-        title="Edit Consumption"
-      >
-        <MdEdit className="h-4 w-4" />
-      </button>
-    );
-  };
-  EditConsumption.page = "Stock";
+  const userType = localStorage.getItem("user_type_id");
 
-//   donor -donor 
+  if (!shouldRenderButton("AddConsumption", userType, "active")) return null;
+
+  return (
+    <button onClick={onClick} className={` ${className}`}>
+      + Add Consumption
+    </button>
+  );
+};
+AddConsumption.page = "Stock";
+
+export const EditConsumption = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("EditConsumption", userType, "active")) return null;
+
+  return (
+    <button
+      variant="ghost"
+      size="icon"
+      onClick={onClick}
+      className={className}
+      title="Edit Consumption"
+    >
+      <MdEdit className="h-4 w-4" />
+    </button>
+  );
+};
+EditConsumption.page = "Stock";
+
+//   donor -donor
 export const AddCashReceipt = ({ onClick, className }) => {
   const userType = localStorage.getItem("user_type_id");
 
@@ -225,7 +229,6 @@ export const AddDonor = ({ onClick, className }) => {
   );
 };
 AddDonor.page = "Donor";
-
 
 export const ViewDonor = ({ onClick, className }) => {
   const userType = localStorage.getItem("user_type_id");
@@ -284,7 +287,8 @@ CashReceiptDonor.page = "Donor";
 export const MaterialReceiptDonor = ({ onClick, className }) => {
   const userType = localStorage.getItem("user_type_id");
 
-  if (!shouldRenderButton("MaterialReceiptDonor", userType, "active")) return null;
+  if (!shouldRenderButton("MaterialReceiptDonor", userType, "active"))
+    return null;
 
   return (
     <button
@@ -320,7 +324,8 @@ FamilyMemberDonor.page = "Donor";
 export const EditDuplicateDonor = ({ onClick, className }) => {
   const userType = localStorage.getItem("user_type_id");
 
-  if (!shouldRenderButton("EditDuplicateDonor", userType, "active")) return null;
+  if (!shouldRenderButton("EditDuplicateDonor", userType, "active"))
+    return null;
 
   return (
     <button
@@ -338,7 +343,8 @@ EditDuplicateDonor.page = "Donor";
 export const DeleteDuplicateDonor = ({ onClick, className }) => {
   const userType = localStorage.getItem("user_type_id");
 
-  if (!shouldRenderButton("DeleteDuplicateDonor", userType, "active")) return null;
+  if (!shouldRenderButton("DeleteDuplicateDonor", userType, "active"))
+    return null;
 
   return (
     <button
@@ -353,10 +359,48 @@ export const DeleteDuplicateDonor = ({ onClick, className }) => {
   );
 };
 DeleteDuplicateDonor.page = "Donor";
+export const ZeroDuplicateDonor = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("ZeroDuplicateDonor", userType, "active"))
+    return null;
+
+  return (
+    <button
+      variant="ghost"
+      size="icon"
+      onClick={onClick}
+      className={className}
+      title="Family Donor Duplicate"
+    >
+      <GrGroup className="h-4 w-4" />
+    </button>
+  );
+};
+ZeroDuplicateDonor.page = "Donor";
+export const NoDuplicateDonor = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("NoDuplicateDonor", userType, "active")) return null;
+
+  return (
+    <button
+      variant="ghost"
+      size="icon"
+      onClick={onClick}
+      className={className}
+      title="Convert Duplicate"
+    >
+      <MdGroups className="h-4 w-4" />
+    </button>
+  );
+};
+NoDuplicateDonor.page = "Donor";
 export const EditDonationReceipt = ({ onClick, className }) => {
   const userType = localStorage.getItem("user_type_id");
 
-  if (!shouldRenderButton("EditDonationReceipt", userType, "active")) return null;
+  if (!shouldRenderButton("EditDonationReceipt", userType, "active"))
+    return null;
 
   return (
     <button
@@ -374,7 +418,8 @@ EditDonationReceipt.page = "Receipts";
 export const ViewDonationReceipt = ({ onClick, className }) => {
   const userType = localStorage.getItem("user_type_id");
 
-  if (!shouldRenderButton("ViewDonationReceipt", userType, "active")) return null;
+  if (!shouldRenderButton("ViewDonationReceipt", userType, "active"))
+    return null;
 
   return (
     <button
@@ -392,7 +437,8 @@ ViewDonationReceipt.page = "Receipts";
 export const ViewMaterialReceipt = ({ onClick, className }) => {
   const userType = localStorage.getItem("user_type_id");
 
-  if (!shouldRenderButton("ViewMaterialReceipt", userType, "active")) return null;
+  if (!shouldRenderButton("ViewMaterialReceipt", userType, "active"))
+    return null;
 
   return (
     <button
@@ -410,7 +456,8 @@ ViewMaterialReceipt.page = "Receipts";
 export const EditMaterialReceipt = ({ onClick, className }) => {
   const userType = localStorage.getItem("user_type_id");
 
-  if (!shouldRenderButton("EditMaterialReceipt", userType, "active")) return null;
+  if (!shouldRenderButton("EditMaterialReceipt", userType, "active"))
+    return null;
 
   return (
     <button
@@ -425,7 +472,95 @@ export const EditMaterialReceipt = ({ onClick, className }) => {
   );
 };
 EditMaterialReceipt.page = "Receipts";
+//create animal stock button
+export const AddAnimal = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
 
+  if (!shouldRenderButton("AddAnimal", userType, "active")) return null;
+
+  return (
+    <button onClick={onClick} className={` ${className}`}>
+      + Add Animal
+    </button>
+  );
+};
+AddAnimal.page = "Animal Stock";
+
+export const EditAnimal = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("EditAnimal", userType, "active")) return null;
+
+  return (
+    <button
+      variant="ghost"
+      size="icon"
+      onClick={onClick}
+      className={className}
+      title="Edit"
+    >
+      <MdEdit className="h-4 w-4" />
+    </button>
+  );
+};
+EditAnimal.page = "Animal Stock";
+
+export const AddAnimalMeet = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("AddAnimalMeet", userType, "active")) return null;
+
+  return (
+    <button onClick={onClick} className={` ${className}`}>
+      + Add Animal Meet
+    </button>
+  );
+};
+AddAnimalMeet.page = "Animal Stock";
+
+export const EditAnimalMeet = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("EditAnimalMeet", userType, "active")) return null;
+
+  return (
+    <button
+      variant="ghost"
+      size="icon"
+      onClick={onClick}
+      className={className}
+      title="Edit"
+    >
+      <MdEdit className="h-4 w-4" />
+    </button>
+  );
+};
+EditAnimalMeet.page = "Animal Stock";
+
+export const AddBornorArrival = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("AddBornorArrival", userType, "active")) return null;
+
+  return (
+    <button onClick={onClick} className={` ${className}`}>
+      + Add Born Arrival
+    </button>
+  );
+};
+AddBornorArrival.page = "Animal Stock";
+export const AddAnimalDead = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("AddAnimalDead", userType, "active")) return null;
+
+  return (
+    <button onClick={onClick} className={` ${className}`}>
+      + Add Dead List
+    </button>
+  );
+};
+AddAnimalDead.page = "Animal Stock";
 
 export const CreateUserButton = ({ onClick, className }) => {
   const userType = localStorage.getItem("user_type_id");
@@ -434,13 +569,13 @@ export const CreateUserButton = ({ onClick, className }) => {
 
   return (
     <Button
-        variant="contained" 
-               color="inherit"
+      variant="contained"
+      color="inherit"
       onClick={onClick}
       className={className}
       title="Create Roles"
     >
-       Create Roles
+      Create Roles
     </Button>
   );
 };
@@ -465,19 +600,17 @@ export default {
   FamilyMemberDonor,
   EditDuplicateDonor,
   DeleteDuplicateDonor,
+  ZeroDuplicateDonor,
+  NoDuplicateDonor,
   ViewDonationReceipt,
   EditDonationReceipt,
   EditMaterialReceipt,
   ViewMaterialReceipt,
+  AddAnimal,
+  EditAnimal,
+  AddAnimalMeet,
+  EditAnimalMeet,
+  AddBornorArrival,
+  AddAnimalDead,
   CreateUserButton,
-
-
-
-
-  
-
-
-
-
-
 };

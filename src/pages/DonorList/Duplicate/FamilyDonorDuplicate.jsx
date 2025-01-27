@@ -17,7 +17,7 @@ import {
 } from "@material-tailwind/react";
 import MUIDataTable from "mui-datatables";
 
-const EditDuplicate = () => {
+const FamilyDonorDuplicate = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [donorName, setDonorName] = useState("");
@@ -54,16 +54,6 @@ const EditDuplicate = () => {
     },
   ];
 
-  const onInputChange = (e) => {
-    setDonor({
-      ...donor,
-      [e.target.name]: e.target.value,
-    });
-    if (e.target.name === "donor_fts_id") {
-      setDonorName(e.target.value);
-    }
-  };
-
   const addDonorToReceipt = (fts_id) => {
     setDonorName(fts_id);
     setShowDialog(false);
@@ -73,16 +63,19 @@ const EditDuplicate = () => {
     e.preventDefault();
     const data = {
       donor_fts_id: donor.donor_fts_id,
-      new_donor_fts_id: donorName,
-      donor_status: "0",
+      new_indicomp_fts_id: donorName,
     };
 
     axios
-      .put(`${BaseUrl}/update-donors-duplicate/${id}`, data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      .put(
+        `${BaseUrl}/update-donors-duplicate-zero-receipt-family-member/${id}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then((res) => {
         toast.success("Donor Updated Successfully");
         navigate("/duplicate");
@@ -133,7 +126,7 @@ const EditDuplicate = () => {
               className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
             />
             <h1 className="text-2xl text-[#464D69] font-semibold ml-2 mb-2 md:mb-0">
-              Donation Receipt
+              Update Zero Receipt Family Member
             </h1>
           </div>
         </div>
@@ -193,11 +186,10 @@ const EditDuplicate = () => {
           </form>
         </div>
 
-        {/* Dialog for selecting a donor */}
         <Dialog
           open={showDialog}
           handler={() => setShowDialog(false)}
-          size="md"
+          size="lg"
         >
           <DialogHeader className="flex justify-between items-center">
             <span>Select a Donor</span>
@@ -206,42 +198,9 @@ const EditDuplicate = () => {
               onClick={() => setShowDialog(false)}
               size={24}
             />
-          </DialogHeader>{" "}
+          </DialogHeader>
           <DialogBody>
             <div className="max-h-[500px] overflow-y-auto">
-              {/* <MUIDataTable
-                title={"Donor List"}
-                data={donorData}
-                columns={columns}
-                // options={{
-                //   filterType: "textField",
-                //   print: false,
-                //   viewColumns: false,
-                //   filter: false,
-                //   searchOpen: true,
-                //   download: false,
-                //   selectableRows: false,
-                //   responsive: "standard",
-                //   search: false,
-                //   pagination: true,
-                //   rowsPerPageOptions: [5, 10, 50],
-                //   rowsPerPage: 10,
-                // }}
-                options={{
-                  filterType: "textField",
-                  print: false,
-                  viewColumns: false,
-                  filter: false,
-                  searchOpen: true,
-                  download: false,
-                  selectableRows: "none",
-                  responsive: "standard",
-                  search: false,
-                  pagination: true, // Enable pagination
-                  rowsPerPageOptions: [5, 10, 50], // Set pagination options
-                  rowsPerPage: 10, // Set default rows per page (optional)
-                }}
-              /> */}
               <MUIDataTable
                 title={"Donor List"}
                 data={donorData}
@@ -253,13 +212,14 @@ const EditDuplicate = () => {
                   filter: false,
                   searchOpen: true,
                   download: false,
+                  // selectableRows: false,
                   selectableRows: "none",
+
                   responsive: "standard",
                   search: false,
-                  pagination: true, // Enable pagination
-                  rowsPerPageOptions: [10, 25, 50], // Options for rows per page
-                  rowsPerPage: 10, 
-
+                  pagination: true,
+                  rowsPerPageOptions: [5, 10, 50],
+                  rowsPerPage: 10,
                 }}
               />
             </div>
@@ -270,4 +230,4 @@ const EditDuplicate = () => {
   );
 };
 
-export default EditDuplicate;
+export default FamilyDonorDuplicate;

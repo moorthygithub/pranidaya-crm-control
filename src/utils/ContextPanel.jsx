@@ -135,6 +135,8 @@ const AppProvider = ({ children }) => {
           "/d-summary-view",
           "/duplicate",
           "/edit-duplicate",
+          "/zero-duplicate",
+          "/no-duplicate",
           "/occasion",
           "/add-occasion",
           "/edit-occasion",
@@ -142,7 +144,16 @@ const AppProvider = ({ children }) => {
           "/cashrecepitall",
           "/test",
           "/materialrecepitall",
-          "/userManagement"
+          "/userManagement",
+          "/animalStock",
+          "/add-animal",
+          "/edit-animal",
+          "/animal-meet",
+          "/add-animal-meet",
+          "/edit-animal-meet",
+          "/animal-born-arrival",
+          "/add-born-arrival",
+          "/animal-dead",
         ];
         const isAllowedPath = allowedPaths.some((path) =>
           currentPath.startsWith(path)
@@ -174,27 +185,29 @@ const AppProvider = ({ children }) => {
     return () => clearInterval(intervalId);
   }, []);
 
-
   const fetchPagePermission = async () => {
     setIsLoading(true);
     setIsError(false);
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${BaseUrl}/panel-fetch-usercontrol-new`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-     
-      // array in local storage
-      localStorage.setItem("pageControl", JSON.stringify(response.data?.usercontrol));
+      const response = await axios.get(
+        `${BaseUrl}/panel-fetch-usercontrol-new`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-      
+      // array in local storage
+      localStorage.setItem(
+        "pageControl",
+        JSON.stringify(response.data?.usercontrol)
+      );
     } catch (error) {
       setIsError(true);
     } finally {
       setIsLoading(false);
     }
   };
-
 
   const fetchPermissions = async () => {
     setIsLoading(true);
@@ -206,9 +219,10 @@ const AppProvider = ({ children }) => {
       });
 
       // Store the entire `usercontrol` array in localStorage
-      localStorage.setItem("userControl", JSON.stringify(response.data?.usercontrol));
-
-      
+      localStorage.setItem(
+        "userControl",
+        JSON.stringify(response.data?.usercontrol)
+      );
     } catch (error) {
       setIsError(true);
     } finally {
@@ -217,16 +231,16 @@ const AppProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if(token){
+    if (token) {
       fetchPermissions();
-      fetchPagePermission()
+      fetchPagePermission();
     }
-  
-}, []);
-
+  }, []);
 
   return (
-    <ContextPanel.Provider value={{ isPanelUp, setIsPanelUp ,fetchPermissions,fetchPagePermission}}>
+    <ContextPanel.Provider
+      value={{ isPanelUp, setIsPanelUp, fetchPermissions, fetchPagePermission }}
+    >
       {children}
     </ContextPanel.Provider>
   );

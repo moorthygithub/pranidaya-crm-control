@@ -1,20 +1,22 @@
 import React, { useContext, useEffect, useState } from "react";
 import Layout from "../../../layout/Layout";
-import { ContextPanel } from "../../../utils/ContextPanel";
 import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import axios from "axios";
 import { BaseUrl } from "../../../base/BaseUrl";
 import { Spinner, Button } from "@material-tailwind/react";
 import CommonListing from "../CommonListing";
-import { MdDelete, MdEdit } from "react-icons/md";
 import { toast } from "react-toastify";
-import { DeleteDuplicateDonor, EditDuplicateDonor } from "../../../components/ButtonComponents";
+import {
+  DeleteDuplicateDonor,
+  EditDuplicateDonor,
+  NoDuplicateDonor,
+  ZeroDuplicateDonor,
+} from "../../../components/ButtonComponents";
 
 const DuplicateDonorList = () => {
   const [duplicate, setDuplicate] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { isPanelUp } = useContext(ContextPanel);
   const navigate = useNavigate();
   const [data, setData] = useState("");
 
@@ -68,7 +70,7 @@ const DuplicateDonorList = () => {
     };
 
     fetchPendingRData();
-  }, [isPanelUp, navigate]);
+  }, [navigate]);
 
   const updateData = (value) => {
     axios({
@@ -105,7 +107,7 @@ const DuplicateDonorList = () => {
     {
       name: "Mobile",
       label: "Mobile",
-      options: { filter: false, sort: false },
+      options: { filter: false, sort: true },
     },
     { name: "Email", label: "Email", options: { filter: false, sort: false } },
     {
@@ -122,43 +124,81 @@ const DuplicateDonorList = () => {
             <div style={{ minWidth: "150px" }}>
               {!value.startsWith(0) ? (
                 <>
-                {/* <MdEdit
-                className="h-5 w-5 cursor-pointer text-blue-500 "
-                  onClick={() => {
-                    navigate(
-                      `/edit-duplicate/${value.substr(
-                        value.indexOf("#") + 1,
-                        value.length - 1
-                      )}`
-                    );
-                  }}
-                /> */}
-                <EditDuplicateDonor
-                  className="h-5 w-5 cursor-pointer text-blue-500 "
-                  onClick={() => {
-                    navigate(
-                      `/edit-duplicate/${value.substr(
-                        value.indexOf("#") + 1,
-                        value.length - 1
-                      )}`
-                    );
-                  }}
-                />
+                  <div className="flex">
+                    <EditDuplicateDonor
+                      className="h-5 w-5 cursor-pointer text-blue-500 mr-3"
+                      onClick={() => {
+                        navigate(
+                          `/edit-duplicate/${value.substr(
+                            value.indexOf("#") + 1,
+                            value.length - 1
+                          )}`
+                        );
+                      }}
+                    />
+                    <NoDuplicateDonor
+                      className="h-5 w-5 cursor-pointer text-blue-500"
+                      onClick={() => {
+                        navigate(
+                          `/no-duplicate/${value.substr(
+                            value.indexOf("#") + 1,
+                            value.length - 1
+                          )}`
+                        );
+                      }}
+                    />
+                    {/* <MdGroups
+                      className="h-5 w-5 cursor-pointer text-blue-500 "
+                      onClick={() => {
+                        navigate(
+                          `/no-duplicate/${value.substr(
+                            value.indexOf("#") + 1,
+                            value.length - 1
+                          )}`
+                        );
+                      }}
+                    /> */}
+                  </div>
                 </>
               ) : (
                 <>
-                {/* <MdDelete
-                className="h-5 w-5 cursor-pointer text-blue-500"
-                  onClick={() =>
-                    updateData(value.substr(value.indexOf("#") + 1))
-                  }
-                /> */}
-                <DeleteDuplicateDonor
-                 className="h-5 w-5 cursor-pointer text-blue-500"
-                 onClick={() =>
-                   updateData(value.substr(value.indexOf("#") + 1))
-                 }
-                />
+                  <div className="flex">
+                    <DeleteDuplicateDonor
+                      className="h-5 w-5 cursor-pointer text-blue-500 mr-3"
+                      onClick={() =>
+                        updateData(value.substr(value.indexOf("#") + 1))
+                      }
+                    />
+                    {/* <GrGroup
+                      className="h-4 w-4 cursor-pointer text-blue-500"
+                      onClick={() =>
+                        updateData(value.substr(value.indexOf("#") + 1))
+                      }
+                    /> */}
+
+                    {/* <GrGroup
+                      className="h-5 w-5 cursor-pointer text-blue-500 "
+                      onClick={() => {
+                        navigate(
+                          `/zero-duplicate/${value.substr(
+                            value.indexOf("#") + 1,
+                            value.length - 1
+                          )}`
+                        );
+                      }}
+                    /> */}
+                    <ZeroDuplicateDonor
+                      className="h-5 w-5 cursor-pointer text-blue-500 "
+                      onClick={() => {
+                        navigate(
+                          `/zero-duplicate/${value.substr(
+                            value.indexOf("#") + 1,
+                            value.length - 1
+                          )}`
+                        );
+                      }}
+                    />
+                  </div>
                 </>
               )}
             </div>

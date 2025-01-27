@@ -12,7 +12,6 @@ import moment from "moment";
 const FamilyList = () => {
   const [FamilyList, setFamilyList] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { isPanelUp } = useContext(ContextPanel);
   const { id } = useParams();
   const navigate = useNavigate();
   useEffect(() => {

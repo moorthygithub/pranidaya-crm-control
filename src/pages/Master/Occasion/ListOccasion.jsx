@@ -13,7 +13,6 @@ import { AddOccassionItem, EditOccassionItem } from "../../../components/ButtonC
 const ListOccasion = () => {
   const [openListData, setOpenListData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { isPanelUp } = useContext(ContextPanel);
   const navigate = useNavigate();
 
   useEffect(() => {
