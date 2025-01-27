@@ -59,132 +59,176 @@ import MaterialRecepitAll from "./pages/DonorList/MaterialRecepitAll";
 import CashRecepitAll from "./pages/DonorList/CashRecepitAll";
 import TabIndex from "./pages/userManagement/TabIndex";
 import CreateButton from "./pages/userManagement/CreateButton";
+import ConvertDuplicate from "./pages/DonorList/Duplicate/ConvertDuplicate";
+import FamilyDonorDuplicate from "./pages/DonorList/Duplicate/FamilyDonorDuplicate";
+import AnimalStockFilter from "./components/common/AnimalStockFilter";
+import Animal from "./pages/AnimalStock/Animal/Animal";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import CreateAnimal from "./pages/AnimalStock/Animal/CreateAnimal";
+import EditAnimal from "./pages/AnimalStock/Animal/EditAnimal";
+import AnimalMeat from "./pages/AnimalStock/AnimalMeat/AnimalMeat";
+import CreateAnimalMeat from "./pages/AnimalStock/AnimalMeat/CreateAnimalMeat";
+import EditAnimalMeat from "./pages/AnimalStock/AnimalMeat/EditAnimalMeat";
+import AnimalBornArrival from "./pages/AnimalStock/AnimalBornArrival/AnimalBornArrival";
+import CreateBornArrival from "./pages/AnimalStock/AnimalBornArrival/CreateBornArrival";
+import AnimalDead from "./pages/AnimalStock/AnimalDead/AnimalDead";
+import CreateAnimalDead from "./pages/AnimalStock/AnimalDead/CreateAnimalDead";
+const queryClient = new QueryClient();
+
 const App = () => {
   return (
-    <>
-      <ToastContainer />
-      <Routes>
-        <Route path="/" element={<SignIn />} />
-        <Route path="/register" element={<SIgnUp />} />
-        <Route path="/forget-password" element={<ForgetPassword />} />
-        {/* <Route path="/enquiry-now" element={<EnquiryNow />} /> */}
-        <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
-        <Route path="/maintenance" element={<Maintenance />} />
-        <Route path="/donor-list" element={<DonorList />} />
-        <Route path="/add-donor/:id?" element={<AddDonorList />} />
-        <Route path="/edit-donor/:id" element={<EditDonorList />} />
-        <Route path="/create-donor/:id" element={<CreateDonor />} />
-        <Route path="/create-family/:id" element={<FamilyList />} />
-        <Route path="/add-family" element={<AddFamilyMembers />} />
-        <Route path="/duplicate" element={<DuplicateDonorList />} />
-        <Route path="/edit-duplicate/:id" element={<EditDuplicate />} />
-        <Route
-          path="/createrecepit-donor/:id?"
-          element={<CreateDonorRecepit />}
-        />
-        <Route path="/cashrecepitall/:id?" element={<CashRecepitAll />} />
-        <Route path="/materialrecepitall" element={<MaterialRecepitAll />} />
-        <Route path="/viewdonor-list/:id" element={<ViewDonorDetails />} />
-        <Route
-          path="/recepitdonor-list/:id"
-          element={<DonorReceiptsDetails />}
-        />
-        {/* MASTER  */}
-        <Route path="/master-list" element={<OpenListEnquiry />} />
-        <Route path="/add-enquiry" element={<AddEnquiry />} />
-        <Route path="/edit-enquiry/:id" element={<EditList />} />
-        <Route path="/occasion" element={<ListOccasion />} />
-        <Route path="/add-occasion" element={<AddOccasion />} />
-        <Route path="/edit-occasion/:id" element={<EditOccasion />} />
-        <Route path="/addVendor" element={<AddVendors />} />
-        <Route path="/purchase" element={<PurchaseList />} />
-        <Route path="/consumption" element={<Consumption />} />
-        <Route path="/cashrecepit" element={<RecepitCashRecepit />} />
-        <Route path="recepit-material" element={<MaterialRecepits />} />
-        {/* Reports  */}
-        <Route path="/stock-summary" element={<PendingListTask />} />
-        <Route path="/d-summary" element={<DonationSummary />} />
-        <Route path="/d-summary-view" element={<DonationSummaryView />} />
-        <Route path="/view-stock" element={<ViewStockSummary />} />
-        <Route path="/download-enquiry" element={<EnquiryDownload />} />
-        <Route
-          path="/profile"
-          element={<ProtectedRoute element={<Profile />} />}
-        />
-        <Route
-          path="/change-password"
-          element={<ProtectedRoute element={<ChangePassword />} />}
-        />
-        {/* Download  */}
-        <Route path="/donor" element={<ProtectedRoute element={<Donor />} />} />
-        <Route
-          path="/cashpurchase"
-          element={<ProtectedRoute element={<Students />} />}
-        />
-        <Route path="/cash" element={<ProtectedRoute element={<Cash />} />} />
-        <Route
-          path="/M-recepit"
-          element={<ProtectedRoute element={<Exam />} />}
-        />
-        <Route
-          path="/D-consumption"
-          element={<ProtectedRoute element={<DowloadConsumption />} />}
-        />
-        {/* ///NEW  */}
-        <Route
-          path="/VendorList"
-          element={<ProtectedRoute element={<VendorList />} />}
-        />
-        <Route
-          path="/EditVendors/:id"
-          element={<ProtectedRoute element={<EditVendors />} />}
-        />
-        <Route
-          path="/add-purchase"
-          element={<ProtectedRoute element={<AddPurchase />} />}
-        />
-        <Route
-          path="/edit-purchase/:id"
-          element={<ProtectedRoute element={<EditPurchase />} />}
-        />
-        <Route
-          path="/add-consumption"
-          element={<ProtectedRoute element={<AddConsumption />} />}
-        />
-        <Route
-          path="/edit-consumption/:id"
-          element={<ProtectedRoute element={<EditConsumption />} />}
-        />
-        {/* //STOCK */}
-        <Route path="/stock" element={<ProtectedRoute element={<Stock />} />} />
-        <Route
-          path="/recepit-edit/:id"
-          element={<ProtectedRoute element={<EditRecepit />} />}
-        />
-        <Route
-          path="/recepit-view/:id"
-          element={<ProtectedRoute element={<ViewCashRecepit />} />}
-        />
-        {/* //MATERIAL Recepits */}
-        <Route
-          path="/material-edit/:id"
-          element={<ProtectedRoute element={<EditMaterial />} />}
-        />
-        <Route
-          path="/material-view/:id"
-          element={<ProtectedRoute element={<ViewMaterial />} />}
-        />
-        //DOWLOAD
-        <Route
-          path="/web-donation"
-          element={<ProtectedRoute element={<DownloadWebDonation />} />}
-        />
-        <Route path="/webdonation" element={<WebDonation />} />
-        <Route path="/test" element={<Test />} />
-        <Route path="/userManagement" element={<TabIndex />} />
-        <Route path="/create-createMTest" element={<CreateButton />} />
-      </Routes>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <>
+        <ToastContainer />
+        <Routes>
+          <Route path="/" element={<SignIn />} />
+          <Route path="/register" element={<SIgnUp />} />
+          <Route path="/forget-password" element={<ForgetPassword />} />
+          {/* <Route path="/enquiry-now" element={<EnquiryNow />} /> */}
+          <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
+          <Route path="/maintenance" element={<Maintenance />} />
+          <Route path="/donor-list" element={<DonorList />} />
+          <Route path="/add-donor/:id?" element={<AddDonorList />} />
+          <Route path="/edit-donor/:id" element={<EditDonorList />} />
+          <Route path="/create-donor/:id" element={<CreateDonor />} />
+          <Route path="/create-family/:id" element={<FamilyList />} />
+          <Route path="/add-family" element={<AddFamilyMembers />} />
+          <Route path="/duplicate" element={<DuplicateDonorList />} />
+          <Route path="/edit-duplicate/:id" element={<EditDuplicate />} />
+          <Route
+            path="/zero-duplicate/:id"
+            element={<FamilyDonorDuplicate />}
+          />
+          <Route path="/no-duplicate/:id" element={<ConvertDuplicate />} />
+          <Route
+            path="/createrecepit-donor/:id?"
+            element={<CreateDonorRecepit />}
+          />
+          <Route path="/cashrecepitall/:id?" element={<CashRecepitAll />} />
+          <Route path="/materialrecepitall" element={<MaterialRecepitAll />} />
+          <Route path="/viewdonor-list/:id" element={<ViewDonorDetails />} />
+          <Route
+            path="/recepitdonor-list/:id"
+            element={<DonorReceiptsDetails />}
+          />
+          {/* MASTER  */}
+          <Route path="/master-list" element={<OpenListEnquiry />} />
+          <Route path="/add-enquiry" element={<AddEnquiry />} />
+          <Route path="/edit-enquiry/:id" element={<EditList />} />
+          <Route path="/occasion" element={<ListOccasion />} />
+          <Route path="/add-occasion" element={<AddOccasion />} />
+          <Route path="/edit-occasion/:id" element={<EditOccasion />} />
+          <Route path="/addVendor" element={<AddVendors />} />
+          <Route path="/purchase" element={<PurchaseList />} />
+          <Route path="/consumption" element={<Consumption />} />
+          <Route path="/cashrecepit" element={<RecepitCashRecepit />} />
+          <Route path="recepit-material" element={<MaterialRecepits />} />
+          {/* Reports  */}
+          <Route path="/stock-summary" element={<PendingListTask />} />
+          <Route path="/d-summary" element={<DonationSummary />} />
+          <Route path="/d-summary-view" element={<DonationSummaryView />} />
+          <Route path="/view-stock" element={<ViewStockSummary />} />
+          <Route path="/download-enquiry" element={<EnquiryDownload />} />
+          <Route
+            path="/profile"
+            element={<ProtectedRoute element={<Profile />} />}
+          />
+          <Route
+            path="/change-password"
+            element={<ProtectedRoute element={<ChangePassword />} />}
+          />
+          {/* Download  */}
+          <Route
+            path="/donor"
+            element={<ProtectedRoute element={<Donor />} />}
+          />
+          <Route
+            path="/cashpurchase"
+            element={<ProtectedRoute element={<Students />} />}
+          />
+          <Route path="/cash" element={<ProtectedRoute element={<Cash />} />} />
+          <Route
+            path="/M-recepit"
+            element={<ProtectedRoute element={<Exam />} />}
+          />
+          <Route
+            path="/D-consumption"
+            element={<ProtectedRoute element={<DowloadConsumption />} />}
+          />
+          {/* ///NEW  */}
+          <Route
+            path="/VendorList"
+            element={<ProtectedRoute element={<VendorList />} />}
+          />
+          <Route
+            path="/EditVendors/:id"
+            element={<ProtectedRoute element={<EditVendors />} />}
+          />
+          <Route
+            path="/add-purchase"
+            element={<ProtectedRoute element={<AddPurchase />} />}
+          />
+          <Route
+            path="/edit-purchase/:id"
+            element={<ProtectedRoute element={<EditPurchase />} />}
+          />
+          <Route
+            path="/add-consumption"
+            element={<ProtectedRoute element={<AddConsumption />} />}
+          />
+          <Route
+            path="/edit-consumption/:id"
+            element={<ProtectedRoute element={<EditConsumption />} />}
+          />
+          {/* //STOCK */}
+          <Route
+            path="/stock"
+            element={<ProtectedRoute element={<Stock />} />}
+          />
+          <Route
+            path="/recepit-edit/:id"
+            element={<ProtectedRoute element={<EditRecepit />} />}
+          />
+          <Route
+            path="/recepit-view/:id"
+            element={<ProtectedRoute element={<ViewCashRecepit />} />}
+          />
+          {/* //MATERIAL Recepits */}
+          <Route
+            path="/material-edit/:id"
+            element={<ProtectedRoute element={<EditMaterial />} />}
+          />
+          <Route
+            path="/material-view/:id"
+            element={<ProtectedRoute element={<ViewMaterial />} />}
+          />
+          {/* //DOWLOAD */}
+          <Route
+            path="/web-donation"
+            element={<ProtectedRoute element={<DownloadWebDonation />} />}
+          />
+          <Route path="/webdonation" element={<WebDonation />} />
+          <Route path="/test" element={<Test />} />
+          <Route path="/userManagement" element={<TabIndex />} />
+          <Route path="/create-createMTest" element={<CreateButton />} />
+          {/* ///animal stock */}
+
+          <Route path="/animalStock" element={<Animal />} />
+          <Route path="/add-animal" element={<CreateAnimal />} />
+          <Route path="/edit-animal/:id" element={<EditAnimal />} />
+          {/* //animal meet */}
+          <Route path="/animal-meet" element={<AnimalMeat />} />
+          <Route path="/add-animal-meet" element={<CreateAnimalMeat />} />
+          <Route path="/edit-animal-meet/:id" element={<EditAnimalMeat />} />
+          {/* //animal born/arrival meet */}
+          <Route path="/animal-born-arrival" element={<AnimalBornArrival />} />
+          <Route path="/add-born-arrival" element={<CreateBornArrival />} />
+          {/* //animal dead */}
+          <Route path="/animal-dead" element={<AnimalDead />} />
+          <Route path="/add-animal-dead" element={<CreateAnimalDead />} />
+        </Routes>
+      </>
+    </QueryClientProvider>
   );
 };
 

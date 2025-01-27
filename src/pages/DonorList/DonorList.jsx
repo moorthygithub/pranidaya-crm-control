@@ -16,7 +16,6 @@ import { AddCashReceipt, AddDonor, CashReceiptDonor, EditDonor, FamilyMemberDono
 const DonorList = () => {
   const [donorListData, setDonorListData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { isPanelUp } = useContext(ContextPanel);
   const navigate = useNavigate();
 
   useEffect(() => {

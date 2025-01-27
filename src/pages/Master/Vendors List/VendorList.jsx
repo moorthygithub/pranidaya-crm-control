@@ -13,7 +13,6 @@ import { AddVendorItem, EditVendorItem } from "../../../components/ButtonCompone
 const VendorList = () => {
   const [overdueListData, setOverdueListData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { isPanelUp } = useContext(ContextPanel);
   const navigate = useNavigate();
 
   useEffect(() => {

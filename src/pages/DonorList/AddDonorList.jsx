@@ -4,7 +4,7 @@ import { MdKeyboardBackspace } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Input } from "@material-tailwind/react";
-import  { BaseUrl } from "../../base/BaseUrl";
+import { BaseUrl } from "../../base/BaseUrl";
 import Layout from "../../layout/Layout";
 import Fields from "../../components/common/TextField/TextField";
 import { toast } from "react-toastify";
@@ -222,8 +222,8 @@ const AddDonorList = () => {
       });
 
       if (response.data.code == 201) {
-        toast.success("Data Updated Successfully");
-        navigate(`/createrecepit-donor/${res.data.latestid.id}`);
+        // toast.success("Data Updated Successfully");
+        navigate(`/createrecepit-donor/${response.data.latestid.id}`);
       } else {
         if (response.data.code == 404) {
           toast.error(" Duplicate Entry");

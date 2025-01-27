@@ -12,6 +12,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { CircularProgress, FormLabel } from "@mui/material";
 import Dropdown from "../../components/common/DropDown";
+import FamilyDropDown from "../../components/common/TextField/FamilyDropDown";
 
 // Unit options for dropdown
 const unitOptions = [
@@ -343,6 +344,15 @@ const CashRecepitAll = () => {
         [e.target.name]: e.target.value,
       });
     }
+  };
+
+  const onInputChange1 = (value) => {
+    console.log("Selected Value:", value);
+
+    setDonor((prevDonor) => ({
+      ...prevDonor,
+      family_full_name: value, // Tailwind Select provides value directly
+    }));
   };
   const validateOnlyNumber = (inputtxt) => {
     var phoneno = /^\d*\.?\d*$/;
@@ -790,13 +800,13 @@ const CashRecepitAll = () => {
 
                 {donor.family_full_check === "Yes" && (
                   <div className="flex flex-1 mt-5">
-                    <Dropdown
+                    <FamilyDropDown
                       select
                       label="Family Member"
                       name="family_full_name"
                       value={donor.family_full_name}
-                      onChange={(e) => onInputChange(e)}
-                      options={userfamilydata}
+                      onChange={(e) => onInputChange1(e)}
+                      options={userfamilydata} // Ensure this contains [{ family_full_name: "test123456" }]
                       className="flex-1"
                       size="small"
                     />

@@ -14,7 +14,6 @@ import { AddListItem, EditListItem } from "../../../components/ButtonComponents"
 const OpenListEnquiry = () => {
   const [openListData, setOpenListData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { isPanelUp } = useContext(ContextPanel);
   const navigate = useNavigate();
 
   useEffect(() => {

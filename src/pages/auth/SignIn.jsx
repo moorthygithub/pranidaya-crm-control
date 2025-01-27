@@ -19,7 +19,8 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { isPanelUp ,fetchPermissions,fetchPagePermission} = useContext(ContextPanel);
+  const { isPanelUp, fetchPermissions, fetchPagePermission } =
+    useContext(ContextPanel);
   const navigate = useNavigate();
 
   const handleSumbit = async (e) => {
@@ -48,11 +49,10 @@ const SignIn = () => {
           "user_type_id",
           res.data.UserInfo.user.user_type_id
         );
-        await fetchPagePermission()
-        await fetchPermissions()
-        
+        await fetchPagePermission();
+        await fetchPermissions();
+
         if (token) {
-          
           navigate("/master");
           toast.success("User Logged In Successfully");
         } else {

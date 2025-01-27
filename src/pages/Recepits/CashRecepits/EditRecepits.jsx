@@ -10,11 +10,6 @@ import { BaseUrl } from "../../../base/BaseUrl";
 import moment from "moment/moment";
 import { Button, Card, CardBody, Input } from "@material-tailwind/react";
 
-// Unit options for dropdown
-const unitOptions = [
-  { value: "Kg", label: "Kg" },
-  { value: "Ton", label: "Ton" },
-];
 const exemption = [
   {
     value: "80G",
@@ -23,14 +18,6 @@ const exemption = [
   {
     value: "Non 80G",
     label: "Non 80G",
-  },
-  {
-    value: "FCRA",
-    label: "FCRA",
-  },
-  {
-    value: "CSR",
-    label: "CSR",
   },
 ];
 
@@ -438,8 +425,8 @@ const EditRecepit = () => {
         </Card>
         <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
           <form id="addIndiv" onSubmit={onSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-              <div className="md:col-span-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+              <div>
                 {/* <label
                   className={`${
                     donor?.c_receipt_total_amount
@@ -462,7 +449,18 @@ const EditRecepit = () => {
                   }}
                 />
               </div>
-              <div className="md:col-span-1">
+              <div>
+                <Fields
+                  select
+                  title="Exemption Type"
+                  type="whatsappDropdown"
+                  name="c_receipt_exemption_type"
+                  value={donor.c_receipt_exemption_type}
+                  onChange={(e) => onInputChange(e)}
+                  options={exemption}
+                />
+              </div>
+              <div>
                 <Fields
                   required
                   select
@@ -476,7 +474,7 @@ const EditRecepit = () => {
                   pay_mode_2={pay_mode_2}
                 />
               </div>
-              <div className="md:col-span-2">
+              <div>
                 <Fields
                   type="textField"
                   label="Transaction Pay Details"
@@ -486,7 +484,7 @@ const EditRecepit = () => {
                 />
               </div>{" "}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
               <div>
                 <Fields
                   select
@@ -556,9 +554,9 @@ const EditRecepit = () => {
             {users.map((user, index) => (
               <div
                 key={index}
-                className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4"
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4"
               >
-                <div className="md:col-span-3">
+                <div className="lg:col-span-3">
                   <Fields
                     select
                     required
@@ -572,7 +570,7 @@ const EditRecepit = () => {
                     donation_type_2={donation_type_2}
                   ></Fields>
                 </div>
-                <div className="md:col-span-1">
+                <div className="lg:col-span-1">
                   <Fields
                     label="Amount"
                     type="textField"

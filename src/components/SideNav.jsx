@@ -1,8 +1,5 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
-import {
-
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Button, IconButton, Typography } from "@material-tailwind/react";
 import { useEffect, useRef } from "react";
 import image from "../assets/logo.jpg";
@@ -14,7 +11,6 @@ import { FaCodePullRequest } from "react-icons/fa6";
 import { GrTasks } from "react-icons/gr";
 import { PiDownloadSimpleBold } from "react-icons/pi";
 import { GrUserSettings } from "react-icons/gr";
-
 
 const SideNav = ({ openSideNav, setOpenSideNav }) => {
   const sidenavRef = useRef(null);
@@ -31,11 +27,11 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
   const isMenuItemAllowed = (url) => {
     const pageControl = JSON.parse(localStorage.getItem("pageControl") || "[]");
     const userTypeId = localStorage.getItem("user_type_id");
-    
-    const routeData = pageControl.find(route => route.url === url);
+
+    const routeData = pageControl.find((route) => route.url === url);
     if (!routeData) return false;
-    
-    const allowedUsers = routeData.usertype.split(",").map(id => id.trim());
+
+    const allowedUsers = routeData.usertype.split(",").map((id) => id.trim());
     return allowedUsers.includes(userTypeId) && routeData.status === "Active";
   };
 
@@ -49,7 +45,12 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
     { path: "/webdonation", icon: MdOutlineWebhook, label: "Website Donation" },
     { path: "/stock-summary", icon: GrTasks, label: "Reports" },
     { path: "/donor", icon: PiDownloadSimpleBold, label: "Download" },
-    { path: "/userManagement", icon: GrUserSettings, label: "User Management" }
+    {
+      path: "/animalStock",
+      icon: PiDownloadSimpleBold,
+      label: "Animal Stock",
+    },
+    { path: "/userManagement", icon: GrUserSettings, label: "User Management" },
   ];
   // close sidebar when clicking outside
 
@@ -292,35 +293,35 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
       ) : (
         ""
       )} */}
-  <div className="m-4">
+      <div className="m-4">
         <ul className="mb-4 flex flex-col ">
-          {menuItems.map((item, index) => (
-            isMenuItemAllowed(item.path) && (
-              <li key={index}>
-                <NavLink to={item.path}>
-                  {({ isActive }) => (
-                    <Button
-                      variant={isActive ? "gradient" : "text"}
-                      color="white"
-                      className="flex items-center gap-4 px-4 capitalize"
-                      fullWidth
-                    >
-                      <item.icon className="w-5 h-5 text-inherit" />
-                      <Typography
-                        color="inherit"
-                        className="font-medium capitalize"
+          {menuItems.map(
+            (item, index) =>
+              isMenuItemAllowed(item.path) && (
+                <li key={index}>
+                  <NavLink to={item.path}>
+                    {({ isActive }) => (
+                      <Button
+                        variant={isActive ? "gradient" : "text"}
+                        color="white"
+                        className="flex items-center gap-4 px-4 capitalize"
+                        fullWidth
                       >
-                        {item.label}
-                      </Typography>
-                    </Button>
-                  )}
-                </NavLink>
-              </li>
-            )
-          ))}
+                        <item.icon className="w-5 h-5 text-inherit" />
+                        <Typography
+                          color="inherit"
+                          className="font-medium capitalize"
+                        >
+                          {item.label}
+                        </Typography>
+                      </Button>
+                    )}
+                  </NavLink>
+                </li>
+              )
+          )}
         </ul>
       </div>
-
     </aside>
   );
 };
