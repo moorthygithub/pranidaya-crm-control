@@ -8,7 +8,10 @@ import { BaseUrl } from "../../../base/BaseUrl";
 import { MdEdit } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import { Spinner } from "@material-tailwind/react";
-import { AddVendorItem, EditVendorItem } from "../../../components/ButtonComponents";
+import {
+  AddVendorItem,
+  EditVendorItem,
+} from "../../../components/ButtonComponents";
 
 const VendorList = () => {
   const [overdueListData, setOverdueListData] = useState([]);
@@ -122,9 +125,8 @@ const VendorList = () => {
                 className="h-5 w-5 cursor-pointer text-blue-500"
               /> */}
               <EditVendorItem
-              onClick={() => navigate(`/EditVendors/${id}`)}
-             
-              className="h-5 w-5 cursor-pointer text-blue-500"
+                onClick={() => navigate(`/EditVendors/${id}`)}
+                className="h-5 w-5 cursor-pointer text-blue-500"
               />
             </div>
           );
@@ -141,11 +143,7 @@ const VendorList = () => {
     viewColumns: true,
     download: false,
     print: false,
-    setRowProps: () => ({
-      style: {
-        borderBottom: "10px solid #f1f7f9",
-      },
-    }),
+    filter: false,
   };
 
   return (
@@ -169,10 +167,10 @@ const VendorList = () => {
               >
                  + Add Vendors
               </button> */}
-              <AddVendorItem
-               onClick={()=>navigate('/addVendor')}
-                className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-              />
+        <AddVendorItem
+          onClick={() => navigate("/addVendor")}
+          className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+        />
       </div>
 
       {loading ? (

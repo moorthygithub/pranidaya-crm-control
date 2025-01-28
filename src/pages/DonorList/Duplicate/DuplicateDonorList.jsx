@@ -18,59 +18,72 @@ const DuplicateDonorList = () => {
   const [duplicate, setDuplicate] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [data, setData] = useState("");
 
+  const fetchPendingRData = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${BaseUrl}/fetch-donors-duplicate`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const res = response.data?.individualCompanies || [];
+
+      const tempRows = res.map((item, index) => {
+        if (item["donor_type"] === "Individual") {
+          return [
+            index + 1,
+            item["donor_fts_id"],
+            item["donor_full_name"],
+            item["donor_type"],
+            item["donor_spouse_name"],
+            item["donor_mobile"],
+            item["donor_email"],
+            item["c_receipt_count"],
+            item["c_receipt_count"] + "#" + item["id"],
+          ];
+        } else {
+          return [
+            index + 1,
+            item["donor_fts_id"],
+            item["donor_full_name"],
+            item["donor_type"],
+            item["donor_contact_name"],
+            item["donor_mobile"],
+            item["donor_email"],
+            item["c_receipt_count"],
+            item["c_receipt_count"] + "#" + item["id"],
+          ];
+        }
+      });
+
+      setDuplicate(tempRows);
+    } catch (error) {
+      console.error("Error fetching pending list request data", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchPendingRData = async () => {
-      try {
-        setLoading(true);
-        const token = localStorage.getItem("token");
-        const response = await axios.get(`${BaseUrl}/fetch-donors-duplicate`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const res = response.data?.individualCompanies || [];
-
-        const tempRows = res.map((item, index) => {
-          if (item["donor_type"] === "Individual") {
-            return [
-              index + 1,
-              item["donor_fts_id"],
-              item["donor_full_name"],
-              item["donor_type"],
-              item["donor_spouse_name"],
-              item["donor_mobile"],
-              item["donor_email"],
-              item["c_receipt_count"],
-              item["c_receipt_count"] + "#" + item["id"],
-            ];
-          } else {
-            return [
-              index + 1,
-              item["donor_fts_id"],
-              item["donor_full_name"],
-              item["donor_type"],
-              item["donor_contact_name"],
-              item["donor_mobile"],
-              item["donor_email"],
-              item["c_receipt_count"],
-              item["c_receipt_count"] + "#" + item["id"],
-            ];
-          }
-        });
-
-        setDuplicate(tempRows);
-      } catch (error) {
-        console.error("Error fetching pending list request data", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchPendingRData();
-  }, [navigate]);
+  }, []);
+
+  // const updateData = (value) => {
+  //   axios({
+  //     url: BaseUrl + "/update-donors-duplicate-by-id/" + value,
+  //     method: "PUT",
+  //     headers: {
+  //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //     },
+  //   }).then((res) => {
+  //     console.log("receipt", res.data);
+  //     setData(res.data.c_receipt_count);
+  //     toast.success("Data Updated Successfully");
+  //     fetchPendingRData();
+  //   });
+  // };
 
   const updateData = (value) => {
     axios({
@@ -79,13 +92,17 @@ const DuplicateDonorList = () => {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    }).then((res) => {
-      console.log("receipt", res.data);
-      setData(res.data.c_receipt_count);
-      toast.success("Data Updated Successfully");
-    });
+    })
+      .then((res) => {
+        console.log("receipt", res.data);
+        toast.success("Data Updated Successfully");
+        fetchPendingRData();
+      })
+      .catch((error) => {
+        console.error("Error updating data:", error);
+        toast.error("Error updating data");
+      });
   };
-
   const columns = [
     {
       name: "#",
@@ -215,11 +232,6 @@ const DuplicateDonorList = () => {
     viewColumns: true,
     download: false,
     print: false,
-    setRowProps: (rowData) => ({
-      style: {
-        borderBottom: "10px solid #f1f7f9",
-      },
-    }),
   };
 
   return (

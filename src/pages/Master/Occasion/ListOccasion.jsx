@@ -8,7 +8,10 @@ import { MdEdit } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import EnquiryFilter from "../../../components/EnquiryFilter";
 import { Spinner } from "@material-tailwind/react";
-import { AddOccassionItem, EditOccassionItem } from "../../../components/ButtonComponents";
+import {
+  AddOccassionItem,
+  EditOccassionItem,
+} from "../../../components/ButtonComponents";
 
 const ListOccasion = () => {
   const [openListData, setOpenListData] = useState([]);
@@ -90,9 +93,8 @@ const ListOccasion = () => {
                 className="h-5 w-5 cursor-pointer text-blue-500"
               /> */}
               <EditOccassionItem
-               onClick={() => navigate(`/edit-occasion/${id}`)}
-              
-               className="h-5 w-5 cursor-pointer text-blue-500"
+                onClick={() => navigate(`/edit-occasion/${id}`)}
+                className="h-5 w-5 cursor-pointer text-blue-500"
               />
             </div>
           );
@@ -109,11 +111,7 @@ const ListOccasion = () => {
     viewColumns: true,
     download: false,
     print: false,
-    setRowProps: () => ({
-      style: {
-        borderBottom: "10px solid #f1f7f9",
-      },
-    }),
+    filter: false,
   };
   let usertype = localStorage.getItem("user_type_id");
 
@@ -138,10 +136,10 @@ const ListOccasion = () => {
               >
                  + Add Occasion
               </button> */}
-              <AddOccassionItem
-                            onClick={()=>navigate('/add-occasion')}
-                className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-              />
+        <AddOccassionItem
+          onClick={() => navigate("/add-occasion")}
+          className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+        />
       </div>
 
       {loading ? (

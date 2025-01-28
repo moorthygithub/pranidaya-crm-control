@@ -73,7 +73,10 @@ import AnimalBornArrival from "./pages/AnimalStock/AnimalBornArrival/AnimalBornA
 import CreateBornArrival from "./pages/AnimalStock/AnimalBornArrival/CreateBornArrival";
 import AnimalDead from "./pages/AnimalStock/AnimalDead/AnimalDead";
 import CreateAnimalDead from "./pages/AnimalStock/AnimalDead/CreateAnimalDead";
+import AnimalStocks from "./pages/AnimalStock/AnimalStocks/AnimalStocks";
+import AnimalStocksView from "./pages/AnimalStock/AnimalStocks/AnimalStocksView";
 const queryClient = new QueryClient();
+import { useQuery } from "@tanstack/react-query";
 
 const App = () => {
   return (
@@ -226,6 +229,9 @@ const App = () => {
           {/* //animal dead */}
           <Route path="/animal-dead" element={<AnimalDead />} />
           <Route path="/add-animal-dead" element={<CreateAnimalDead />} />
+          {/* //animal stocks */}
+          <Route path="/animal-stock" element={<AnimalStocks />} />
+          <Route path="/animal-stock-view" element={<AnimalStocksView />} />
         </Routes>
       </>
     </QueryClientProvider>

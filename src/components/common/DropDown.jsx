@@ -16,7 +16,7 @@ const Dropdown = ({
         label={
           <>
             {label}
-            {required && <span className="text-red-500 text-sm ml-1">*</span>}
+            {required && <span className="text-red-500 ml-1">*</span>}
           </>
         }
         onChange={onChange}

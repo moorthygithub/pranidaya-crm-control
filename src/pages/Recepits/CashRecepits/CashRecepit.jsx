@@ -13,39 +13,52 @@ import {
   EditDonationReceipt,
   ViewDonationReceipt,
 } from "../../../components/ButtonComponents";
+import { useQuery } from "@tanstack/react-query";
+
+const fetchCashRecepitData = async () => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(`${BaseUrl}/fetch-c-receipt-list`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data?.receipts ?? [];
+};
 const RecepitCashRecepit = () => {
-  const [pendingRListData, setPendingRListData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  // const [pendingRListData, setPendingRListData] = useState(null);
+  // const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [userType, setUserType] = useState(null);
+  // const [userType, setUserType] = useState(null);
 
-  useEffect(() => {
-    const fetchPendingRData = async () => {
-      const userTypeId = localStorage.getItem("user_type_id");
+  // useEffect(() => {
+  //   const fetchPendingRData = async () => {
+  //     const userTypeId = localStorage.getItem("user_type_id");
 
-      setUserType(userTypeId);
+  //     setUserType(userTypeId);
 
-      try {
-        setLoading(true);
-        const token = localStorage.getItem("token");
-        const response = await axios.get(`${BaseUrl}/fetch-c-receipt-list`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  //     try {
+  //       setLoading(true);
+  //       const token = localStorage.getItem("token");
+  //       const response = await axios.get(`${BaseUrl}/fetch-c-receipt-list`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
 
-        const res = response.data?.receipts;
-        console.log(res);
-        setPendingRListData(res);
-      } catch (error) {
-        console.error("Error fetching pending list request data", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPendingRData();
-  }, []);
+  //       const res = response.data?.receipts;
+  //       console.log(res);
+  //       setPendingRListData(res);
+  //     } catch (error) {
+  //       console.error("Error fetching pending list request data", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchPendingRData();
+  // }, []);
 
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["fetchrecepitdata"],
+    queryFn: fetchCashRecepitData,
+  });
   const columns = [
     {
       name: "c_receipt_no",
@@ -171,16 +184,12 @@ const RecepitCashRecepit = () => {
         </h3>
       </div>
       <div className="mt-5">
-        {loading ? (
+        {isLoading ? (
           <div className="flex justify-center items-center h-64">
             <Spinner className="h-6 w-6" />
           </div>
         ) : (
-          <MUIDataTable
-            data={pendingRListData || []}
-            columns={columns}
-            options={options}
-          />
+          <MUIDataTable data={data || []} columns={columns} options={options} />
         )}
       </div>
     </Layout>

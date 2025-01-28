@@ -226,15 +226,18 @@ function ViewCashRecepit() {
             {/* Email Handling Section */}
             {donor?.donor_email ? (
               <>
-                <div className="flex flex-col items-start">
+                <div className="flex flex-col items-start cursor-pointer">
                   <a onClick={sendEmail} className="flex items-center">
                     <i className="mr-2 ti-email"></i>
                     <span>Email</span>
                   </a>
-                  <small style={{ fontSize: "10px" }}>
-                    {receipts?.receipt_email_count == null
+                  <small
+                    style={{ fontSize: "10px" }}
+                    className="cursor-pointer"
+                  >
+                    {receipts?.c_receipt_email_count == null
                       ? "Email Sent 0 Times"
-                      : `Email Sent ${receipts.receipt_email_count} Times`}
+                      : `Email Sent ${receipts.c_receipt_email_count} Times`}
                   </small>
                 </div>
               </>

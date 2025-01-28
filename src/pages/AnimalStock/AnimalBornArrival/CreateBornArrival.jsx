@@ -213,7 +213,7 @@ const CreateBornArrival = () => {
             className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
           />
           <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
-            Create Born Arrival Stock
+            Create Animal Born or Arrival
           </h1>
         </div>
 

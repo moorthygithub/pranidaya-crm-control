@@ -8,9 +8,10 @@ import { BaseUrl } from "../../../base/BaseUrl";
 import { MdEdit, MdKeyboardBackspace } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import moment from "moment";
+import { AddFamilyMember } from "../../../components/ButtonComponents";
 
 const FamilyList = () => {
-  const [FamilyList, setFamilyList] = useState(null);
+  const [FamilyList, setFamilyList] = useState([]);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -29,18 +30,8 @@ const FamilyList = () => {
           }
         );
 
-        const res = response.data?.donor;
-        if (Array.isArray(res)) {
-          const tempRows = res.map((item, index) => [
-            index + 1,
-            item["family_full_name"],
-            item["family_status"],
-
-            item["id"],
-          ]);
-          console.log(tempRows, "tempRows");
-          setFamilyList(tempRows);
-        }
+        // const res = response.data.donor;
+        setFamilyList(response.data.donor);
       } catch (error) {
         console.error("Error fetching deliverd list Delivery data", error);
       } finally {
@@ -53,16 +44,7 @@ const FamilyList = () => {
 
   const columns = [
     {
-      name: "#",
-      options: {
-        filter: false,
-        print: true,
-        download: true,
-        sort: false,
-      },
-    },
-    {
-      name: " Name",
+      name: "family_full_name",
       label: "Name",
       options: {
         filter: false,
@@ -70,7 +52,15 @@ const FamilyList = () => {
       },
     },
     {
-      name: " Status",
+      name: "family_relation",
+      label: "Relation",
+      options: {
+        filter: false,
+        sort: false,
+      },
+    },
+    {
+      name: "family_status",
       label: "Status",
       options: {
         filter: false,
@@ -87,13 +77,7 @@ const FamilyList = () => {
     viewColumns: true,
     download: false,
     print: false,
-    setRowProps: (rowData) => {
-      return {
-        style: {
-          borderBottom: "10px solid #f1f7f9",
-        },
-      };
-    },
+    filter: false,
   };
   return (
     <Layout>
@@ -117,25 +101,13 @@ const FamilyList = () => {
           </h1>
         </div>
 
-        <Link
-          to="/add-family"
-          className="btn btn-primary text-center md:text-right text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg shadow-md"
-          style={{
-            display:
-              localStorage.getItem("user_type_id") == 2
-                ? "inline-block"
-                : "none",
-          }}
-        >
-          + Add Family Member
-        </Link>
+        <AddFamilyMember
+          onClick={() => navigate("/add-family")}
+          className="flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+        />
       </div>
       <div className="mt-5">
-        <MUIDataTable
-          data={FamilyList ? FamilyList : []}
-          columns={columns}
-          options={options}
-        />
+        <MUIDataTable data={FamilyList} columns={columns} options={options} />
       </div>
     </Layout>
   );

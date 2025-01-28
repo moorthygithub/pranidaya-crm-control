@@ -121,7 +121,7 @@ const CreateAnimalDead = () => {
             className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
           />
           <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
-            Create Dead Stock
+            Create Animal Death /Given
           </h1>
         </div>
 
@@ -130,7 +130,7 @@ const CreateAnimalDead = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-3 my-4">
               <div>
                 <Dropdown
-                  label="Male No"
+                  label="Animal Govt Id"
                   className="required"
                   name="animal_type_no"
                   required={true}
@@ -175,7 +175,7 @@ const CreateAnimalDead = () => {
                 value={animalborn.animal_type_remarks}
                 onChange={onInputChange}
                 rows={6}
-                label="Animal Remark"
+                label="Remark"
                 className="resize-y"
               />
             </div>

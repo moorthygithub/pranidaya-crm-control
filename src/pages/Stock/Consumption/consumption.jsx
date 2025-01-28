@@ -9,7 +9,10 @@ import { MdEdit } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import moment from "moment";
 import { Spinner } from "@material-tailwind/react";
-import { AddConsumption, EditConsumption } from "../../../components/ButtonComponents";
+import {
+  AddConsumption,
+  EditConsumption,
+} from "../../../components/ButtonComponents";
 
 const Consumption = () => {
   const [consumptionList, setConsumptionList] = useState(null);
@@ -92,9 +95,8 @@ const Consumption = () => {
                 className="h-5 w-5 cursor-pointer text-blue-500"
               /> */}
               <EditConsumption
-               onClick={() => navigate(`/edit-consumption/${id}`)}
-              
-               className="h-5 w-5 cursor-pointer text-blue-500"
+                onClick={() => navigate(`/edit-consumption/${id}`)}
+                className="h-5 w-5 cursor-pointer text-blue-500"
               />
             </div>
           );
@@ -110,13 +112,7 @@ const Consumption = () => {
     viewColumns: true,
     download: false,
     print: false,
-    setRowProps: (rowData) => {
-      return {
-        style: {
-          borderBottom: "10px solid #f1f7f9",
-        },
-      };
-    },
+    filter: false,
   };
   return (
     <Layout>
@@ -139,10 +135,10 @@ onClick={()=>navigate('/add-consumption')}
 >
 + Add Consumption
 </button> */}
-<AddConsumption
-onClick={()=>navigate('/add-consumption')}
-  className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-/>
+        <AddConsumption
+          onClick={() => navigate("/add-consumption")}
+          className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+        />
       </div>
 
       {loading ? (

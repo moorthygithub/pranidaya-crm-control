@@ -11,35 +11,55 @@ import { PiNotebook } from "react-icons/pi";
 import { FaUsers } from "react-icons/fa";
 import CommonListing from "./CommonListing";
 import { Spinner } from "@material-tailwind/react";
-import { AddCashReceipt, AddDonor, CashReceiptDonor, EditDonor, FamilyMemberDonor, MaterialReceiptDonor, ViewDonor } from "../../components/ButtonComponents";
+import {
+  AddCashReceipt,
+  AddDonor,
+  CashReceiptDonor,
+  EditDonor,
+  FamilyMemberDonor,
+  MaterialReceiptDonor,
+  ViewDonor,
+} from "../../components/ButtonComponents";
+import { useQuery } from "@tanstack/react-query";
 
+const fetchOpenData = async () => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(`${BaseUrl}/fetch-donor-list`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response?.data?.donor ?? [];
+};
 const DonorList = () => {
-  const [donorListData, setDonorListData] = useState(null);
+  // const [donorListData, setDonorListData] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchOpenData = async () => {
-      try {
-        setLoading(true);
-        const token = localStorage.getItem("token");
-        const response = await axios.get(`${BaseUrl}/fetch-donor-list`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  // useEffect(() => {
+  //   const fetchOpenData = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const token = localStorage.getItem("token");
+  //       const response = await axios.get(`${BaseUrl}/fetch-donor-list`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
 
-        setDonorListData(response?.data?.donor);
-      } catch (error) {
-        console.error("Error fetching open list enquiry data", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       setDonorListData(response?.data?.donor);
+  //     } catch (error) {
+  //       console.error("Error fetching open list enquiry data", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchOpenData();
-  }, []);
+  //   fetchOpenData();
+  // }, []);
 
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["fetchdata"],
+    queryFn: fetchOpenData,
+  });
   const columns = [
     {
       name: "donor_fts_id",
@@ -91,9 +111,8 @@ const DonorList = () => {
                 className="h-5 w-5 cursor-pointer text-blue-500 "
               /> */}
               <ViewDonor
-                 onClick={() => navigate(`/viewdonor-list/${id}`)}
-            
-                 className="h-5 w-5 cursor-pointer text-blue-500 "
+                onClick={() => navigate(`/viewdonor-list/${id}`)}
+                className="h-5 w-5 cursor-pointer text-blue-500 "
               />
               {/* <MdEdit
                 onClick={() => navigate(`/edit-donor/${id}`)}
@@ -101,10 +120,8 @@ const DonorList = () => {
                 className="h-5 w-5 cursor-pointer text-blue-500 "
               /> */}
               <EditDonor
-          
-              onClick={() => navigate(`/edit-donor/${id}`)}
-           
-              className="h-5 w-5 cursor-pointer text-blue-500 "
+                onClick={() => navigate(`/edit-donor/${id}`)}
+                className="h-5 w-5 cursor-pointer text-blue-500 "
               />
               {/* <PiNotebook
                 onClick={() => navigate(`/createrecepit-donor/${id}`)}
@@ -112,9 +129,8 @@ const DonorList = () => {
                 className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
               /> */}
               <CashReceiptDonor
-              onClick={() => navigate(`/createrecepit-donor/${id}`)}
-           
-              className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
+                onClick={() => navigate(`/createrecepit-donor/${id}`)}
+                className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
               />
               {/* <MdOutlineStickyNote2
                 onClick={() => navigate(`/create-donor/${id}`)}
@@ -122,9 +138,7 @@ const DonorList = () => {
                 className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
               /> */}
               <MaterialReceiptDonor
-              
-              onClick={() => navigate(`/create-donor/${id}`)}
-             
+                onClick={() => navigate(`/create-donor/${id}`)}
                 className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
               />
               {/* <FaUsers
@@ -133,9 +147,8 @@ const DonorList = () => {
                 className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
               /> */}
               <FamilyMemberDonor
-               onClick={() => navigate(`/create-family/${id}`)}
-             
-               className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
+                onClick={() => navigate(`/create-family/${id}`)}
+                className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
               />
             </div>
           );
@@ -150,15 +163,15 @@ const DonorList = () => {
     responsive: "standard",
     viewColumns: true,
     download: false,
-    filter: false,
     print: false,
-    setRowProps: (rowData) => {
-      return {
-        style: {
-          borderBottom: "10px solid #f1f7f9",
-        },
-      };
-    },
+    filter: false,
+    // setRowProps: (rowData) => {
+    //   return {
+    //     style: {
+    //       borderBottom: "10px solid #f1f7f9",
+    //     },
+    //   };
+    // },
   };
 
   return (
@@ -183,10 +196,10 @@ onClick={()=>navigate('/cashrecepitall')}
 >
 + CashRecepit
 </button> */}
-<AddCashReceipt
-onClick={()=>navigate('/cashrecepitall')}
-  className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-/>
+          <AddCashReceipt
+            onClick={() => navigate("/cashrecepitall")}
+            className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+          />
 
           {/* <Link
             to="/materialrecepitall"
@@ -207,16 +220,15 @@ onClick={()=>navigate('/add-donor')}
 >
 + Add Donor
 </button> */}
-<AddDonor
-onClick={()=>navigate('/add-donor')}
-  className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-/>
-
+          <AddDonor
+            onClick={() => navigate("/add-donor")}
+            className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
+          />
         </div>
       </div>
 
       {/* Show spinner while loading */}
-      {loading ? (
+      {isLoading ? (
         <div className="flex justify-center items-center h-64">
           <Spinner className="h-6 w-6" />
         </div>
@@ -224,7 +236,7 @@ onClick={()=>navigate('/add-donor')}
         <div className="mt-5">
           <MUIDataTable
             title="Donor List"
-            data={donorListData ? donorListData : []}
+            data={data || []}
             columns={columns}
             options={options}
           />

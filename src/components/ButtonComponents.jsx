@@ -24,7 +24,7 @@ const getUserControlData = () => {
 
 const shouldRenderButton = (buttonName, userType, status) => {
   const data = getUserControlData();
-  console.log("danjks", data);
+  // console.log("danjks", data);
   return data.some((item) => {
     const userTypes = item.usertype.split(",");
     return (
@@ -396,6 +396,19 @@ export const NoDuplicateDonor = ({ onClick, className }) => {
   );
 };
 NoDuplicateDonor.page = "Donor";
+
+export const AddFamilyMember = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("AddFamilyMember", userType, "active")) return null;
+
+  return (
+    <button onClick={onClick} className={` ${className}`}>
+      + Add Family
+    </button>
+  );
+};
+AddFamilyMember.page = "Donor";
 export const EditDonationReceipt = ({ onClick, className }) => {
   const userType = localStorage.getItem("user_type_id");
 
@@ -612,5 +625,6 @@ export default {
   EditAnimalMeet,
   AddBornorArrival,
   AddAnimalDead,
+  AddFamilyMember,
   CreateUserButton,
 };
