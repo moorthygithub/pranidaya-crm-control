@@ -434,25 +434,33 @@ function ViewMaterialRecepit() {
 
             {/* Email Section */}
             {donor?.donor_email ? (
-              <div className="p-4">
+              <div className="p-4 ">
                 <Button
                   variant="text"
-                  className="flex items-center bg-green-400"
+                  className="flex items-center  cursor-pointer"
                   onClick={sendEmail}
                 >
                   <MdEmail className="text-lg" />
                   <span>Email</span>
                 </Button>
-                {receipts?.receipt_email_count == null ? (
-                  <small style={{ fontSize: "10px" }}>Email Sent 0 Times</small>
+                {receipts?.m_receipt_email_count == null ? (
+                  <small
+                    style={{ fontSize: "10px" }}
+                    className="cursor-pointer"
+                  >
+                    Email Sent 0 Times
+                  </small>
                 ) : (
-                  <small style={{ fontSize: "10px" }}>
-                    Email Sent {receipts.receipt_email_count} Times
+                  <small
+                    style={{ fontSize: "10px" }}
+                    className="cursor-pointer"
+                  >
+                    Email Sent {receipts.m_receipt_email_count} Times
                   </small>
                 )}
               </div>
             ) : (
-              <p style={{ color: "red" }}>
+              <p style={{ color: "red" }} className="cursor-pointer">
                 <i className="mr-10 ti-email"></i> Email not found
               </p>
             )}

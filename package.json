@@ -21,6 +21,8 @@
     "@progress/kendo-file-saver": "^1.1.2",
     "@progress/kendo-react-common": "^8.5.0",
     "@progress/kendo-react-pdf": "^8.5.0",
+    "@tanstack/query-core": "^5.60.6",
+    "@tanstack/react-query": "^5.65.0",
     "apexcharts": "^3.44.0",
     "axios": "^1.7.5",
     "chart.js": "^4.4.4",

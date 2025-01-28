@@ -74,7 +74,7 @@ const Animal = () => {
       <AnimalStockFilter />
       <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-2 rounded-lg space-y-4 md:space-y-0">
         <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
-          Animal List
+          Animal Type List
         </h3>
         <AddAnimal
           onClick={() => navigate("/add-animal")}

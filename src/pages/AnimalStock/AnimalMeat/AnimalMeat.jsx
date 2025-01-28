@@ -38,12 +38,12 @@ const AnimalMeat = () => {
   const columns = [
     {
       name: "animal_male_no",
-      label: "Male No",
+      label: "Male Govt Id",
       options: { filter: false, sort: false },
     },
     {
       name: "animal_female_no",
-      label: "Female No",
+      label: "Female Govt Id",
       options: { filter: false, sort: false },
     },
     {
@@ -53,13 +53,16 @@ const AnimalMeat = () => {
         filter: false,
         sort: false,
         customBodyRender: (value) => {
-          return moment(value).format("DD-MM-YYYY");
+          return value && moment(value).isValid()
+            ? moment(value).format("DD-MM-YYYY")
+            : "";
         },
       },
     },
+
     {
       name: "animal_baby_no",
-      label: "Baby No",
+      label: "Baby Govt Id",
       options: { filter: false, sort: false },
     },
     {
@@ -70,7 +73,9 @@ const AnimalMeat = () => {
         sort: false,
 
         customBodyRender: (value) => {
-          return moment(value).format("DD-MM-YYYY");
+          return value && moment(value).isValid()
+            ? moment(value).format("DD-MM-YYYY")
+            : "";
         },
       },
     },
@@ -105,7 +110,7 @@ const AnimalMeat = () => {
     viewColumns: true,
     download: false,
     print: false,
-    setRowProps: () => ({ style: { borderBottom: "10px solid #f1f7f9" } }),
+    filter: false,
   };
 
   return (

@@ -154,6 +154,8 @@ const AppProvider = ({ children }) => {
           "/animal-born-arrival",
           "/add-born-arrival",
           "/animal-dead",
+          "/animal-stock",
+          "/animal-stock-view",
         ];
         const isAllowedPath = allowedPaths.some((path) =>
           currentPath.startsWith(path)

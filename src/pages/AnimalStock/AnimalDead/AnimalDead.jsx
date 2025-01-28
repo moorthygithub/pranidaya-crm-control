@@ -44,7 +44,12 @@ const AnimalDead = () => {
     },
     {
       name: "animal_type_no",
-      label: "Govt No",
+      label: "Govt Id",
+      options: { filter: false, sort: false },
+    },
+    {
+      name: "animal_type_gender",
+      label: "Gender",
       options: { filter: false, sort: false },
     },
     {
@@ -54,19 +59,15 @@ const AnimalDead = () => {
         filter: false,
         sort: false,
         customBodyRender: (value) => {
-          return moment(value).format("DD-MM-YYYY");
+          return value && moment(value).isValid()
+            ? moment(value).format("DD-MM-YYYY")
+            : "";
         },
       },
     },
     {
       name: "animal_dead_source",
-      label: "Dead Source",
-      options: { filter: false, sort: false },
-    },
-
-    {
-      name: "animal_type_gender",
-      label: "Gender",
+      label: " Source",
       options: { filter: false, sort: false },
     },
   ];
@@ -78,7 +79,7 @@ const AnimalDead = () => {
     viewColumns: true,
     download: false,
     print: false,
-    setRowProps: () => ({ style: { borderBottom: "10px solid #f1f7f9" } }),
+    filter: false,
   };
 
   return (
@@ -86,7 +87,7 @@ const AnimalDead = () => {
       <AnimalStockFilter />
       <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-2 rounded-lg space-y-4 md:space-y-0">
         <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
-          Animal Dead List
+          Animal Death /Given List
         </h3>
         <AddAnimalDead
           onClick={() => navigate("/add-animal-dead")}

@@ -10,24 +10,29 @@ const AnimalStockFilter = () => {
   };
   const buttons = [
     {
-      label: "Animal",
+      label: "Animal Type",
       path: "/animalStock",
       color: "from-pink-500 to-orange-400",
     },
     {
-      label: "Animal Born or Arrival",
+      label: "Born or Arrival",
       path: "/animal-born-arrival",
       color: "from-orange-500 to-cyan-400",
     },
     {
-      label: "Animal Meat",
+      label: "Meet",
       path: "/animal-meet",
       color: "from-blue-500 to-cyan-400",
     },
     {
-      label: "Animal Dead",
+      label: "Death/Given",
       path: "/animal-dead",
       color: "from-blue-500 to-cyan-400",
+    },
+    {
+      label: "Animal Stock",
+      path: "/animal-stock",
+      color: "from-red-500 to-cyan-400",
     },
   ];
   return (

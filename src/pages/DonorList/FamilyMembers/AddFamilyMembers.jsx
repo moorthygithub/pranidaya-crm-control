@@ -13,10 +13,11 @@ import Fields from "../../../components/common/TextField/TextField";
 function AddFamilyMembers() {
   const navigate = useNavigate();
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-
+  const donorid = localStorage.getItem("donor_fts_id");
   const [donor, setDonor] = useState({
     family_full_name: "",
     donor_fts_id: "",
+    family_relation: "",
   });
   //ONCHANGE
   const onInputChange = (e) => {
@@ -26,10 +27,12 @@ function AddFamilyMembers() {
     });
   };
   //SUBMIT
+
   const onSubmit = (e) => {
     let data = {
       family_full_name: donor.family_full_name,
-      donor_fts_id: localStorage.getItem("donor_fts_id"),
+      donor_fts_id: donorid,
+      family_relation: donor.family_relation,
     };
 
     e.preventDefault();
@@ -45,7 +48,7 @@ function AddFamilyMembers() {
     }).then((res) => {
       if (res.data.code == "200") {
         toast.success("Family Member Created Sucessfully");
-        navigate("/donor-list");
+        navigate(`/create-family/${donorid}`);
       } else {
         toast.error("Duplicate Entry");
       }
@@ -71,10 +74,20 @@ function AddFamilyMembers() {
                 onChange={(e) => onInputChange(e)}
               />
             </div>
+            <div className="w-full">
+              <Fields
+                title="Relation"
+                type="textField"
+                autoComplete="Name"
+                name="family_relation"
+                value={donor.family_relation}
+                onChange={(e) => onInputChange(e)}
+              />
+            </div>
 
             <div className="w-auto">
               <Button
-                className="bg-blue-400"
+                className="bg-blue-400 "
                 fullWidth
                 type="submit"
                 name="donor_gender"

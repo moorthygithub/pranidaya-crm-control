@@ -118,13 +118,7 @@ const WebDonation = () => {
     viewColumns: true,
     download: false,
     print: false,
-    setRowProps: (rowData) => {
-      return {
-        style: {
-          borderBottom: "10px solid #f1f7f9",
-        },
-      };
-    },
+    filter: false,
   };
 
   return (

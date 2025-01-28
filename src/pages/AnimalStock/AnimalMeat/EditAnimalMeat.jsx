@@ -191,7 +191,7 @@ const EditAnimalMeat = () => {
             className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
           />
           <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
-            Edit Animal Meet Stock
+            Edit Animal Meet
           </h1>
         </div>
 
@@ -201,7 +201,7 @@ const EditAnimalMeat = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 my-4">
               <div>
                 <Dropdown
-                  label="Male No"
+                  label="Male Govt Id"
                   className="required"
                   name="animal_male_no"
                   value={animalmeet.animal_male_no}
@@ -221,7 +221,7 @@ const EditAnimalMeat = () => {
               </div>
               <div>
                 <Dropdown
-                  label="Female No"
+                  label="Female Govt Id"
                   className="required"
                   name="animal_female_no"
                   value={animalmeet.animal_female_no}
@@ -261,7 +261,7 @@ const EditAnimalMeat = () => {
                 <Fields
                   required
                   type="textField"
-                  label="Animal Baby No"
+                  label="Baby Govt Id"
                   value={animalmeet.animal_baby_no}
                   onChange={onInputChange}
                   name="animal_baby_no"

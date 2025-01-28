@@ -53,7 +53,9 @@ const AnimalBornArrival = () => {
         filter: false,
         sort: false,
         customBodyRender: (value) => {
-          return moment(value).format("DD-MM-YYYY");
+          return value && moment(value).isValid()
+            ? moment(value).format("DD-MM-YYYY")
+            : "";
         },
       },
     },
@@ -75,12 +77,12 @@ const AnimalBornArrival = () => {
 
     {
       name: "animal_type_mother_no",
-      label: "Mother No",
+      label: "Mother Govt Id",
       options: { filter: false, sort: false },
     },
     {
       name: "animal_type_father_no",
-      label: "Father No",
+      label: "Father Govt Id",
       options: { filter: false, sort: false },
     },
 

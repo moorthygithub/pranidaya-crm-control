@@ -143,7 +143,7 @@ const CreateAnimalMeat = () => {
             className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
           />
           <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
-            Create Animal Meet Stock
+            Create Animal Meet 
           </h1>
         </div>
 
@@ -153,7 +153,7 @@ const CreateAnimalMeat = () => {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 my-4">
               <div>
                 <Dropdown
-                  label="Male No"
+                  label="Male Govt Id"
                   className="required"
                   name="animal_male_no"
                   value={animalmeet.animal_male_no}
@@ -168,7 +168,7 @@ const CreateAnimalMeat = () => {
               </div>
               <div>
                 <Dropdown
-                  label="Female No"
+                  label="Female Govt Id"
                   className="required"
                   name="animal_female_no"
                   value={animalmeet.animal_female_no}
