@@ -12,6 +12,7 @@ import { toast } from "react-hot-toast";
 // import "react-hot-toast/dist/ReactToastify.css";
 import axios from "axios";
 import DownloadCommon from "../../download/DeliveryDownload";
+import { inputClass } from "../../../components/common/Buttoncss";
 
 function Cash() {
   const navigate = useNavigate();
@@ -179,129 +180,127 @@ function Cash() {
   return (
     <Layout>
       <DownloadCommon />
-      {/* <ToastContainer /> */}
-      <div className="mt-4 mb-6">
-        <PageTitle
-          title={"Download Donation Receipts"}
-          // icon={FaArrowCircleLeft}
-          // backLink="-1"
-        />
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+        <div>
+          <h1 className="text-xl md:text-2xl text-[#464D69] font-semibold ml-2">
+            Download Donation Receipts
+          </h1>
+        </div>
+        <div className="p-4">
+          <h3 className="text-red-500 mb-5">
+            Leave blank if you want all records.
+          </h3>
+
+          <form id="dowRecp" autoComplete="off">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+              <div className="w-full">
+                <Input
+                  required
+                  type="date"
+                  label="From Date"
+                  className="required"
+                  name="receipt_from_date"
+                  value={receiptsdwn.receipt_from_date}
+                  onChange={(e) => onInputChange(e)}
+                />
+              </div>
+              <div className="w-full">
+                <Input
+                  required
+                  type="date"
+                  label="To Date"
+                  className="required"
+                  name="receipt_to_date"
+                  value={receiptsdwn.receipt_to_date}
+                  onChange={(e) => onInputChange(e)}
+                />
+              </div>
+
+              <div className="w-full">
+                <Dropdown
+                  label="Purpose"
+                  className="required"
+                  options={donation_type.map((option, index) => ({
+                    value: option.value,
+                    label: option.label,
+                  }))}
+                  onChange={(value) => {
+                    setReceiptDownload((prev) => ({
+                      ...prev,
+                      receipt_donation_type: value,
+                    }));
+                  }}
+                  name="receipt_donation_type"
+                />
+              </div>
+              <div className="w-full">
+                <Dropdown
+                  label="Category"
+                  className="required"
+                  options={exemption.map((option, index) => ({
+                    value: option.value,
+                    label: option.label,
+                  }))}
+                  onChange={(value) => {
+                    setReceiptDownload((prev) => ({
+                      ...prev,
+                      receipt_exemption_type: value,
+                    }));
+                  }}
+                  name="receipt_exemption_type"
+                />
+              </div>
+
+              <div className="w-full">
+                <Dropdown
+                  label="Transaction Type"
+                  className="required"
+                  options={pay_mode.map((option, index) => ({
+                    value: option.value,
+                    label: option.label,
+                  }))}
+                  onChange={(value) => {
+                    setReceiptDownload((prev) => ({
+                      ...prev,
+                      receipt_tran_pay_mode: value,
+                    }));
+                  }}
+                  name="receipt_tran_pay_mode"
+                />
+              </div>
+              <div className="w-full">
+                <Dropdown
+                  label="Manual Receipt"
+                  className="required"
+                  options={manual.map((option, index) => ({
+                    value: option.value,
+                    label: option.label,
+                  }))}
+                  onChange={(value) => {
+                    setReceiptDownload((prev) => ({
+                      ...prev,
+                      c_manual_receipt_no: value,
+                    }));
+                  }}
+                  name="c_manual_receipt_no"
+                />
+              </div>
+
+              <div className="w-77">
+                <button
+                  className={`${inputClass} ${
+                    isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={onSubmit}
+                  disabled={isButtonDisabled}
+                >
+                  {isButtonDisabled ? "Downloading..." : "Download"}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
-      <Card className="p-4">
-        <h3 className="text-red-500 mb-5">
-          Leave blank if you want all records.
-        </h3>
-
-        <form id="dowRecp" autoComplete="off">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-            <div className="w-full">
-              <Input
-                required
-                type="date"
-                label="From Date"
-                className="required"
-                name="receipt_from_date"
-                value={receiptsdwn.receipt_from_date}
-                onChange={(e) => onInputChange(e)}
-                
-              />
-            </div>
-            <div className="w-full">
-              <Input
-                required
-                type="date"
-                label="To Date"
-                className="required"
-                name="receipt_to_date"
-                value={receiptsdwn.receipt_to_date}
-                onChange={(e) => onInputChange(e)}
-                
-              />
-            </div>
-
-            <div className="w-full">
-              <Dropdown
-                label="Purpose"
-                className="required"
-                options={donation_type.map((option, index) => ({
-                  value: option.value,
-                  label: option.label,
-                }))}
-                onChange={(value) => {
-                  setReceiptDownload((prev) => ({
-                    ...prev,
-                    receipt_donation_type: value,
-                  }));
-                }}
-                name="receipt_donation_type"
-              />
-            </div>
-            <div className="w-full">
-              <Dropdown
-                label="Category"
-                className="required"
-                options={exemption.map((option, index) => ({
-                  value: option.value,
-                  label: option.label,
-                }))}
-                onChange={(value) => {
-                  setReceiptDownload((prev) => ({
-                    ...prev,
-                    receipt_exemption_type: value,
-                  }));
-                }}
-                name="receipt_exemption_type"
-              />
-            </div>
-
-            <div className="w-full">
-              <Dropdown
-                label="Transaction Type"
-                className="required"
-                options={pay_mode.map((option, index) => ({
-                  value: option.value,
-                  label: option.label,
-                }))}
-                onChange={(value) => {
-                  setReceiptDownload((prev) => ({
-                    ...prev,
-                    receipt_tran_pay_mode: value,
-                  }));
-                }}
-                name="receipt_tran_pay_mode"
-              />
-            </div>
-            <div className="w-full">
-              <Dropdown
-                label="Manual Receipt"
-                className="required"
-                options={manual.map((option, index) => ({
-                  value: option.value,
-                  label: option.label,
-                }))}
-                onChange={(value) => {
-                  setReceiptDownload((prev) => ({
-                    ...prev,
-                    c_manual_receipt_no: value,
-                  }));
-                }}
-                name="c_manual_receipt_no"
-              />
-            </div>
-
-            <div className="w-77">
-              <Button
-                color="blue"
-                fullWidth
-                onClick={onSubmit}
-                disabled={isButtonDisabled}
-              >
-                {isButtonDisabled ? "Downloading..." : "Download"}
-              </Button>
-            </div>
-          </div>
-        </form>
-      </Card>
     </Layout>
   );
 }

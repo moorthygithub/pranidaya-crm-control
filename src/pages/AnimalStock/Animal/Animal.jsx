@@ -8,6 +8,8 @@ import MUIDataTable from "mui-datatables";
 import { Spinner } from "@material-tailwind/react";
 import { BaseUrl } from "../../../base/BaseUrl";
 import AnimalStockFilter from "../../../components/common/AnimalStockFilter";
+import { inputClass } from "../../../components/common/Buttoncss";
+import { encryptId } from "../../../components/common/EncryptDecrypt";
 
 const fetchAnimalList = async () => {
   const token = localStorage.getItem("token");
@@ -50,7 +52,13 @@ const Animal = () => {
         customBodyRender: (id) => (
           <div className="flex items-center space-x-2">
             <EditAnimal
-              onClick={() => navigate(`/edit-animal/${id}`)}
+              // onClick={() => navigate(`/edit-animal/${id}`)}
+              onClick={() => {
+                const encryptedId = encryptId(id); // Encrypt the ID
+                navigate(
+                  `/edit-animal/${encodeURIComponent(encryptedId)}`
+                );
+              }}
               className="h-5 w-5 cursor-pointer text-blue-500"
             />
           </div>
@@ -67,20 +75,19 @@ const Animal = () => {
     download: false,
     print: false,
     filter: false,
+    customToolbar: () => {
+      return (
+        <AddAnimal
+          onClick={() => navigate("/add-animal")}
+          className={inputClass}
+        />
+      );
+    },
   };
 
   return (
     <Layout>
       <AnimalStockFilter />
-      <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-2 rounded-lg space-y-4 md:space-y-0">
-        <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
-          Animal Type List
-        </h3>
-        <AddAnimal
-          onClick={() => navigate("/add-animal")}
-          className="flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-        />
-      </div>
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
@@ -91,6 +98,11 @@ const Animal = () => {
       ) : (
         <div className="mt-5">
           <MUIDataTable
+            title={
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-semibold"> Animal Type List</span>
+              </div>
+            }
             data={pendingDListData || []}
             columns={columns}
             options={options}

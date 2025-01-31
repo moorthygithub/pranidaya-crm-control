@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import DownloadCommon from "../../download/DeliveryDownload";
+import { inputClass } from "../../../components/common/Buttoncss";
 
 function DownloadWebDonation() {
   const navigate = useNavigate();
@@ -87,52 +88,57 @@ function DownloadWebDonation() {
     <Layout>
       <DownloadCommon />
       <ToastContainer />
-      <div className="mt-4 mb-6">
-        <PageTitle title={"Download Website Donation"}  />
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+        <div>
+          <h1 className="text-xl md:text-2xl text-[#464D69] font-semibold ml-2">
+            Download Website Donation
+          </h1>
+        </div>
+        <div className="p-4">
+          <h3 className="text-red-500 mb-5">
+            Leave blank if you want all records.
+          </h3>
+
+          <form id="dowRecp" autoComplete="off">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="w-full">
+                <Input
+                  required
+                  type="date"
+                  label="From Date"
+                  name="payment_from_date"
+                  className="required"
+                  value={receiptsdwn.payment_from_date}
+                  onChange={(e) => onInputChange(e)}
+                />
+              </div>
+              <div className="w-full">
+                <Input
+                  required
+                  type="date"
+                  label="To Date"
+                  className="required"
+                  name="payment_to_date"
+                  value={receiptsdwn.payment_to_date}
+                  onChange={(e) => onInputChange(e)}
+                />
+              </div>
+
+              <div className="w-77">
+                <button
+                  className={`${inputClass} ${
+                    isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={onSubmit}
+                  disabled={isButtonDisabled}
+                >
+                  {isButtonDisabled ? "Downloading..." : "Download"}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
-      <Card className="p-4">
-        <h3 className="text-red-500 mb-5">
-          Leave blank if you want all records.
-        </h3>
-
-        <form id="dowRecp" autoComplete="off">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <div className="w-full">
-              <Input
-                required
-                type="date"
-                label="From Date"
-                name="payment_from_date"
-                className="required"
-                value={receiptsdwn.payment_from_date}
-                onChange={(e) => onInputChange(e)}
-              />
-            </div>
-            <div className="w-full">
-              <Input
-                required
-                type="date"
-                label="To Date"
-                className="required"
-                name="payment_to_date"
-                value={receiptsdwn.payment_to_date}
-                onChange={(e) => onInputChange(e)}
-              />
-            </div>
-
-            <div className="w-77">
-              <Button
-                color="blue"
-                fullWidth
-                onClick={onSubmit}
-                disabled={isButtonDisabled}
-              >
-                {isButtonDisabled ? "Downloading..." : "Download"}
-              </Button>
-            </div>
-          </div>
-        </form>
-      </Card>
     </Layout>
   );
 }

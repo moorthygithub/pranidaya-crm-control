@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import DownloadCommon from "../../download/DeliveryDownload";
+import { inputClass } from "../../../components/common/Buttoncss";
 
 function CashPurchase() {
   const navigate = useNavigate();
@@ -35,7 +36,6 @@ function CashPurchase() {
 
   // Input change handler for native inputs
   const onInputChangeN = (name, value) => {
-    
     setPurchaseDownload({
       ...receiptsdwn,
       [name]: value,
@@ -147,91 +147,104 @@ function CashPurchase() {
     <Layout>
       <DownloadCommon />
       <ToastContainer />
-      <div className="mt-4 mb-6">
-        <PageTitle title={"Download Purchase"}  />
-      </div> 
-      <Card className="p-4">
-        <h3 className="text-red-500 mb-5">
-          Leave blank if you want all records.
-        </h3>
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+        <div>
+          <h1 className="text-xl md:text-2xl text-[#464D69] font-semibold ml-2">
+            Download Purchase
+          </h1>
+        </div>
+        <div className="p-4">
+          <h3 className="text-red-500 mb-5">
+            Leave blank if you want all records.
+          </h3>
 
-        <form id="dowRecp" autoComplete="off">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <div className="w-full">
-              <Input
-                required
-                type="date"
-                label="From Date"
-                name="purchase_from_date"
-                className="required"
-                value={receiptsdwn.purchase_from_date}
-                onChange={(e) => onInputChange(e)}
-              />
-            </div>
-            <div className="w-full">
-              <Input
-                required
-                type="date"
-                label="To Date"
-                className="required"
-                name="purchase_to_date"
-                value={receiptsdwn.purchase_to_date}
-                onChange={(e) => onInputChange(e)}
-              />
-            </div>
-            <div className="w-full">
-              <Dropdown
-                label="Item"
-                className="required"
-                name="purchase_sub_item"
-                value={receiptsdwn.purchase_sub_item}
-                options={item.map((item) => ({
-                  value: item.item_name,
-                  label: item.item_name,
-                }))}
-                onChange={(value) => onInputChangeN("purchase_sub_item", value)}
-              />
-            </div>
+          <form id="dowRecp" autoComplete="off">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="w-full">
+                <Input
+                  required
+                  type="date"
+                  label="From Date"
+                  name="purchase_from_date"
+                  className="required"
+                  value={receiptsdwn.purchase_from_date}
+                  onChange={(e) => onInputChange(e)}
+                />
+              </div>
+              <div className="w-full">
+                <Input
+                  required
+                  type="date"
+                  label="To Date"
+                  className="required"
+                  name="purchase_to_date"
+                  value={receiptsdwn.purchase_to_date}
+                  onChange={(e) => onInputChange(e)}
+                />
+              </div>
+              <div className="w-full">
+                <Dropdown
+                  label="Item"
+                  className="required"
+                  name="purchase_sub_item"
+                  value={receiptsdwn.purchase_sub_item}
+                  options={item.map((item) => ({
+                    value: item.item_name,
+                    label: item.item_name,
+                  }))}
+                  onChange={(value) =>
+                    onInputChangeN("purchase_sub_item", value)
+                  }
+                />
+              </div>
 
-            <div className="w-full">
-              <Dropdown
-                label="Unit"
-                className="required"
-                name="purchase_sub_unit"
-                value={receiptsdwn.purchase_sub_unit}
-                options={unit.map((option) => ({
-                  value: option.value,
-                  label: option.label,
-                }))}
-                onChange={(value) => onInputChangeN("purchase_sub_unit", value)}
-              />
+              <div className="w-full">
+                <Dropdown
+                  label="Unit"
+                  className="required"
+                  name="purchase_sub_unit"
+                  value={receiptsdwn.purchase_sub_unit}
+                  options={unit.map((option) => ({
+                    value: option.value,
+                    label: option.label,
+                  }))}
+                  onChange={(value) =>
+                    onInputChangeN("purchase_sub_unit", value)
+                  }
+                />
+              </div>
             </div>
-
-            <div className="w-77">
-              <Button
-                color="blue"
-                fullWidth
-                onClick={onSubmit}
-                disabled={isButtonDisabled}
-              >
-                {isButtonDisabled ? "Downloading..." : "Download"}
-              </Button>
+            <div className="flex space-x-4 mt-6">
+              <div className="w-77">
+                <button
+                  className={`${inputClass} ${
+                    isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={onSubmit}
+                  disabled={isButtonDisabled}
+                >
+                  {isButtonDisabled ? "Downloading..." : "Download"}
+                </button>
+              </div>
+              <div className="w-77">
+                <button
+                  color="blue"
+                  fullWidth
+                  onClick={onSubmit1}
+                  className={`${inputClass} ${
+                    isButtonDisableds ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  disabled={isButtonDisableds}
+                >
+                  {isButtonDisableds
+                    ? "Downloading Details..."
+                    : "Download Details"}
+                </button>
+              </div>
             </div>
-            <div className="w-77">
-              <Button
-                color="blue"
-                fullWidth
-                onClick={onSubmit1}
-                disabled={isButtonDisableds}
-              >
-                {isButtonDisableds
-                  ? "Downloading Details..."
-                  : "Download Details"}
-              </Button>
-            </div>
-          </div>
-        </form>
-      </Card>
+          </form>
+        </div>
+      </div>
     </Layout>
   );
 }

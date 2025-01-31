@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Layout from "../../../layout/Layout";
 import DeliveryFilter from "../../../components/DeliveryFilter";
-import { ContextPanel } from "../../../utils/ContextPanel";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BaseUrl } from "../../../base/BaseUrl";
@@ -13,6 +12,8 @@ import {
   AddConsumption,
   EditConsumption,
 } from "../../../components/ButtonComponents";
+import { inputClass } from "../../../components/common/Buttoncss";
+import { encryptId } from "../../../components/common/EncryptDecrypt";
 
 const Consumption = () => {
   const [consumptionList, setConsumptionList] = useState(null);
@@ -30,16 +31,8 @@ const Consumption = () => {
         });
 
         const res = response.data?.cons;
-        if (Array.isArray(res)) {
-          const tempRows = res.map((item, index) => [
-            index + 1,
-            moment(item["cons_date"]).format("DD-MM-YYYY"),
-            item["cons_count"],
-            item["id"],
-          ]);
-          console.log(tempRows, "tempRows");
-          setConsumptionList(tempRows);
-        }
+
+        setConsumptionList(res);
       } catch (error) {
         console.error("Error fetching deliverd list Delivery data", error);
       } finally {
@@ -51,24 +44,25 @@ const Consumption = () => {
 
   const columns = [
     {
-      name: "SlNo",
-      options: {
-        filter: false,
-        print: true,
-        download: true,
-        sort: false,
-      },
-    },
-    {
-      name: "Date",
-      label: "Date",
+      name: "sno",
+      label: "S.No",
       options: {
         filter: false,
         sort: false,
+        customBodyRender: (value, tableMeta) => tableMeta.rowIndex + 1,
       },
     },
     {
-      name: "No of Item ",
+      name: "cons_date",
+      label: " Date ",
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value) => moment(value).format("DD-MM-YYYY"),
+      },
+    },
+    {
+      name: "cons_count",
       label: " No of Item ",
       options: {
         filter: false,
@@ -85,17 +79,14 @@ const Consumption = () => {
         customBodyRender: (id) => {
           return (
             <div className="flex items-center space-x-2">
-              {/* <MdEdit
-                style={{
-                  display:
-                    localStorage.getItem("user_type_id") == 1 ? "none" : "",
-                }}
-                onClick={() => navigate(`/edit-consumption/${id}`)}
-                title="edit country list"
-                className="h-5 w-5 cursor-pointer text-blue-500"
-              /> */}
               <EditConsumption
-                onClick={() => navigate(`/edit-consumption/${id}`)}
+                // onClick={() => navigate(`/edit-consumption/${id}`)}
+                onClick={() => {
+                  const encryptedId = encryptId(id);
+                  navigate(
+                    `/edit-consumption/${encodeURIComponent(encryptedId)}`
+                  );
+                }}
                 className="h-5 w-5 cursor-pointer text-blue-500"
               />
             </div>
@@ -113,33 +104,18 @@ const Consumption = () => {
     download: false,
     print: false,
     filter: false,
+    customToolbar: () => {
+      return (
+        <AddConsumption
+          onClick={() => navigate("/add-consumption")}
+          className={inputClass}
+        />
+      );
+    },
   };
   return (
     <Layout>
       <DeliveryFilter />
-      <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-2 rounded-lg space-y-4 md:space-y-0">
-        <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
-          Consumption List
-        </h3>
-
-        {/* <Link
-          to="/add-consumption"
-          className="btn btn-primary text-center md:text-right text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg shadow-md"
-        >
-          + Add Consumption
-        </Link> */}
-        {/* <button
-onClick={()=>navigate('/add-consumption')}
-  className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-
->
-+ Add Consumption
-</button> */}
-        <AddConsumption
-          onClick={() => navigate("/add-consumption")}
-          className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-        />
-      </div>
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
@@ -148,6 +124,11 @@ onClick={()=>navigate('/add-consumption')}
       ) : (
         <div className="mt-5">
           <MUIDataTable
+            title={
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-semibold"> Consumption List</span>
+              </div>
+            }
             data={consumptionList ? consumptionList : []}
             columns={columns}
             options={options}

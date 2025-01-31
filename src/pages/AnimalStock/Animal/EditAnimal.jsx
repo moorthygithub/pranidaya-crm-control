@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { MdKeyboardBackspace } from "react-icons/md";
 import axios from "axios";
 import Layout from "../../../layout/Layout";
 import Fields from "../../../components/common/TextField/TextField";
@@ -8,7 +7,11 @@ import { toast } from "react-toastify";
 import { BaseUrl } from "../../../base/BaseUrl";
 import { useQuery } from "@tanstack/react-query";
 import Dropdown from "../../../components/common/DropDown";
-import { Button } from "@material-tailwind/react";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
+import { decryptId } from "../../../components/common/EncryptDecrypt";
 
 // Unit options for dropdown
 const AnimalStatus = [
@@ -18,6 +21,8 @@ const AnimalStatus = [
 
 const EditAnimal = () => {
   const { id } = useParams();
+  const decryptedId = decryptId(id);
+
   const navigate = useNavigate();
 
   const [animal, setAnimal] = useState({
@@ -31,7 +36,7 @@ const EditAnimal = () => {
   const fetchAnimalById = async () => {
     const token = localStorage.getItem("token");
     const response = await axios.get(
-      `${BaseUrl}/fetch-animalType-by-id/${id}`,
+      `${BaseUrl}/fetch-animalType-by-id/${decryptedId}`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -44,9 +49,9 @@ const EditAnimal = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["AnimalListId", id],
+    queryKey: ["AnimalListId", decryptedId],
     queryFn: fetchAnimalById,
-    enabled: !!id, // Ensure the query only runs if id exists
+    enabled: !!decryptedId, // Ensure the query only runs if id exists
   });
 
   // Set fetched data to state when available
@@ -81,7 +86,7 @@ const EditAnimal = () => {
       setIsButtonDisabled(true);
       try {
         const res = await axios.put(
-          `${BaseUrl}/update-animalType/${id}`,
+          `${BaseUrl}/update-animalType/${decryptedId}`,
           data,
           {
             headers: {
@@ -111,66 +116,65 @@ const EditAnimal = () => {
   return (
     <Layout>
       <div>
-        <div className="flex mb-4 mt-6">
-          <MdKeyboardBackspace
-            onClick={handleBackButton}
-            className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-          />
-          <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
-            Edit Animal Type
-          </h1>
-        </div>
-
         <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
           {isLoading ? (
             <p>Loading...</p>
           ) : isError ? (
             <p className="text-red-500">Error loading data.</p>
           ) : (
-            <form id="editAnimalForm" onSubmit={onSubmit}>
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 my-4">
-                <div className="mb-4">
-                  <Fields
-                    required
-                    type="textField"
-                    label="Animal Type"
-                    value={animal.animal_type}
-                    onChange={onInputChange}
-                    name="animal_type"
-                    disabled
-                    labelProps={{
-                      className: "!text-gray-500",
-                    }}
-                  />
-                </div>
-                <div>
-                  <Dropdown
-                    label="Status"
-                    className="required"
-                    value={animal.animal_type_status}
-                    name="animal_type_status"
-                    required={true}
-                    options={AnimalStatus}
-                    onChange={(value) =>
-                      onInputChangeN("animal_type_status", value)
-                    }
-                  />
-                </div>
+            <>
+              <div className="flex mb-4">
+                <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
+                  Edit Animal Type
+                </h1>
               </div>
+              <form id="editAnimalForm" onSubmit={onSubmit}>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 my-4">
+                  <div className="mb-4">
+                    <Fields
+                      required
+                      type="textField"
+                      label="Animal Type"
+                      value={animal.animal_type}
+                      onChange={onInputChange}
+                      name="animal_type"
+                      disabled
+                      labelProps={{
+                        className: "!text-gray-500",
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <Dropdown
+                      label="Status"
+                      className="required"
+                      value={animal.animal_type_status}
+                      name="animal_type_status"
+                      required={true}
+                      options={AnimalStatus}
+                      onChange={(value) =>
+                        onInputChangeN("animal_type_status", value)
+                      }
+                    />
+                  </div>
+                </div>
 
-              <div className="flex justify-center mt-4 space-x-4">
-                <Button
-                  type="submit"
-                  disabled={isButtonDisabled}
-                  className="mt-4  bg-blue-400"
-                >
-                  Update
-                </Button>
-                <Button className="mt-4 bg-red-400" onClick={handleBackButton}>
-                  Back
-                </Button>
-              </div>
-            </form>
+                <div className="flex justify-center mt-4 space-x-4">
+                  <button
+                    type="submit"
+                    disabled={isButtonDisabled}
+                    className={`${inputClass} ${
+                      isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    {isButtonDisabled ? "Updating..." : "Update"}
+                  </button>
+                  <button className={inputClassBack} onClick={handleBackButton}>
+                    Back
+                  </button>
+                </div>
+              </form>
+            </>
           )}
         </div>
       </div>

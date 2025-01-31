@@ -17,6 +17,10 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import Dropdown from "../../../components/common/DropDown";
 import moment from "moment";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
 
 // Unit options for dropdown
 const AnimalGender = [
@@ -88,8 +92,6 @@ const CreateAnimalMeat = () => {
       animal_male_no: animalmeet.animal_male_no,
       animal_female_no: animalmeet.animal_female_no,
       animal_meet_date: animalmeet.animal_meet_date,
-      // animal_baby_no: animalmeet.animal_baby_no,
-      // animal_baby_date: animalmeet.animal_baby_date,
     };
 
     const isValid = document.getElementById("addIndiv").checkValidity();
@@ -123,31 +125,15 @@ const CreateAnimalMeat = () => {
     navigate("/animal-meet");
   };
 
-  // if (isLoading)
-  //   return (
-  //     <Layout>
-  //       {" "}
-  //       <div className="flex justify-center items-center h-64">
-  //         <Spinner className="h-6 w-6" />
-  //       </div>
-  //     </Layout>
-  //   );
-  // if (isError) return <Layout>Error loading data.</Layout>;
-
   return (
     <Layout>
       <div>
-        <div className="flex mb-4 mt-6">
-          <MdKeyboardBackspace
-            onClick={handleBackButton}
-            className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-          />
-          <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
-            Create Animal Meet 
-          </h1>
-        </div>
-
         <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+          <div className="flex mb-4">
+            <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
+              Create Animal Meet
+            </h1>
+          </div>
           <form id="addIndiv" onSubmit={onSubmit}>
             {/* Purchase Details */}
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 my-4">
@@ -197,16 +183,18 @@ const CreateAnimalMeat = () => {
             </div>
 
             <div className="flex justify-center mt-4 space-x-4">
-              <Button
+              <button
                 type="submit"
                 disabled={isButtonDisabled}
-                className="mt-4  bg-blue-400"
+                className={`${inputClass} ${
+                  isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
-                Submit
-              </Button>
-              <Button className="mt-4 bg-red-400" onClick={handleBackButton}>
+                {isButtonDisabled ? "Submitting..." : "Submit"}
+              </button>
+              <button className={inputClassBack} onClick={handleBackButton}>
                 Back
-              </Button>
+              </button>
             </div>
           </form>
         </div>

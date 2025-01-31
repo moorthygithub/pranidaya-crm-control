@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import Layout from "../../layout/Layout";
-import { ContextPanel } from "../../utils/ContextPanel";
-import {  useNavigate } from "react-router-dom";
-import  { BaseUrl } from "../../base/BaseUrl";
+import { useNavigate } from "react-router-dom";
+import { BaseUrl } from "../../base/BaseUrl";
 import axios from "axios";
 import MUIDataTable from "mui-datatables";
-import {  MdKeyboardBackspace, } from "react-icons/md";
+import { MdKeyboardBackspace } from "react-icons/md";
 
 import moment from "moment/moment";
 
@@ -74,42 +73,6 @@ const CashRecepitList = () => {
     "Exemption Type",
     "Donation Type",
     "Amount",
-    // {
-    //   name: "id",
-    //   label: "Action",
-    //   options: {
-    //     filter: false,
-    //     sort: false,
-    //     customBodyRender: (id) => {
-    //       return (
-    //         <div className="flex items-center space-x-2">
-    //           <IoEye
-    //             onClick={() => navigate(`/edit-donor/${id}`)}
-    //             title="edit courses list"
-    //             className="h-5 w-5 cursor-pointer"
-    //           />
-
-    //           <MdEdit
-    //             onClick={() => navigate(`/edit-donor/${id}`)}
-    //             title="edit courses list"
-    //             className="h-5 w-5 cursor-pointer"
-    //           />
-
-    //           <BiAbacus
-    //             onClick={() => navigate(`/createrecepit-donor/${id}`)}
-    //             title="edit courses list"
-    //             className="h-5 w-5 cursor-pointer"
-    //           />
-    //           <MdShoppingBasket
-    //             onClick={() => navigate(`/create-donor/${id}`)}
-    //             title="edit courses list"
-    //             className="h-5 w-5 cursor-pointer"
-    //           />
-    //         </div>
-    //       );
-    //     },
-    //   },
-    // },
   ];
   const options = {
     selectableRows: "none",

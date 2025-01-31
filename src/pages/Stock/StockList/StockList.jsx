@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Layout from "../../../layout/Layout";
 import DeliveryFilter from "../../../components/DeliveryFilter";
-import { ContextPanel } from "../../../utils/ContextPanel";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BaseUrl } from "../../../base/BaseUrl";
@@ -29,49 +28,9 @@ const Stock = () => {
           }
         );
 
-        console.log(response, "response of stock");
-
         const res = response.data?.stock;
-        if (Array.isArray(res)) {
-          const tempRows = res.map((item, index) => [
-            index + 1,
-            item["item_name"],
-            <NumericFormat
-              thousandSeparator={true}
-              thousandsGroupStyle="lakh"
-              displayType={"text"}
-              prefix={""}
-              value={item["openpurch"]}
-            />,
-            <NumericFormat
-              thousandSeparator={true}
-              thousandsGroupStyle="lakh"
-              displayType={"text"}
-              prefix={""}
-              value={item["purch"]}
-            />,
-            <NumericFormat
-              thousandSeparator={true}
-              thousandsGroupStyle="lakh"
-              displayType={"text"}
-              prefix={""}
-              value={item["sale"]}
-            />,
-            <NumericFormat
-              thousandSeparator={true}
-              thousandsGroupStyle="lakh"
-              displayType={"text"}
-              prefix={""}
-              value={
-                item["openpurch"] -
-                item["closesale"] +
-                (item["purch"] - item["sale"])
-              }
-            />,
-          ]);
-          console.log(tempRows, "tempRows");
-          setStockList(tempRows);
-        }
+
+        setStockList(res);
       } catch (error) {
         console.error("Error fetching stock data:", error);
       } finally {
@@ -84,6 +43,18 @@ const Stock = () => {
   const columns = [
     {
       name: "SlNo",
+      label: "S.No",
+      options: {
+        filter: false,
+        print: true,
+        download: true,
+        sort: false,
+        customBodyRender: (value, tableMeta) => tableMeta.rowIndex + 1,
+      },
+    },
+    {
+      name: "item_name",
+      label: "Item Name",
       options: {
         filter: false,
         print: true,
@@ -92,47 +63,76 @@ const Stock = () => {
       },
     },
     {
-      name: "Item Name",
+      name: "openpurch",
+      label: "Open Balance",
       options: {
         filter: false,
-        print: true,
-        download: true,
         sort: false,
+        customBodyRender: (value) => (
+          <NumericFormat
+            thousandSeparator
+            thousandsGroupStyle="lakh"
+            displayType="text"
+            value={value}
+          />
+        ),
       },
     },
     {
-      name: "Open Balance ",
-      label: " Open Balance ",
+      name: "purch",
+      label: "Received",
       options: {
         filter: false,
         sort: false,
+        customBodyRender: (value) => (
+          <NumericFormat
+            thousandSeparator
+            thousandsGroupStyle="lakh"
+            displayType="text"
+            value={value}
+          />
+        ),
       },
     },
     {
-      name: "Received ",
-      label: " Received ",
+      name: "sale",
+      label: "Consumption",
       options: {
         filter: false,
         sort: false,
+        customBodyRender: (value) => (
+          <NumericFormat
+            thousandSeparator
+            thousandsGroupStyle="lakh"
+            displayType="text"
+            value={value}
+          />
+        ),
       },
     },
     {
-      name: "Consumption ",
-      label: " Consumption ",
+      name: "close_balance",
+      label: "Close Balance",
       options: {
         filter: false,
         sort: false,
-      },
-    },
-    {
-      name: "Close Balance ",
-      label: " Close Balance ",
-      options: {
-        filter: false,
-        sort: false,
+        customBodyRender: (_, tableMeta) => {
+          const item = stockList[tableMeta.rowIndex];
+          const closeBalance =
+            item.openpurch - item.closesale + (item.purch - item.sale);
+          return (
+            <NumericFormat
+              thousandSeparator
+              thousandsGroupStyle="lakh"
+              displayType="text"
+              value={closeBalance}
+            />
+          );
+        },
       },
     },
   ];
+
   const options = {
     selectableRows: "none",
     elevation: 0,
@@ -146,11 +146,6 @@ const Stock = () => {
   return (
     <Layout>
       <DeliveryFilter />
-      <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-2 rounded-lg space-y-4 md:space-y-0">
-        <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
-          Stocks List ( In Kgs )
-        </h3>
-      </div>
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
@@ -159,7 +154,13 @@ const Stock = () => {
       ) : (
         <div className="mt-5">
           <MUIDataTable
-            title={"Current Month"}
+            title={
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-semibold">
+                  Stocks List ( In Kgs )-Current Month
+                </span>
+              </div>
+            }
             data={stockList ? stockList : []}
             columns={columns}
             options={options}

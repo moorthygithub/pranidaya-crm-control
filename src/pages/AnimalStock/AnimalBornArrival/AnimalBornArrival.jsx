@@ -4,17 +4,16 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Layout from "../../../layout/Layout";
 import {
-  AddAnimal,
-  AddAnimalMeet,
+
   AddBornorArrival,
-  EditAnimalMeet,
-  EditPurchase,
+
 } from "../../../components/ButtonComponents";
 import MUIDataTable from "mui-datatables";
 import { Spinner } from "@material-tailwind/react";
 import { BaseUrl } from "../../../base/BaseUrl";
 import AnimalStockFilter from "../../../components/common/AnimalStockFilter";
 import moment from "moment";
+import { inputClass } from "../../../components/common/Buttoncss";
 
 const fetchAnimalMeetList = async () => {
   const token = localStorage.getItem("token");
@@ -101,21 +100,19 @@ const AnimalBornArrival = () => {
     download: false,
     print: false,
     filter: false,
-    // setRowProps: () => ({ style: { borderBottom: "10px solid #f1f7f9" } }),
+    customToolbar: () => {
+      return (
+        <AddBornorArrival
+          onClick={() => navigate("/add-born-arrival")}
+          className={inputClass}
+        />
+      );
+    },
   };
 
   return (
     <Layout>
       <AnimalStockFilter />
-      <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-2 rounded-lg space-y-4 md:space-y-0">
-        <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
-          Animal Born or Arrival List
-        </h3>
-        <AddBornorArrival
-          onClick={() => navigate("/add-born-arrival")}
-          className="flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-        />
-      </div>
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
@@ -126,6 +123,14 @@ const AnimalBornArrival = () => {
       ) : (
         <div className="mt-5">
           <MUIDataTable
+            title={
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-semibold">
+                  {" "}
+                  Animal Born or Arrival Listt
+                </span>
+              </div>
+            }
             data={AnimalMeetData || []}
             columns={columns}
             options={options}

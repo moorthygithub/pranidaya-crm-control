@@ -13,36 +13,55 @@ import {
 } from "../../../components/ButtonComponents";
 import { inputClass } from "../../../components/common/Buttoncss";
 import CryptoJS from "crypto-js";
-import { encryptId } from "../../../components/common/EncryptDecrypt";
+
 const PurchaseList = () => {
   const [pendingDListData, setPendingDListData] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  //encryption
-  // const secretKey = "AGSOLUTION@123";
+  const secretKey = "!^&^!&!apicall1209437477436@%%@&&!&!";
 
-  // const encryptId = (id) => {
-  //   if (!id) {
-  //     console.error("ID is missing");
-  //     return "";
-  //   }
-  //   return CryptoJS.AES.encrypt(id.toString(), secretKey).toString();
-  // };
+  // Encrypting the request payload
+  const encryptRequest = (data) => {
+    return CryptoJS.AES.encrypt(data, secretKey).toString();
+  };
+
+  // Decrypt the response
+  const decryptResponse = (encryptedData) => {
+    const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8); // Decrypts and returns the string
+  };
+
   useEffect(() => {
     const fetchOpenData = async () => {
       try {
         setLoading(true);
         const token = localStorage.getItem("token");
+
+        // Example: Encrypt the endpoint and any query parameters (e.g., page number, ID)
+        const encryptedUrl = encryptRequest("fetch-purchase-list");
+
         const response = await axios.get(`${BaseUrl}/fetch-purchase-list`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          params: {
+            encryptedUrl, // Send encrypted data as a parameter
+          },
         });
 
-        const responseData = response.data.purchase;
+        if (response.status === 200) {
+          // Assuming the server sends back encrypted data that needs to be decrypted
+          const decryptedData = response.data.purchase.map((item) => {
+            return {
+              ...item,
+              vendor_name: decryptResponse(item.vendor_name),
+              purchase_bill_no: decryptResponse(item.purchase_bill_no),
+            };
+          });
 
-        setPendingDListData(responseData);
+          setPendingDListData(decryptedData);
+        }
       } catch (error) {
         console.error("Error fetching purchase list data", error);
       } finally {
@@ -114,28 +133,13 @@ const PurchaseList = () => {
         customBodyRender: (id) => {
           return (
             <div className="flex items-center space-x-2">
-              {/* <EditPurchase
-                onClick={() => navigate(`/edit-purchase/${id}`)}
-                className="h-5 w-5 cursor-pointer text-blue-500"
-              /> */}
-              {/* <EditPurchase
+              <EditPurchase
                 onClick={() => {
-                  const encryptedId = encryptId(id);
+                  const encryptedId = encryptRequest(id); // Encrypt the ID
                   navigate(`/edit-purchase/${encodeURIComponent(encryptedId)}`);
                 }}
                 className="h-5 w-5 cursor-pointer text-blue-500"
-              /> */}
-              <div className="flex items-center space-x-2">
-                <EditPurchase
-                  onClick={() => {
-                    const encryptedId = encryptId(id); // Encrypt the ID
-                    navigate(
-                      `/edit-purchase/${encodeURIComponent(encryptedId)}`
-                    );
-                  }}
-                  className="h-5 w-5 cursor-pointer text-blue-500"
-                />
-              </div>
+              />
             </div>
           );
         },

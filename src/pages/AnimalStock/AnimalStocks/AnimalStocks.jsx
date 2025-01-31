@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useState } from "react";
 import Layout from "../../../layout/Layout";
-import TaskManagerFilter from "../../../components/TaskManagerFilter";
 import { Link, useNavigate } from "react-router-dom";
 
-import { Input, Button } from "@material-tailwind/react";
+import { Input, } from "@material-tailwind/react";
 import AnimalStockFilter from "../../../components/common/AnimalStockFilter";
 import moment from "moment";
 import { BaseUrl } from "../../../base/BaseUrl";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { inputClass } from "../../../components/common/Buttoncss";
 
 const AnimalStocks = () => {
   const navigate = useNavigate();
@@ -132,18 +132,18 @@ const AnimalStocks = () => {
                 name="to_date"
               />
             </div>
+          </div>
+          <div className="space-x-3 mt-6">
+            <button className={inputClass} onClick={onReportView}>
+              View
+            </button>
 
-            <div className="w-full">
-              <Button color="blue" fullWidth onClick={onReportView}>
-                View
-              </Button>
-            </div>
-            <Button color="blue" fullWidth onClick={onSubmit}>
+            <button className={inputClass} onClick={onSubmit}>
               Download Stock
-            </Button>
-            <Button color="blue" fullWidth onClick={onSubmit1}>
+            </button>
+            <button className={`${inputClass} w-[180px]`} onClick={onSubmit1}>
               Download Deatils Stock
-            </Button>
+            </button>
           </div>
         </form>
       </div>

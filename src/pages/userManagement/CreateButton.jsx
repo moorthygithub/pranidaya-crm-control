@@ -3,10 +3,12 @@ import Layout from "../../layout/Layout";
 import ButtonComponents from "../../components/ButtonComponents";
 import { ContextPanel } from "../../utils/ContextPanel";
 import axios from "axios";
-import { Select, Option, Button, Checkbox } from "@material-tailwind/react";
+import { Select, Option, Checkbox } from "@material-tailwind/react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Save } from "@mui/icons-material";
+import { inputClass } from "../../components/common/Buttoncss";
+import { BaseUrl } from "../../base/BaseUrl";
 const CreateButton = () => {
   const { fetchPermissions } = useContext(ContextPanel);
   const [selectedPage, setSelectedPage] = useState("");
@@ -133,15 +135,11 @@ const CreateButton = () => {
 
       // Submit each permission
       for (const permission of permissionsToSubmit) {
-        await axios.post(
-          "https://testags.store/public/api/panel-create-usercontrol",
-          permission,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        await axios.post(`${BaseUrl}/panel-create-usercontrol`, permission, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
       }
 
       toast.success("User controls created successfully");
@@ -241,15 +239,15 @@ const CreateButton = () => {
 
         {selectedPage && (
           <div className="mt-6">
-            <Button
+            <button
               onClick={handleSubmit}
-              className="flex items-center gap-2"
+              className={`${inputClass} flex justify-center items-center space-x-3`}
               color="blue"
               disabled={isLoading}
             >
               <Save className="h-4 w-4" />
               Create Roles
-            </Button>
+            </button>
           </div>
         )}
       </div>

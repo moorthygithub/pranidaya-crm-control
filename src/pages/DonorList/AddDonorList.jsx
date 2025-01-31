@@ -10,6 +10,7 @@ import Fields from "../../components/common/TextField/TextField";
 import { toast } from "react-toastify";
 import Dropdown from "../../components/common/DropDown";
 import InputMask from "react-input-mask";
+import { inputClass, inputClassBack } from "../../components/common/Buttoncss";
 
 const gender = [
   {
@@ -77,7 +78,6 @@ const AddDonorList = () => {
     donor_state: "",
     donor_pin_code: "",
   });
-  console.log("locationvalue", value);
   const validateOnlyDigits = (inputtxt) => {
     var phoneno = /^\d+$/;
     if (inputtxt.match(phoneno) || inputtxt.length == 0) {
@@ -270,17 +270,14 @@ const AddDonorList = () => {
   ];
   return (
     <Layout>
-      <div>
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
         {/* Title */}
-        <div className="flex mb-4 mt-6">
-          <Link to="/donor-list">
-            <MdKeyboardBackspace className=" text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl" />
-          </Link>
+        <div className="flex">
           <h1 className="text-2xl text-[#464D69] font-semibold ml-2 content-center">
             Add Donor
           </h1>
         </div>
-        <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+        <div className="p-6 ">
           <h1 className="p-4 mb-2">Personal Details</h1>
           <form autoComplete="off">
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
@@ -550,7 +547,7 @@ const AddDonorList = () => {
             <div className="mt-4 text-center">
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+                className={inputClass}
                 disabled={isButtonDisabled}
                 onClick={onSubmit}
               >
@@ -559,16 +556,18 @@ const AddDonorList = () => {
 
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+                className={`${inputClass} w-[200px]`}
                 onClick={onSubmitR}
               >
                 Submit& Create Recepit
               </button>
-              <Link to="/donor-list">
-                <button className="bg-green-500 text-white px-4 py-2 rounded-md">
-                  Back
-                </button>
-              </Link>
+              <button
+                type="button"
+                className={inputClassBack}
+                onClick={() => navigate("/donor-list")}
+              >
+                Back
+              </button>
             </div>
           </form>
         </div>

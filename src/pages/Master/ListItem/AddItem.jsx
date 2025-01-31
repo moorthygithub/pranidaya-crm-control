@@ -1,12 +1,16 @@
-import {  useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { MdKeyboardBackspace } from "react-icons/md";
 import axios from "axios";
-import  { BaseUrl } from "../../../base/BaseUrl";
+import { BaseUrl } from "../../../base/BaseUrl";
 import Layout from "../../../layout/Layout";
 import Fields from "../../../components/common/TextField/TextField";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
 
 const AddEnquiry = () => {
   const navigate = useNavigate();
@@ -88,17 +92,11 @@ const AddEnquiry = () => {
     <Layout>
       <div>
         {/* Title */}
-        <div className="flex mb-4 mt-6">
-          <MdKeyboardBackspace
-            onClick={handleBackButton}
-            className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-          />
-          <h1 className="text-2xl text-[#464D69] font-semibold ml-2 content-center">
-            Create Item
-          </h1>
-        </div>
 
         <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+          <h1 className="text-2xl text-[#464D69] font-semibold ml-2 content-center mb-4">
+            Create Item
+          </h1>
           <form autoComplete="off" id="addIndiv" onSubmit={onSubmit}>
             <div className="md:flex gap-2 justify-start mb-5">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full justify-between">
@@ -119,15 +117,12 @@ const AddEnquiry = () => {
             <div className="mt-4 text-center">
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+                className={inputClass}
                 disabled={isButtonDisabled}
               >
                 Submit
               </button>
-              <button
-                onClick={handleBackButton}
-                className="bg-red-500 text-white px-4 py-2 rounded-md"
-              >
+              <button onClick={handleBackButton} className={inputClassBack}>
                 Back
               </button>
             </div>

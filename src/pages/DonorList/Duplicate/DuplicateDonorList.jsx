@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../../layout/Layout";
 import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import axios from "axios";
 import { BaseUrl } from "../../../base/BaseUrl";
-import { Spinner, Button } from "@material-tailwind/react";
+import { Spinner } from "@material-tailwind/react";
 import CommonListing from "../CommonListing";
 import { toast } from "react-toastify";
 import {
@@ -13,6 +13,7 @@ import {
   NoDuplicateDonor,
   ZeroDuplicateDonor,
 } from "../../../components/ButtonComponents";
+import { encryptId } from "../../../components/common/EncryptDecrypt";
 
 const DuplicateDonorList = () => {
   const [duplicate, setDuplicate] = useState([]);
@@ -24,42 +25,10 @@ const DuplicateDonorList = () => {
       setLoading(true);
       const token = localStorage.getItem("token");
       const response = await axios.get(`${BaseUrl}/fetch-donors-duplicate`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
-      const res = response.data?.individualCompanies || [];
-
-      const tempRows = res.map((item, index) => {
-        if (item["donor_type"] === "Individual") {
-          return [
-            index + 1,
-            item["donor_fts_id"],
-            item["donor_full_name"],
-            item["donor_type"],
-            item["donor_spouse_name"],
-            item["donor_mobile"],
-            item["donor_email"],
-            item["c_receipt_count"],
-            item["c_receipt_count"] + "#" + item["id"],
-          ];
-        } else {
-          return [
-            index + 1,
-            item["donor_fts_id"],
-            item["donor_full_name"],
-            item["donor_type"],
-            item["donor_contact_name"],
-            item["donor_mobile"],
-            item["donor_email"],
-            item["c_receipt_count"],
-            item["c_receipt_count"] + "#" + item["id"],
-          ];
-        }
-      });
-
-      setDuplicate(tempRows);
+      setDuplicate(response.data?.individualCompanies || []);
     } catch (error) {
       console.error("Error fetching pending list request data", error);
     } finally {
@@ -70,152 +39,118 @@ const DuplicateDonorList = () => {
     fetchPendingRData();
   }, []);
 
-  // const updateData = (value) => {
-  //   axios({
-  //     url: BaseUrl + "/update-donors-duplicate-by-id/" + value,
-  //     method: "PUT",
-  //     headers: {
-  //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //     },
-  //   }).then((res) => {
-  //     console.log("receipt", res.data);
-  //     setData(res.data.c_receipt_count);
-  //     toast.success("Data Updated Successfully");
-  //     fetchPendingRData();
-  //   });
-  // };
-
-  const updateData = (value) => {
-    axios({
-      url: BaseUrl + "/update-donors-duplicate-by-id/" + value,
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((res) => {
-        console.log("receipt", res.data);
-        toast.success("Data Updated Successfully");
-        fetchPendingRData();
-      })
-      .catch((error) => {
-        console.error("Error updating data:", error);
-        toast.error("Error updating data");
+  const updateData = async (id) => {
+    try {
+      await axios.put(`${BaseUrl}/update-donors-duplicate-by-id/${id}`, null, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
+
+      toast.success("Data Updated Successfully");
+
+      setDuplicate((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, c_receipt_count: 0 } : item
+        )
+      );
+
+      fetchPendingRData();
+    } catch (error) {
+      console.error("Error updating data:", error);
+      toast.error("Error updating data");
+    }
   };
+
   const columns = [
     {
-      name: "#",
-      label: "#",
-      options: { filter: false, print: true, download: true, sort: false },
-    },
-    {
-      name: "PDS Id",
+      name: "donor_fts_id",
       label: "PDS Id",
       options: { filter: false, sort: false },
     },
-    { name: "Name", label: "Name", options: { filter: false, sort: false } },
-    { name: "Type", label: "Type", options: { filter: false, sort: false } },
     {
-      name: "Spouse/Contact",
-      label: "Spouse/Contact",
+      name: "donor_full_name",
+      label: "Name",
       options: { filter: false, sort: false },
     },
     {
-      name: "Mobile",
-      label: "Mobile",
-      options: { filter: false, sort: true },
+      name: "donor_type",
+      label: "Type",
+      options: { filter: false, sort: false },
     },
-    { name: "Email", label: "Email", options: { filter: false, sort: false } },
     {
-      name: "Receipt Count",
+      name: "donor_spouse_name",
+      label: "Spouse/Contact",
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value, tableMeta) => {
+          return tableMeta.rowData[3] === "Individual"
+            ? value
+            : duplicate[tableMeta.rowIndex]?.donor_contact_name;
+        },
+      },
+    },
+    { name: "donor_mobile", label: "Mobile", options: { sort: true } },
+    {
+      name: "donor_email",
+      label: "Email",
+      options: { filter: false, sort: false },
+    },
+    {
+      name: "c_receipt_count",
       label: "Receipt Count",
       options: { filter: false, sort: false },
     },
     {
-      name: "Actions",
+      name: "actions",
+      label: "Actions",
       options: {
-        filter: true,
-        customBodyRender: (value) => {
+        filter: false,
+        sort: false,
+        customBodyRender: (_, tableMeta) => {
+          const id = duplicate[tableMeta.rowIndex]?.id;
+          const receiptCount = duplicate[tableMeta.rowIndex]?.c_receipt_count;
+
           return (
-            <div style={{ minWidth: "150px" }}>
-              {!value.startsWith(0) ? (
+            <div className="flex space-x-3">
+              {receiptCount !== 0 ? (
                 <>
-                  <div className="flex">
-                    <EditDuplicateDonor
-                      className="h-5 w-5 cursor-pointer text-blue-500 mr-3"
-                      onClick={() => {
-                        navigate(
-                          `/edit-duplicate/${value.substr(
-                            value.indexOf("#") + 1,
-                            value.length - 1
-                          )}`
-                        );
-                      }}
-                    />
-                    <NoDuplicateDonor
-                      className="h-5 w-5 cursor-pointer text-blue-500"
-                      onClick={() => {
-                        navigate(
-                          `/no-duplicate/${value.substr(
-                            value.indexOf("#") + 1,
-                            value.length - 1
-                          )}`
-                        );
-                      }}
-                    />
-                    {/* <MdGroups
-                      className="h-5 w-5 cursor-pointer text-blue-500 "
-                      onClick={() => {
-                        navigate(
-                          `/no-duplicate/${value.substr(
-                            value.indexOf("#") + 1,
-                            value.length - 1
-                          )}`
-                        );
-                      }}
-                    /> */}
-                  </div>
+                  <EditDuplicateDonor
+                    className="h-5 w-5 cursor-pointer text-blue-500"
+                    // onClick={() => navigate(`/edit-duplicate/${id}`)}
+                    onClick={() => {
+                      const encryptedId = encryptId(id);
+                      navigate(
+                        `/edit-duplicate/${encodeURIComponent(encryptedId)}`
+                      );
+                    }}
+                  />
+                  <NoDuplicateDonor
+                    className="h-5 w-5 cursor-pointer text-blue-500"
+                    // onClick={() => navigate(`/no-duplicate/${id}`)}
+                    onClick={() => {
+                      const encryptedId = encryptId(id);
+                      navigate(
+                        `/no-duplicate/${encodeURIComponent(encryptedId)}`
+                      );
+                    }}
+                  />
                 </>
               ) : (
                 <>
-                  <div className="flex">
-                    <DeleteDuplicateDonor
-                      className="h-5 w-5 cursor-pointer text-blue-500 mr-3"
-                      onClick={() =>
-                        updateData(value.substr(value.indexOf("#") + 1))
-                      }
-                    />
-                    {/* <GrGroup
-                      className="h-4 w-4 cursor-pointer text-blue-500"
-                      onClick={() =>
-                        updateData(value.substr(value.indexOf("#") + 1))
-                      }
-                    /> */}
-
-                    {/* <GrGroup
-                      className="h-5 w-5 cursor-pointer text-blue-500 "
-                      onClick={() => {
-                        navigate(
-                          `/zero-duplicate/${value.substr(
-                            value.indexOf("#") + 1,
-                            value.length - 1
-                          )}`
-                        );
-                      }}
-                    /> */}
-                    <ZeroDuplicateDonor
-                      className="h-5 w-5 cursor-pointer text-blue-500 "
-                      onClick={() => {
-                        navigate(
-                          `/zero-duplicate/${value.substr(
-                            value.indexOf("#") + 1,
-                            value.length - 1
-                          )}`
-                        );
-                      }}
-                    />
-                  </div>
+                  <DeleteDuplicateDonor
+                    className="h-5 w-5 cursor-pointer text-blue-500"
+                    onClick={() => updateData(id)}
+                  />
+                  <ZeroDuplicateDonor
+                    className="h-5 w-5 cursor-pointer text-blue-500"
+                    // onClick={() => navigate(`/zero-duplicate/${id}`)}
+                    onClick={() => {
+                      const encryptedId = encryptId(id);
+                      navigate(
+                        `/zero-duplicate/${encodeURIComponent(encryptedId)}`
+                      );
+                    }}
+                  />
                 </>
               )}
             </div>
@@ -237,21 +172,18 @@ const DuplicateDonorList = () => {
   return (
     <Layout>
       <CommonListing />
-      <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-2 rounded-lg space-y-4 md:space-y-0">
+      <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-2 rounded-lg">
         <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
           Duplicate List
         </h3>
       </div>
-      <div
-        className="flex justify-between items-center  p-4"
-        style={{ backgroundColor: "#b8f2ed" }}
-      >
+      <div className="flex justify-between items-center p-4 bg-teal-200">
         <p className="text-black">
-          Duplicate Criteria: If Mobile Number is Same or Donor Name is Same.
+          Duplicate Criteria: If Mobile Number is the same or Donor Name is the
+          same.
           <br />
           (Note: All the below data is not 100% duplicate. It is all recommended
-          data that may be duplicated. Please make the changes very carefully.
-          We advise you to make a note before removing.)
+          data that may be duplicated. Please make the changes carefully.)
         </p>
       </div>
       {loading ? (

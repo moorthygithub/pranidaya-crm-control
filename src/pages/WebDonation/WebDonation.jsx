@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import Layout from "../../layout/Layout";
-import { ContextPanel } from "../../utils/ContextPanel";
 import { Link, useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import moment from "moment";
@@ -28,17 +27,8 @@ const WebDonation = () => {
         );
 
         const res = response.data?.website_donation || [];
-        const tempRows = res.map((item, index) => [
-          index + 1,
-          item["payment_user"],
-          item["payment_mobile"],
-          moment(item["payment_date"]).format("DD-MM-YYYY"),
-          item["payment_exemption_type"],
-          item["payment_donation_type"],
-          item["payment_amount"],
-          item["id"],
-        ]);
-        setWebDonation(tempRows);
+
+        setWebDonation(res);
       } catch (error) {
         console.error("Error fetching pending list request data", error);
       } finally {
@@ -51,17 +41,16 @@ const WebDonation = () => {
 
   const columns = [
     {
-      name: "SlNo",
-      label: "Sl No",
+      name: "sno",
+      label: "S.No",
       options: {
         filter: false,
-        print: true,
-        download: true,
         sort: false,
+        customBodyRender: (value, tableMeta) => tableMeta.rowIndex + 1,
       },
     },
     {
-      name: "Name",
+      name: "payment_user",
       label: " Name",
       options: {
         filter: false,
@@ -69,7 +58,7 @@ const WebDonation = () => {
       },
     },
     {
-      name: "Mobile",
+      name: "payment_mobile",
       label: " Mobile",
       options: {
         filter: false,
@@ -77,15 +66,18 @@ const WebDonation = () => {
       },
     },
     {
-      name: "Date",
+      name: "payment_date",
       label: " Date",
       options: {
         filter: false,
         sort: false,
+        customBodyRender: (value) => {
+          return moment(value).format("DD-MM-YYYY");
+        },
       },
     },
     {
-      name: "Exemption Type",
+      name: "payment_exemption_type",
       label: " Exemption Type",
       options: {
         filter: false,
@@ -93,7 +85,7 @@ const WebDonation = () => {
       },
     },
     {
-      name: "Donation Type",
+      name: "payment_donation_type",
       label: " Donation Type",
       options: {
         filter: false,
@@ -101,7 +93,7 @@ const WebDonation = () => {
       },
     },
     {
-      name: "Amount ",
+      name: "payment_amount",
       label: " Amount ",
       options: {
         filter: false,
@@ -123,11 +115,6 @@ const WebDonation = () => {
 
   return (
     <Layout>
-      <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-2 rounded-lg space-y-4 md:space-y-0">
-        <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
-          Website Donation List
-        </h3>
-      </div>
       {loading ? (
         <div className="flex justify-center items-center h-64">
           <Spinner className="h-6 w-6" />
@@ -135,6 +122,14 @@ const WebDonation = () => {
       ) : (
         <div className="mt-5">
           <MUIDataTable
+            title={
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-semibold">
+                  {" "}
+                  Website Donation List
+                </span>
+              </div>
+            }
             data={webdonation}
             columns={columns}
             options={options}

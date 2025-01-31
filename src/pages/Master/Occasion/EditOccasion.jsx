@@ -4,8 +4,13 @@ import { MdKeyboardBackspace } from "react-icons/md";
 import { useEffect, useState } from "react";
 import Fields from "../../../components/common/TextField/TextField";
 import axios from "axios";
-import  { BaseUrl } from "../../../base/BaseUrl";
+import { BaseUrl } from "../../../base/BaseUrl";
 import { toast } from "react-toastify";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
+import { decryptId } from "../../../components/common/EncryptDecrypt";
 
 const status = [
   {
@@ -20,6 +25,8 @@ const status = [
 
 const EditOccasion = () => {
   const { id } = useParams();
+  const decryptedId = decryptId(id);
+
   const navigate = useNavigate();
   const [occasion, setOccasion] = useState({
     occasion_name: "",
@@ -59,9 +66,9 @@ const EditOccasion = () => {
   };
 
   useEffect(() => {
-    if (id) {
+    if (decryptedId) {
       axios({
-        url: BaseUrl + "/fetch-occasion-by-id/" + id,
+        url: BaseUrl + "/fetch-occasion-by-id/" + decryptedId,
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -74,7 +81,7 @@ const EditOccasion = () => {
           toast.error("Failed to fetch item details");
         });
     }
-  }, [id]);
+  }, [decryptedId]);
 
   // Handle form submission
   const onSubmit = (e) => {
@@ -91,7 +98,7 @@ const EditOccasion = () => {
       setIsButtonDisabled(true);
 
       axios({
-        url: BaseUrl + "/update-occasion/" + id,
+        url: BaseUrl + "/update-occasion/" + decryptedId,
         method: "PUT",
         data,
         headers: {
@@ -118,13 +125,9 @@ const EditOccasion = () => {
   return (
     <Layout>
       <div>
-        <div>
+        <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
           {/* Title */}
-          <div className="flex mb-4 mt-6">
-            <MdKeyboardBackspace
-              onClick={handleBackButton}
-              className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-            />
+          <div className="flex mb-4">
             <h1 className="text-2xl text-[#464D69] font-semibold ml-2 content-center">
               Edit Occasion
             </h1>
@@ -164,15 +167,12 @@ const EditOccasion = () => {
             <div className="mt-4 text-center">
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+                className={inputClass}
                 disabled={isButtonDisabled}
               >
                 Update
               </button>
-              <button
-                onClick={handleBackButton}
-                className="bg-red-500 text-white px-4 py-2 rounded-md"
-              >
+              <button onClick={handleBackButton} className={inputClassBack}>
                 Back
               </button>
             </div>

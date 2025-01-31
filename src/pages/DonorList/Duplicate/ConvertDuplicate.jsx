@@ -16,10 +16,17 @@ import {
   Input,
 } from "@material-tailwind/react";
 import MUIDataTable from "mui-datatables";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
+import { decryptId } from "../../../components/common/EncryptDecrypt";
 
 const ConvertDuplicate = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const decryptedId = decryptId(id);
+
   const [donorName, setDonorName] = useState("");
   const [donor, setDonor] = useState({
     donor_fts_id: "",
@@ -46,7 +53,12 @@ const ConvertDuplicate = () => {
         sort: false,
 
         customBodyRender: (value) => (
-          <Button onClick={() => addDonorToReceipt(value)}>Select</Button>
+          <button
+            onClick={() => addDonorToReceipt(value)}
+            className={inputClass}
+          >
+            Select
+          </button>
         ),
       },
     },
@@ -66,7 +78,7 @@ const ConvertDuplicate = () => {
 
     axios
       .put(
-        `${BaseUrl}/update-donors-duplicate-receipt-family-member/${id}`,
+        `${BaseUrl}/update-donors-duplicate-receipt-family-member/${decryptedId}`,
         data,
         {
           headers: {
@@ -106,31 +118,27 @@ const ConvertDuplicate = () => {
 
   useEffect(() => {
     axios
-      .get(`${BaseUrl}/fetch-donors-duplicate-by-id/${id}`, {
+      .get(`${BaseUrl}/fetch-donors-duplicate-by-id/${decryptedId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
       .then((res) => setDonor(res.data.individualCompanies));
 
     fetchDonorData();
-  }, [id]);
+  }, [decryptedId]);
 
   return (
     <Layout>
-      <div>
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
         <div className="flex flex-col md:flex-row items-center justify-between mb-4 mt-6">
           <div className="flex items-center">
-            <MdKeyboardBackspace
-              onClick={handleBackButton}
-              className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-            />
             <h1 className="text-2xl text-[#464D69] font-semibold ml-2 mb-2 md:mb-0">
               Update One Receipt Family Member
             </h1>
           </div>
         </div>
 
-        <Card className="p-6 mt-5 bg-white shadow-md rounded-lg">
-          <CardBody>
+        <div className="p-6 mt-5 ">
+          <div>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-4">
               <div className="text-gray-700">
                 <strong>Donor Name:</strong>
@@ -157,10 +165,10 @@ const ConvertDuplicate = () => {
                 {donor.donor_email}
               </div>
             </div>
-          </CardBody>
-        </Card>
+          </div>
+        </div>
 
-        <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+        <div className="p-6 mt-5 ">
           <form id="addIndiv" onSubmit={onSubmit}>
             <div>
               <Fields
@@ -174,12 +182,12 @@ const ConvertDuplicate = () => {
             </div>
 
             <div className="flex justify-center mt-4 space-x-4">
-              <Button type="submit" className="bg-blue-400">
+              <button type="submit" className={inputClass}>
                 Submit
-              </Button>
-              <Button className="bg-red-400" onClick={handleBackButton}>
+              </button>
+              <button className={inputClassBack} onClick={handleBackButton}>
                 Back
-              </Button>
+              </button>
             </div>
           </form>
         </div>

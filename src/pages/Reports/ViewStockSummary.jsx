@@ -10,6 +10,7 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import moment from "moment/moment";
 import html2pdf from "html2pdf.js";
+import { inputClass } from "../../components/common/Buttoncss";
 
 const TABLE_HEAD = [
   "Items Name",
@@ -119,145 +120,109 @@ function ViewStockSummary() {
   return (
     <Layout>
       <ToastContainer />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 p-2 bg-white rounded-lg">
-        <div className="flex flex-row justify-start p-2">
-          <MdKeyboardBackspace
-            className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-            onClick={() => navigate("/stock-summary")}
-          />
-          <h1 className="text-xl md:text-2xl text-[#464D69] font-semibold ml-2">
-            Stock Summary (In Kgs)
-          </h1>
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-2">
+          <div className="flex flex-row justify-start p-2">
+            <h1 className="text-xl md:text-2xl text-[#464D69] font-semibold ml-2">
+              Stock Summary (In Kgs)
+            </h1>
+          </div>
+          <div className="flex flex-col md:flex-row justify-center md:justify-end items-center space-y-4 md:space-y-0 md:space-x-4">
+            <button
+              className={`${inputClass} flex items-center gap-1 justify-center text-center w-[80px]`}
+              onClick={downloadPDF}
+            >
+              <LuDownload className="text-lg mr-1" />
+              <span className="mr-2"> PDF</span>
+            </button>
+            <button
+              className={`${inputClass} flex items-center gap-1 justify-center text-center`}
+              onClick={PrintRecepit}
+            >
+              <IoIosPrint className="text-lg " />
+              <span>Print Receipt</span>
+            </button>
+          </div>
         </div>
-        <div className="flex flex-col md:flex-row justify-center md:justify-end items-center space-y-4 md:space-y-0 md:space-x-4">
-          <Button
-            variant="text"
-            className="flex items-center space-x-2"
-            onClick={downloadPDF}
-          >
-            <LuDownload className="text-lg" />
-            <span> PDF</span>
-          </Button>
-          <Button
-            variant="text"
-            className="flex items-center space-x-2"
-            onClick={PrintRecepit}
-          >
-            <IoIosPrint className="text-lg" />
-            <span>Print Receipt</span>
-          </Button>
-        </div>
-      </div>
 
-      <div className="flex justify-center mt-4" ref={componentRef}>
-        <Card className="p-4 w-full overflow-x-auto">
-          {loader ? (
-            <div className="flex justify-center items-center h-64">
-              <Spinner className="h-6 w-6" />
-            </div>
-          ) : (
-            <div className="overflow-x-auto print-container">
-              <div className="flex justify-center">
-                <div className="p-4 text-xl md:text-2xl flex justify-center font-bold">
-                  Stock Summary - From: {from_date} To: {to_date}
-                </div>
+        <div className="flex justify-center mt-4" ref={componentRef}>
+          <div className="p-4 w-full overflow-x-auto">
+            {loader ? (
+              <div className="flex justify-center items-center h-64">
+                <Spinner className="h-6 w-6" />
               </div>
-              <table className="min-w-full border border-gray-200">
-                <thead>
-                  <tr className="bg-gray-100">
-                    {TABLE_HEAD.map((head) => (
-                      <th
-                        key={head}
-                        className="border border-gray-300 p-4 text-left"
-                      >
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal leading-none opacity-70"
-                        >
-                          {head}
-                        </Typography>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {stocksummary.length > 0 ? (
-                    stocksummary.map((stockItem, index) => {
-                      const { item_name, openpurch, purch, sale, closesale } =
-                        stockItem;
-                      const isLast = index === stocksummary.length - 1;
-                      const classes = isLast
-                        ? "border-t border-gray-300 p-4"
-                        : "border-t border-b border-gray-300 p-4";
+            ) : (
+              <div className="overflow-x-auto print-container">
+                <div className="flex justify-center">
+                  <div className="p-4 text-xl md:text-2xl flex justify-center font-bold">
+                    Stock Summary - From: {from_date} To: {to_date}
+                  </div>
+                </div>
 
-                      const numberFormatter = new Intl.NumberFormat("en-US", {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 2,
-                      });
-
-                      return (
-                        <tr key={item_name}>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {item_name}
-                            </Typography>
-                          </td>
-                          <td className={`${classes} bg-blue-gray-50/50`}>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal flex justify-end"
-                            >
-                              {numberFormatter.format(openpurch)}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal flex justify-end"
-                            >
-                              {numberFormatter.format(purch)}
-                            </Typography>
-                          </td>
-                          <td className={`${classes} bg-blue-gray-50/50`}>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal flex justify-end"
-                            >
-                              {numberFormatter.format(sale)}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal flex justify-end"
-                            >
-                              {numberFormatter.format(closesale)}
-                            </Typography>
+                <div className="p-4 mb-4">
+                  <table className="w-full border-collapse border border-gray-200 mb-[10px] text-sm">
+                    <thead>
+                      <tr className="bg-gray-200">
+                        <th className="border p-2">Items Name</th>
+                        <th className="border p-2">Open Balance</th>
+                        <th className="border p-2">Received</th>
+                        <th className="border p-2">Consumption</th>
+                        <th className="border p-2">Close Balance</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {stocksummary.length === 0 ? (
+                        <tr>
+                          <td
+                            colSpan="5"
+                            className="border p-2 text-center text-gray-500"
+                          >
+                            No data available
                           </td>
                         </tr>
-                      );
-                    })
-                  ) : (
-                    <tr>
-                      <td colSpan={5} className="p-4 text-center">
-                        No data available
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </Card>
+                      ) : (
+                        stocksummary.map((stockItem, index) => {
+                          const {
+                            item_name,
+                            openpurch,
+                            purch,
+                            sale,
+                            closesale,
+                          } = stockItem;
+                          const numberFormatter = new Intl.NumberFormat(
+                            "en-US",
+                            {
+                              minimumFractionDigits: 0,
+                              maximumFractionDigits: 2,
+                            }
+                          );
+
+                          return (
+                            <tr key={index} className="border">
+                              <td className="border p-2">{item_name}</td>
+                              <td className="border p-2 text-center">
+                                {numberFormatter.format(openpurch)}
+                              </td>
+                              <td className="border p-2 text-center">
+                                {numberFormatter.format(purch)}
+                              </td>
+                              <td className="border p-2 text-center">
+                                {numberFormatter.format(sale)}
+                              </td>
+                              <td className="border p-2 text-center">
+                                {numberFormatter.format(closesale)}
+                              </td>
+                            </tr>
+                          );
+                        })
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </Layout>
   );

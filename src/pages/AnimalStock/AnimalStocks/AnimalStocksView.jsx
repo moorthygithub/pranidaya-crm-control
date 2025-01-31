@@ -10,6 +10,7 @@ import html2pdf from "html2pdf.js";
 import Layout from "../../../layout/Layout";
 import { BaseUrl } from "../../../base/BaseUrl";
 import { toast } from "react-toastify";
+import { inputClass } from "../../../components/common/Buttoncss";
 
 function AnimalStocksView() {
   const navigate = useNavigate();
@@ -182,13 +183,9 @@ function AnimalStocksView() {
   };
   return (
     <Layout>
-      <div className="p-4 bg-gray-100 min-h-screen">
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg  min-h-screen">
         <div className="flex items-center justify-between mb-4 p-2 bg-white rounded-lg flex-wrap">
           <div className="flex items-center w-full sm:w-auto mb-2 sm:mb-0">
-            <MdKeyboardBackspace
-              className="text-white bg-[#464D69] p-2 w-10 h-10 cursor-pointer rounded-full"
-              onClick={() => navigate("/animal-stock")}
-            />
             <Typography
               variant="h4"
               className="ml-3 text-gray-700 font-semibold"
@@ -197,42 +194,36 @@ function AnimalStocksView() {
             </Typography>
           </div>
           <div className="flex flex-wrap space-x-4 justify-between w-full sm:w-auto">
-            <Button
-              variant="outlined"
-              color="blue"
-              className="flex items-center space-x-2 mb-2 sm:mb-0"
+            <button
+              className={`${inputClass} flex justify-center items-center space-x-3`}
               onClick={onSubmit1}
             >
               <LuDownload className="text-lg" />
               <span>Details Stock</span>
-            </Button>
-            <Button
-              variant="outlined"
-              color="blue"
-              className="flex items-center space-x-2 mb-2 sm:mb-0"
+            </button>
+            <button
+              className={`${inputClass} flex justify-center items-center space-x-3`}
               onClick={onSubmit}
             >
               <LuDownload className="text-lg" />
               <span>Stock</span>
-            </Button>
-            <Button
-              variant="outlined"
-              color="blue"
-              className="flex items-center space-x-2 mb-2 sm:mb-0"
+            </button>
+
+            <button
+              className={`${inputClass} flex justify-center items-center space-x-3`}
               onClick={PrintRecepit}
             >
               <IoIosPrint className="text-lg" />
-              <span>Detail Stock</span>
-            </Button>
-            <Button
-              variant="outlined"
-              color="blue"
-              className="flex items-center space-x-2"
+              <span className="ml-2">Detail Stock</span>
+            </button>
+
+            <button
+              className={`${inputClass} flex justify-center items-center space-x-3`}
               onClick={PrintRecepit1}
             >
               <IoIosPrint className="text-lg" />
               <span>Stock</span>
-            </Button>
+            </button>
           </div>
         </div>
 
@@ -241,7 +232,7 @@ function AnimalStocksView() {
             <Spinner color="blue" />
           </div>
         ) : (
-          <div ref={componentRef} className="bg-white shadow-md rounded-lg">
+          <div ref={componentRef}>
             {/* Total Active Animal Count */}
             <div className="p-6 shadow-lg my-6   rounded-lg   overflow-hidden ">
               <div className="flex justify-between">
@@ -250,14 +241,18 @@ function AnimalStocksView() {
                   className="text-gray-800 font-bold whitespace-nowrap overflow-hidden text-ellipsis"
                 >
                   Total Animal Born/Arrival :{" "}
-                  <span className="text-indigo-600 ml-1">{animaltotalcount}</span>
+                  <span className="text-indigo-600 ml-1">
+                    {animaltotalcount}
+                  </span>
                 </Typography>
                 <Typography
                   variant="h6"
                   className="text-gray-800 font-bold text-right whitespace-nowrap overflow-hidden text-ellipsis"
                 >
                   Total Animal Death/Given :{" "}
-                  <span className="text-red-600 ml-1">{animalinactivecount}</span>
+                  <span className="text-red-600 ml-1">
+                    {animalinactivecount}
+                  </span>
                 </Typography>
               </div>
             </div>
@@ -381,7 +376,7 @@ function AnimalStocksView() {
                 variant="h6"
                 className="text-gray-700 font-semibold my-3"
               >
-               Born
+                Born
               </Typography>
               <table className="w-full border-collapse border border-gray-200 mb-[20px] text-sm">
                 <thead>

@@ -8,6 +8,11 @@ import { toast } from "react-toastify";
 import { Button } from "@mui/material";
 import { BaseUrl } from "../../../base/BaseUrl";
 import { Input } from "@material-tailwind/react";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
+import { decryptId } from "../../../components/common/EncryptDecrypt";
 
 // Unit options for dropdown
 const unitOptions = [
@@ -18,7 +23,9 @@ const unitOptions = [
 
 const EditPurchase = () => {
   const navigate = useNavigate();
+  // const { id } = useParams();
   const { id } = useParams();
+  const decryptedId = decryptId(id);
   const [vendors, setVendors] = useState([]);
   const [items, setItems] = useState([]);
   const [purchase, setPurchase] = useState({
@@ -34,10 +41,20 @@ const EditPurchase = () => {
     purchase_sub_qnty: "",
     purchase_sub_unit: "",
   };
+  console.log("Decrypted ID:", decryptedId);
 
   const [users, setUsers] = useState([initialUserTemplate]);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  // const secretKey = "AGSOLUTION@123";
 
+  // const decryptId = (encryptedId) => {
+  //   const bytes = CryptoJS.AES.decrypt(
+  //     decodeURIComponent(encryptedId),
+  //     secretKey
+  //   );
+  //   return bytes.toString(CryptoJS.enc.Utf8);
+  // };
+  // const decryptedId = decryptId(id);
   useEffect(() => {
     const fetchVendorData = async () => {
       const response = await axios.get(`${BaseUrl}/fetch-vendor`, {
@@ -59,7 +76,7 @@ const EditPurchase = () => {
 
     const fetchPurchaseData = async () => {
       const response = await axios.get(
-        `${BaseUrl}/fetch-purchase-by-id/${id}`,
+        `${BaseUrl}/fetch-purchase-by-id/${decryptedId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -73,7 +90,7 @@ const EditPurchase = () => {
     fetchVendorData();
     fetchItemData();
     fetchPurchaseData();
-  }, [id]);
+  }, [decryptedId]);
 
   const onInputChange = (e) => {
     setPurchase({
@@ -113,11 +130,15 @@ const EditPurchase = () => {
     if (isValid) {
       setIsButtonDisabled(true);
       try {
-        const res = await axios.put(`${BaseUrl}/update-purchase/${id}`, data, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const res = await axios.put(
+          `${BaseUrl}/update-purchase/${decryptedId}`,
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         if (res.data.code == "200") {
           toast.success("Purchase Updated Successfully");
           navigate("/purchase");
@@ -139,17 +160,13 @@ const EditPurchase = () => {
   return (
     <Layout>
       <div>
-        <div className="flex mb-4 mt-6">
-          <MdKeyboardBackspace
-            onClick={handleBackButton}
-            className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-          />
-          <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
-            Edit Purchase
-          </h1>
-        </div>
-
         <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+          <div className="flex mb-4">
+            <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
+              Edit Purchase
+            </h1>
+          </div>
+
           <form id="addIndiv" onSubmit={onSubmit}>
             {/* Purchase Details */}
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 mb-4 mt-4">
@@ -248,23 +265,16 @@ const EditPurchase = () => {
             ))}
 
             <div className="flex justify-center mt-4 space-x-4">
-              <Button
+              <button
                 type="submit"
-                variant="contained"
-                color="primary"
+                className={inputClass}
                 disabled={isButtonDisabled}
-                className="mt-4"
               >
                 Update
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                className="mt-4"
-                onClick={handleBackButton}
-              >
+              </button>
+              <button onClick={handleBackButton} className={inputClassBack}>
                 Back
-              </Button>
+              </button>
             </div>
           </form>
         </div>

@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import DownloadCommon from "../../download/DeliveryDownload";
+import { inputClass } from "../../../components/common/Buttoncss";
 
 function DowloadConsumption() {
   const navigate = useNavigate();
@@ -106,79 +107,84 @@ function DowloadConsumption() {
     <Layout>
       <DownloadCommon />
       <ToastContainer />
-      <div className="mt-4 mb-6">
-        <PageTitle title={"Download Consumption"} />
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+        <div>
+          <h1 className="text-xl md:text-2xl text-[#464D69] font-semibold ml-2">
+            Download Consumption
+          </h1>
+        </div>
+        <div className="p-4">
+          <h3 className="text-red-500 mb-5">
+            Leave blank if you want all records.
+          </h3>
+
+          <form id="dowRecp" autoComplete="off">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="w-full">
+                <Input
+                  required
+                  type="date"
+                  label="From Date"
+                  name="cons_from_date"
+                  className="required"
+                  value={receiptsdwn.cons_from_date}
+                  onChange={(e) => onInputChange(e)}
+                />
+              </div>
+              <div className="w-full">
+                <Input
+                  required
+                  type="date"
+                  label="To Date"
+                  className="required"
+                  name="cons_to_date"
+                  value={receiptsdwn.cons_to_date}
+                  onChange={(e) => onInputChange(e)}
+                />
+              </div>
+              <div className="w-full">
+                <Dropdown
+                  label="Item"
+                  className="required"
+                  name="cons_sub_item"
+                  value={receiptsdwn.cons_sub_item}
+                  options={item.map((item) => ({
+                    value: item.item_name,
+                    label: item.item_name,
+                  }))}
+                  onChange={(value) => onInputChangeN("cons_sub_item", value)}
+                />
+              </div>
+
+              <div className="w-full">
+                <Dropdown
+                  label="Unit"
+                  className="required"
+                  name="cons_sub_unit"
+                  value={receiptsdwn.cons_sub_unit}
+                  options={unit.map((option) => ({
+                    value: option.value,
+                    label: option.label,
+                  }))}
+                  onChange={(value) => onInputChangeN("cons_sub_unit", value)}
+                />
+              </div>
+
+              <div>
+                <button
+                  className={`${inputClass} ${
+                    isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={onSubmit}
+                  disabled={isButtonDisabled}
+                >
+                  {isButtonDisabled ? "Downloading..." : "Download"}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
-      <Card className="p-4">
-        <h3 className="text-red-500 mb-5">
-          Leave blank if you want all records.
-        </h3>
-
-        <form id="dowRecp" autoComplete="off">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <div className="w-full">
-              <Input
-                required
-                type="date"
-                label="From Date"
-                name="cons_from_date"
-                className="required"
-                value={receiptsdwn.cons_from_date}
-                onChange={(e) => onInputChange(e)}
-              />
-            </div>
-            <div className="w-full">
-              <Input
-                required
-                type="date"
-                label="To Date"
-                className="required"
-                name="cons_to_date"
-                value={receiptsdwn.cons_to_date}
-                onChange={(e) => onInputChange(e)}
-              />
-            </div>
-            <div className="w-full">
-              <Dropdown
-                label="Item"
-                className="required"
-                name="cons_sub_item"
-                value={receiptsdwn.cons_sub_item}
-                options={item.map((item) => ({
-                  value: item.item_name,
-                  label: item.item_name,
-                }))}
-                onChange={(value) => onInputChangeN("cons_sub_item", value)}
-              />
-            </div>
-
-            <div className="w-full">
-              <Dropdown
-                label="Unit"
-                className="required"
-                name="cons_sub_unit"
-                value={receiptsdwn.cons_sub_unit}
-                options={unit.map((option) => ({
-                  value: option.value,
-                  label: option.label,
-                }))}
-                onChange={(value) => onInputChangeN("cons_sub_unit", value)}
-              />
-            </div>
-
-            <div className="w-77">
-              <Button
-                color="blue"
-                fullWidth
-                onClick={onSubmit}
-                disabled={isButtonDisabled}
-              >
-                {isButtonDisabled ? "Downloading..." : "Download"}
-              </Button>
-            </div>
-          </div>
-        </form>
-      </Card>
     </Layout>
   );
 }

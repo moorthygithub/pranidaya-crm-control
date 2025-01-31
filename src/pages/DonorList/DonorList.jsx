@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import Layout from "../../layout/Layout";
-import { ContextPanel } from "../../utils/ContextPanel";
 import { Link, useNavigate } from "react-router-dom";
 import { BaseUrl } from "../../base/BaseUrl";
 import axios from "axios";
@@ -14,6 +13,7 @@ import { Spinner } from "@material-tailwind/react";
 import {
   AddCashReceipt,
   AddDonor,
+  AddMaterialReceipt,
   CashReceiptDonor,
   EditDonor,
   FamilyMemberDonor,
@@ -21,6 +21,8 @@ import {
   ViewDonor,
 } from "../../components/ButtonComponents";
 import { useQuery } from "@tanstack/react-query";
+import { inputClass, inputClassBack } from "../../components/common/Buttoncss";
+import { encryptId } from "../../components/common/EncryptDecrypt";
 
 const fetchOpenData = async () => {
   const token = localStorage.getItem("token");
@@ -29,34 +31,11 @@ const fetchOpenData = async () => {
   });
   return response?.data?.donor ?? [];
 };
+
 const DonorList = () => {
-  // const [donorListData, setDonorListData] = useState(null);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchOpenData = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const token = localStorage.getItem("token");
-  //       const response = await axios.get(`${BaseUrl}/fetch-donor-list`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-
-  //       setDonorListData(response?.data?.donor);
-  //     } catch (error) {
-  //       console.error("Error fetching open list enquiry data", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchOpenData();
-  // }, []);
-
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["fetchdata"],
     queryFn: fetchOpenData,
   });
@@ -105,49 +84,52 @@ const DonorList = () => {
         customBodyRender: (id) => {
           return (
             <div className="flex items-center space-x-2">
-              {/* <IoEye
-                onClick={() => navigate(`/viewdonor-list/${id}`)}
-                title="View "
-                className="h-5 w-5 cursor-pointer text-blue-500 "
-              /> */}
               <ViewDonor
-                onClick={() => navigate(`/viewdonor-list/${id}`)}
+                // onClick={() => navigate(`/viewdonor-list/${id}`)}
+                onClick={() => {
+                  const encryptedId = encryptId(id); // Encrypt the ID
+                  navigate(
+                    `/viewdonor-list/${encodeURIComponent(encryptedId)}`
+                  );
+                }}
                 className="h-5 w-5 cursor-pointer text-blue-500 "
               />
-              {/* <MdEdit
-                onClick={() => navigate(`/edit-donor/${id}`)}
-                title="Edit"
-                className="h-5 w-5 cursor-pointer text-blue-500 "
-              /> */}
+
               <EditDonor
-                onClick={() => navigate(`/edit-donor/${id}`)}
+                // onClick={() => navigate(`/edit-donor/${id}`)}
+                onClick={() => {
+                  const encryptedId = encryptId(id); // Encrypt the ID
+                  navigate(`/edit-donor/${encodeURIComponent(encryptedId)}`);
+                }}
                 className="h-5 w-5 cursor-pointer text-blue-500 "
               />
-              {/* <PiNotebook
-                onClick={() => navigate(`/createrecepit-donor/${id}`)}
-                title="Cash Recepit"
-                className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
-              /> */}
+
               <CashReceiptDonor
-                onClick={() => navigate(`/createrecepit-donor/${id}`)}
+                // onClick={() => navigate(`/createrecepit-donor/${id}`)}
+                onClick={() => {
+                  const encryptedId = encryptId(id); // Encrypt the ID
+                  navigate(
+                    `/createrecepit-donor/${encodeURIComponent(encryptedId)}`
+                  );
+                }}
                 className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
               />
-              {/* <MdOutlineStickyNote2
-                onClick={() => navigate(`/create-donor/${id}`)}
-                title="Material Recepit"
-                className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
-              /> */}
+
               <MaterialReceiptDonor
-                onClick={() => navigate(`/create-donor/${id}`)}
+                // onClick={() => navigate(`/create-donor/${id}`)}
+                onClick={() => {
+                  const encryptedId = encryptId(id); // Encrypt the ID
+                  navigate(`/create-donor/${encodeURIComponent(encryptedId)}`);
+                }}
                 className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
               />
-              {/* <FaUsers
-                onClick={() => navigate(`/create-family/${id}`)}
-                title="Family Members"
-                className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
-              /> */}
+
               <FamilyMemberDonor
-                onClick={() => navigate(`/create-family/${id}`)}
+                // onClick={() => navigate(`/create-family/${id}`)}
+                onClick={() => {
+                  const encryptedId = encryptId(id); // Encrypt the ID
+                  navigate(`/create-family/${encodeURIComponent(encryptedId)}`);
+                }}
                 className="h-5 w-5 cursor-pointer text-blue-500 mr-2"
               />
             </div>
@@ -165,69 +147,26 @@ const DonorList = () => {
     download: false,
     print: false,
     filter: false,
-    // setRowProps: (rowData) => {
-    //   return {
-    //     style: {
-    //       borderBottom: "10px solid #f1f7f9",
-    //     },
-    //   };
-    // },
+    customToolbar: () => {
+      return (
+        <>
+          <AddMaterialReceipt
+            onClick={() => navigate("/materialrecepitall")}
+            className={inputClass}
+          />
+          <AddDonor
+            onClick={() => navigate("/add-donor")}
+            className={inputClass}
+          />
+        </>
+      );
+    },
   };
 
   return (
     <Layout>
       <CommonListing />
-      <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-4 rounded-lg space-y-4 md:space-y-0">
-        <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
-          Donor List
-        </h3>
 
-        <div className="md:space-x-5 space-y-5 md:space-y-0  flex flex-col md:flex-row ">
-          {/* <Link
-            to="/cashrecepitall"
-            className="btn btn-primary text-center text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg shadow-md w-full md:w-auto"
-          >
-            + CashRecepit
-          </Link> */}
-          {/* <button
-onClick={()=>navigate('/cashrecepitall')}
-  className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-
->
-+ CashRecepit
-</button> */}
-          <AddCashReceipt
-            onClick={() => navigate("/cashrecepitall")}
-            className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-          />
-
-          {/* <Link
-            to="/materialrecepitall"
-            className="btn btn-primary text-center text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg shadow-md w-full md:w-auto"
-          >
-            + DirectMaterialRecepit{" "}
-          </Link> */}
-          {/* <Link
-            to="/add-donor"
-            className="btn btn-primary text-center text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg shadow-md w-full md:w-auto"
-          >
-            + Add Donor
-          </Link> */}
-          {/* <button
-onClick={()=>navigate('/add-donor')}
-  className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-
->
-+ Add Donor
-</button> */}
-          <AddDonor
-            onClick={() => navigate("/add-donor")}
-            className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-          />
-        </div>
-      </div>
-
-      {/* Show spinner while loading */}
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
           <Spinner className="h-6 w-6" />
@@ -235,7 +174,11 @@ onClick={()=>navigate('/add-donor')}
       ) : (
         <div className="mt-5">
           <MUIDataTable
-            title="Donor List"
+            title={
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-semibold"> Donor List</span>
+              </div>
+            }
             data={data || []}
             columns={columns}
             options={options}

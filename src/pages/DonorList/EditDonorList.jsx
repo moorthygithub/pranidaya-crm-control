@@ -4,12 +4,14 @@ import { MdKeyboardBackspace } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Button, Input } from "@material-tailwind/react";
-import  { BaseUrl } from "../../base/BaseUrl";
+import { BaseUrl } from "../../base/BaseUrl";
 import Layout from "../../layout/Layout";
 import Fields from "../../components/common/TextField/TextField";
 import { toast } from "react-toastify";
 import InputMask from "react-input-mask";
 import FamilyGroupModal from "./FamilyGroupModa";
+import { inputClass, inputClassBack } from "../../components/common/Buttoncss";
+import { decryptId } from "../../components/common/EncryptDecrypt";
 
 const gender = [
   {
@@ -51,6 +53,8 @@ const title1 = [
 const EditDonorList = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const decryptedId = decryptId(id);
+
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [donor, setDonor] = useState({
     donor_full_name: "",
@@ -151,7 +155,7 @@ const EditDonorList = () => {
     };
     try {
       const response = await axios({
-        url: BaseUrl + "/update-donor-by-id/" + id,
+        url: BaseUrl + "/update-donor-by-id/" + decryptedId,
         method: "PUT",
         data,
         headers: {
@@ -212,7 +216,7 @@ const EditDonorList = () => {
   //GET DATA
   useEffect(() => {
     axios({
-      url: `${BaseUrl}/fetch-donor-by-id/${id}`,
+      url: `${BaseUrl}/fetch-donor-by-id/${decryptedId}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -241,7 +245,7 @@ const EditDonorList = () => {
     }
 
     axios({
-      url: `${BaseUrl}/update-donor-by-id/${id}`,
+      url: `${BaseUrl}/update-donor-by-id/${decryptedId}`,
       method: "PUT",
       data,
       headers: {
@@ -262,15 +266,13 @@ const EditDonorList = () => {
     <Layout>
       <div>
         {/* Title */}
-        <div className="flex mb-4 mt-6">
-          <Link to="/donor-list">
-            <MdKeyboardBackspace className=" text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl" />
-          </Link>
-          <h1 className="text-2xl text-[#464D69] font-semibold ml-2 content-center">
-            Edit Donor
-          </h1>
-        </div>
+
         <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+          <div className="flex  ">
+            <h1 className="text-2xl text-[#464D69] font-semibold ml-2 content-center">
+              Edit Donor
+            </h1>
+          </div>
           <h1 className="p-4 mb-2">Personal Details </h1>
           <form onSubmit={onSubmit} autoComplete="off">
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
@@ -534,20 +536,11 @@ const EditDonorList = () => {
             <div className="mt-4 text-center flex flex-col sm:flex-row sm:justify-center sm:gap-2">
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                className={inputClass}
                 disabled={isButtonDisabled}
               >
                 Update
               </button>
-              {/* {donor.donor_related_id == donor.donor_fts_id ? (
-                <Button color="blue" onClick={openModal}>
-                  Attach to Group
-                </Button>
-              ) : (
-                <Button color="blue" onClick={openModal} disabled>
-                  Attach to Group
-                </Button>
-              )} */}
 
               <div>
                 <FamilyGroupModal
@@ -557,27 +550,9 @@ const EditDonorList = () => {
                   id={donor.donor_fts_id}
                 />
               </div>
-              {/* {donor.donor_related_id == donor.donor_fts_id ? (
-                <Button
-                  color="red"
-                  disabled
-                  onClick={() => handleFamilyGroupStatus("leave_family_group")}
-                >
-                  Leave Group
-                </Button>
-              ) : (
-                <Button
-                  color="red"
-                  onClick={() => handleFamilyGroupStatus("leave_family_group")}
-                >
-                  Leave Group
-                </Button>
-              )} */}
 
               <Link to="/donor-list">
-                <button className="bg-green-500 text-white px-4 py-2 rounded-md">
-                  Back
-                </button>
+                <button className={inputClassBack}>Back</button>
               </Link>
             </div>
           </form>

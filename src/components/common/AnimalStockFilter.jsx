@@ -27,7 +27,7 @@ const AnimalStockFilter = () => {
     {
       label: "Death/Given",
       path: "/animal-dead",
-      color: "from-blue-500 to-cyan-400",
+      color: "from-cyan-500 to-pink-400",
     },
     {
       label: "Animal Stock",
