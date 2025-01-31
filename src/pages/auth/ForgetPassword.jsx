@@ -5,6 +5,7 @@ import Logo from "../../assets/logo.jpg";
 import { useState } from "react";
 import { BaseUrl } from "../../base/BaseUrl";
 import { toast } from "react-toastify";
+import { inputClass } from "../../components/common/Buttoncss";
 
 const ForgetPassword = () => {
   const [username, setUsername] = useState("");
@@ -33,22 +34,37 @@ const ForgetPassword = () => {
     <>
       <section className="flex flex-col lg:flex-row min-h-screen">
         <div
-          style={{ backgroundImage: `url(${img1})` }}
+          // style={{ backgroundImage: `url(${img1})` }}
+          style={{
+            backgroundImage: `url(${img1})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+          // style={{
+          //   backgroundImage: `url(https://img.freepik.com/free-photo/white-bovine-ox-grazing-agricultural-field-goa-india_181624-53390.jpg?t=st=1738149059~exp=1738152659~hmac=20594f6da5f06958e9cc22c66bf8d1a8ef46004658d27f9684aebed0551c44db&w=996)`,
+          //   backgroundSize: "cover",
+          //   backgroundPosition: "center",
+          //   backgroundRepeat: "no-repeat",
+          // }}
           className="flex-1 flex items-center   bg-cover bg-center bg-no-repeat justify-center px-4 lg:px-8 py-12 lg:w-1/2"
         >
           <div className="w-full max-w-md p-8 bg-white/90  rounded-xl shadow-lg  shadow-blue-500 ">
             <div className="flex justify-center mb-4">
               <img
                 src={Logo}
-                alt="RK Cylinder Logo"
+                alt="logo"
                 className="h-auto w-full rounded-lg  "
               />
             </div>
+            {/* <h2 className="flex justify-center font-extrabold text-5xl bg-gradient-to-b from-[#32e432] via-[#1f1f75] to-[#FF8C00] bg-clip-text text-transparent">
+              GAUSHALA
+            </h2> */}
             <h2 className="font-bold text-2xl text-[#002D74]">
               Forget Password
             </h2>
             <p className="text-xs mt-4 text-[#002D74]">
-              Get started with PRANI DAYA
+              Get started with Pranidaya
             </p>
             <form
               method="POST"
@@ -97,13 +113,13 @@ const ForgetPassword = () => {
                 />
               </div>
 
-              <Button
+              <button
                 type="submit"
-                className="mt-6 bg-blue-500 hover:bg-blue-600 text-white"
+                className={`${inputClass} w-full`}
                 fullWidth
               >
                 Forget Password
-              </Button>
+              </button>
 
               <div className="flex items-center justify-between gap-2 mt-6">
                 <Typography

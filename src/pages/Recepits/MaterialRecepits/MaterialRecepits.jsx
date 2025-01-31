@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Layout from "../../../layout/Layout";
 import RequestFilter from "../../../components/RequestFilter";
-import { ContextPanel } from "../../../utils/ContextPanel";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BaseUrl } from "../../../base/BaseUrl";
@@ -10,12 +9,16 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import moment from "moment";
 import { Spinner } from "@material-tailwind/react";
-import { EditMaterialReceipt, ViewMaterialReceipt } from "../../../components/ButtonComponents";
+import {
+  EditMaterialReceipt,
+  ViewMaterialReceipt,
+} from "../../../components/ButtonComponents";
+import { encryptId } from "../../../components/common/EncryptDecrypt";
 
 const MaterialReceipts = () => {
   const [materialdata, setMaterialData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchApprovedRData = async () => {
@@ -93,34 +96,22 @@ const MaterialReceipts = () => {
         customBodyRender: (id) => {
           return (
             <div className="flex items-center space-x-2">
-              {/* <Link
-                to={`/material-view/${id}`}
-              >
-                <MdOutlineRemoveRedEye
-                  title="View"
-                  className="h-5 w-5 cursor-pointer text-blue-500"
-                />
-              </Link> */}
-
               <ViewMaterialReceipt
                 onClick={() => navigate(`/material-view/${id}`)}
-              className="h-5 w-5 cursor-pointer text-blue-500"
+                // onClick={() => {
+                //   const encryptedId = encryptId(id); // Encrypt the ID
+                //   navigate(`/material-view/${encodeURIComponent(encryptedId)}`);
+                // }}
+                className="h-5 w-5 cursor-pointer text-blue-500"
               />
-              {/* <Link
-                to={`/material-edit/${id}`}
-                style={{
-                  display:
-                    localStorage.getItem("user_type_id") === "2" ? "" : "none",
-                }}
-              >
-                <MdEdit
-                  title="Edit"
-                  className="h-5 w-5 cursor-pointer text-blue-500"
-                />
-              </Link> */}
+
               <EditMaterialReceipt
-               onClick={() => navigate(`/material-edit/${id}`)}
-              className="h-5 w-5 cursor-pointer text-blue-500"
+                // onClick={() => navigate(`/material-edit/${id}`)}
+                onClick={() => {
+                  const encryptedId = encryptId(id); // Encrypt the ID
+                  navigate(`/material-edit/${encodeURIComponent(encryptedId)}`);
+                }}
+                className="h-5 w-5 cursor-pointer text-blue-500"
               />
             </div>
           );
@@ -137,23 +128,12 @@ const MaterialReceipts = () => {
     viewColumns: true,
     download: false,
     print: false,
-    setRowProps: (rowData) => {
-      return {
-        style: {
-          borderBottom: "10px solid #f1f7f9",
-        },
-      };
-    },
   };
 
   return (
     <Layout>
       <RequestFilter />
-      <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-2 rounded-lg space-y-4 md:space-y-0">
-        <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
-          Material Receipts List
-        </h3>
-      </div>
+
       <div className="mt-5">
         {loading ? (
           <div className="flex justify-center items-center h-64">
@@ -161,6 +141,14 @@ const MaterialReceipts = () => {
           </div>
         ) : (
           <MUIDataTable
+            title={
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-semibold">
+                  {" "}
+                  Material Receipts List
+                </span>
+              </div>
+            }
             data={materialdata ? materialdata : []}
             columns={columns}
             options={options}

@@ -11,6 +11,8 @@ import { Button, ButtonGroup, Input } from "@material-tailwind/react";
 import { FormLabel } from "@mui/material";
 import Dropdown from "../../components/common/DropDown";
 import FamilyDropDown from "../../components/common/TextField/FamilyDropDown";
+import { inputClass, inputClassBack } from "../../components/common/Buttoncss";
+import { decryptId, encryptId } from "../../components/common/EncryptDecrypt";
 
 const unitOptions = [
   { value: "Kg", label: "Kg" },
@@ -155,6 +157,8 @@ const DonorDonationReceipt = () => {
   const [vendors, setVendors] = useState([]);
   const [items, setItems] = useState([]);
   const { id } = useParams();
+  const decryptedId = decryptId(id);
+
   const [userdata, setUserdata] = useState("");
 
   const [userfamilydata, setUserfFamilydata] = useState([]);
@@ -415,7 +419,6 @@ const DonorDonationReceipt = () => {
     };
 
     const isValid = document.getElementById("addIndiv").checkValidity();
-    console.log(data, "finaldat");
     if (isValid) {
       setIsButtonDisabled(true);
 
@@ -426,8 +429,10 @@ const DonorDonationReceipt = () => {
           },
         })
         .then((res) => {
-          if (res.status === 200 || res.data.code === "200") {
+          if (res.status == 200 || res.data.code == "200") {
             toast.success("Donor Created Successfully");
+            // const encryptedId = encryptId(res.data?.latestid?.id);
+            // console.log(encryptedId);
             setTimeout(() => {
               navigate(`/recepit-view/${res.data?.latestid?.id}`);
             }, 100);
@@ -463,7 +468,7 @@ const DonorDonationReceipt = () => {
 
   useEffect(() => {
     axios({
-      url: BaseUrl + "/fetch-donor-by-id/" + id,
+      url: BaseUrl + "/fetch-donor-by-id/" + decryptedId,
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -471,7 +476,7 @@ const DonorDonationReceipt = () => {
     }).then((res) => {
       setUserdata(res.data.donor);
       setUserfFamilydata(res.data.familyMember);
-      console.log("datatable", res.data.donor);
+      // console.log("datatable", res.data.donor);
     });
   }, []);
   //DAY CLOSE
@@ -591,13 +596,9 @@ const DonorDonationReceipt = () => {
   return (
     <Layout>
       <Toaster position="top-right" reverseOrder={false} />
-      <div>
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
         <div className="flex flex-col md:flex-row items-center justify-between mb-4 mt-6">
           <div className="flex items-center">
-            <MdKeyboardBackspace
-              onClick={handleBackButton}
-              className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-            />
             <h1 className="text-2xl text-[#464D69] font-semibold ml-2 mb-2 md:mb-0">
               Donation Receipt
             </h1>
@@ -605,61 +606,31 @@ const DonorDonationReceipt = () => {
 
           <div className="flex flex-col md:flex-row md:ml-auto md:space-x-2">
             {localStorage.getItem("user_type_id") === "2" ? (
-              <Button
-                onClick={(e) => onDayOpen(e)}
-                className="mb-2 md:mb-0 bg-red-400"
-              >
+              <button onClick={(e) => onDayOpen(e)} className={inputClass}>
                 + Day Open
-              </Button>
+              </button>
             ) : (
               ""
             )}
             {dayClose === todayback ? (
-              <Button disabled className="bg-red-400">
-                + Day Close
-              </Button>
-            ) : (
-              <Button
-                onClick={dayClose === todayback ? null : (e) => onDayClose(e)}
-                className="btn-get-started bg-red-400"
+              <button
+                disabled
+                className={`${inputClass} bg-gray-500 text-white cursor-not-allowed opacity-50`}
               >
                 + Day Close
-              </Button>
+              </button>
+            ) : (
+              <button
+                onClick={dayClose === todayback ? null : (e) => onDayClose(e)}
+                className={inputClass}
+              >
+                + Day Close
+              </button>
             )}
           </div>
         </div>
-        {/* <div className="p-4 ">
-          <div className="p-0">
-            <div className="grid grid-cols-1 md:grid-cols-3  lg:grid-cols-6 gap-4 ">
-              <div className="text-gray-700 md:col-span-2">
-                {userdata.donor_full_name}
-              </div>
-              <div className="text-gray-700">
-                {" "}
-                <strong>PDS Id:</strong> {userdata.donor_fts_id}
-              </div>
-              <div className="text-gray-700">
-                {" "}
-                <strong>Pan No:</strong> {pan}
-              </div>
-              <div className="text-gray-700 md:col-span-2">
-                <strong>Receipt Date:</strong>{" "}
-                {moment(check ? dayClose : dayClose).format("DD-MM-YYYY")} (
-                {finalyear})
-              </div>
-            </div>
-            {donor.c_receipt_total_amount > 2000 &&
-            donor.c_receipt_exemption_type == "80G" &&
-            pan == "NA" ? (
-              <span className="amounterror">
-                Max amount allowedwithout Pan card is 2000
-              </span>
-            ) : (
-              ""
-            )}
-          </div>
-        </div> */}
-        <div className="p-4 bg-white rounded-b-xl shadow-xl mb-4">
+
+        <div className="p-4  mb-4">
           <div className="flex justify-between items-start">
             <div className="space-y-1">
               <h3 className="text-lg font-semibold text-black">
@@ -694,78 +665,8 @@ const DonorDonationReceipt = () => {
           </div>
         </div>
 
-        <div className="p-6  bg-white shadow-md rounded-lg">
+        <div className="p-6  ">
           <form id="addIndiv" onSubmit={onSubmit}>
-            {/* <div className="grid grid-cols-1  lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-4">
-              <div className="w-full col-span-1 sm:col-span-2 lg:col-span-2">
-                <Fields
-                  type="newwhatsappDropdown"
-                  title="Category"
-                  name="c_receipt_exemption_type"
-                  value={donor.c_receipt_exemption_type}
-                  onChange={(e) => onInputChange(e)}
-                  required={true}
-                  options={exemption}
-                />
-              </div>
-
-              <div className="col-span-1 sm:col-span-2 lg:col-span-2">
-                <Fields
-                  type="transactionDropdown"
-                  title="Transaction Type"
-                  required={true}
-                  options={
-                    donor.c_receipt_exemption_type === "80G" &&
-                    donor.c_receipt_total_amount > 2000
-                      ? pay_mode_2
-                      : pay_mode
-                  }
-                  name="c_receipt_tran_pay_mode"
-                  value={donor.c_receipt_tran_pay_mode}
-                  onChange={(e) => onInputChange(e)}
-                />
-              </div>
-
-              <div className="col-span-1 sm:col-span-2 lg:col-span-2 flex flex-col sm:flex-row gap-4">
-                <Fields
-                  type="familyDropdowns"
-                  title="Family Member"
-                  required={true}
-                  name="family_full_check"
-                  value={donor.family_full_check}
-                  onChange={(e) => onInputChange(e)}
-                  options={family_check}
-                  className="flex-1"
-                />
-
-                {donor.family_full_check === "Yes" && (
-                  <Fields
-                    select
-                    title="Family Member"
-                    type="familyDropdown"
-                    name="family_full_name"
-                    value={donor.family_full_name}
-                    onChange={(e) => onInputChange(e)}
-                    options={userfamilydata}
-                    className="flex-1"
-                    size="small"
-                  />
-                )}
-              </div>
-
-              <div className="col-span-1 sm:col-span-2 lg:col-span-2 sm:mt-4">
-                <Fields
-                  select
-                  title="On Occasion"
-                  type="occasionDropdown"
-                  name="c_receipt_occasional"
-                  value={donor.c_receipt_occasional}
-                  onChange={(e) => onInputChange(e)}
-                  options={occasion}
-                />
-              </div>
-            </div> */}
-
             <div className="grid grid-cols-1 gap-20 md:gap-4 lg:grid-cols-2">
               <div className="col-span-1">
                 <FormLabel required>Category</FormLabel>
@@ -788,7 +689,6 @@ const DonorDonationReceipt = () => {
                 )}
               </div>
 
-              {/* <div className="flex flex-wrap gap-5 lg:gap-4 lg:flex-nowrap"> */}
               <div
                 className={`flex flex-wrap gap-5 lg:gap-4 lg:flex-nowrap ${
                   typeof donor.donor_fts_id === "string" &&
@@ -914,16 +814,22 @@ const DonorDonationReceipt = () => {
               </div>
             ))}
 
-            <div className="flex justify-start space-x-2">
-              <Button
-                onClick={addItem}
-                className="mt-4 bg-blue-400 flex "
-                disabled={isAddMoreDisabled()}
-              >
-                Add More
-              </Button>
+            <div className="flex justify-start">
+              <div className="flex justify-center items-center">
+                <button
+                  onClick={addItem}
+                  className={`${inputClass} ${
+                    isAddMoreDisabled()
+                      ? "bg-gray-500 cursor-not-allowed opacity-50"
+                      : "bg-blue-600 hover:bg-blue-700"
+                  } text-white rounded-lg shadow-md h-10 flex justify-center items-center px-4`}
+                  disabled={isAddMoreDisabled()}
+                >
+                  Add More
+                </button>
+              </div>
 
-              <div className="w-56 mt-4 ">
+              <div className="w-56 ">
                 <Input
                   type="text"
                   label="Total Amount"
@@ -940,16 +846,16 @@ const DonorDonationReceipt = () => {
             </div>
 
             <div className="flex justify-center mt-4 space-x-4">
-              <Button
+              <button
                 type="submit"
                 disabled={isButtonDisabled}
-                className="mt-4  bg-blue-400"
+                className={inputClass}
               >
                 Submit
-              </Button>
-              <Button className="mt-4 bg-red-400" onClick={handleBackButton}>
+              </button>
+              <button className={inputClassBack} onClick={handleBackButton}>
                 Back
-              </Button>
+              </button>
             </div>
           </form>
         </div>

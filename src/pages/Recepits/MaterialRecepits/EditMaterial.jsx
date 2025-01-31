@@ -8,6 +8,11 @@ import { toast } from "react-toastify";
 import { BaseUrl } from "../../../base/BaseUrl";
 import moment from "moment/moment";
 import { Button, Card, CardBody, Input } from "@material-tailwind/react";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
+import { decryptId } from "../../../components/common/EncryptDecrypt";
 
 const unit = [
   { value: "Kg", label: "Kg" },
@@ -19,8 +24,8 @@ const EditMaterial = () => {
   const navigate = useNavigate();
   const [donors, setDonors] = useState([]);
   const { id } = useParams();
+  const decryptedId = decryptId(id);
 
-  console.log(id);
 
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
@@ -169,7 +174,7 @@ const EditMaterial = () => {
       setIsButtonDisabled(true);
 
       axios
-        .put(`${BaseUrl}/update-m-receipt/${id}`, data, {
+        .put(`${BaseUrl}/update-m-receipt/${decryptedId}`, data, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -199,7 +204,7 @@ const EditMaterial = () => {
 
   useEffect(() => {
     axios({
-      url: BaseUrl + "/fetch-m-receipt-by-id/" + id,
+      url: BaseUrl + "/fetch-m-receipt-by-id/" + decryptedId,
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -210,7 +215,7 @@ const EditMaterial = () => {
       setDonor(res.data.receipts);
       console.log("datatable", res.data.donor);
     });
-  }, [id]);
+  }, [decryptedId]);
 
   const [item, setItem] = useState([]);
 
@@ -231,18 +236,14 @@ const EditMaterial = () => {
 
   return (
     <Layout>
-      <div>
-        <div className="flex mb-4 mt-6">
-          <MdKeyboardBackspace
-            onClick={handleBackButton}
-            className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-          />
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+        <div className="flex mb-4">
           <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
             Material Recepit
           </h1>
         </div>
-        <Card className=" mt-5 bg-white shadow-md rounded-lg">
-          <CardBody>
+        <div className=" mt-5 mx-4">
+          <div>
             <div className="grid grid-cols-1 md:grid-cols-3  lg:grid-cols-5 gap-4 mb-4">
               <div className=" text-gray-700">
                 <strong>Name:</strong>
@@ -279,9 +280,9 @@ const EditMaterial = () => {
                 </div>
               </div>
             </div>
-          </CardBody>
-        </Card>
-        <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+          </div>
+        </div>
+        <div className="p-6 mt-5">
           <form id="addIndiv" onSubmit={onSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="mb-4 ">
@@ -385,12 +386,12 @@ const EditMaterial = () => {
             ))}
 
             <div className="flex justify-center mt-4 space-x-4 ">
-              <Button type="submit" className="mt-4 bg-blue-500">
+              <button type="submit" className={inputClass}>
                 Update
-              </Button>
-              <Button className="mt-4 bg-red-500" onClick={handleBackButton}>
+              </button>
+              <button className={inputClassBack} onClick={handleBackButton}>
                 Back
-              </Button>
+              </button>
             </div>
           </form>
         </div>

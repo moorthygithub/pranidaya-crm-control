@@ -8,6 +8,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Layout from "../../../layout/Layout";
 import { BaseUrl } from "../../../base/BaseUrl";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
+import { decryptId } from "../../../components/common/EncryptDecrypt";
 
 const status = [
   {
@@ -22,6 +27,7 @@ const status = [
 
 const EditVendors = () => {
   const { id } = useParams();
+  const decryptedId = decryptId(id);
   const navigate = useNavigate();
   const [vendor, setVendor] = useState({
     vendor_name: "",
@@ -32,6 +38,7 @@ const EditVendors = () => {
     vendor_status: "",
   });
   const [isButtonDisabled, setIsButtonDisabled] = useState(false); // Button state for disable/enable
+  // console.log("Decrypted ID:", decryptedId);
 
   const handleBackButton = () => {
     navigate("/VendorList");
@@ -65,7 +72,7 @@ const EditVendors = () => {
   useEffect(() => {
     if (id) {
       axios({
-        url: `${BaseUrl}/fetch-vendor-by-id/${id}`,
+        url: `${BaseUrl}/fetch-vendor-by-id/${decryptedId}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -78,7 +85,7 @@ const EditVendors = () => {
           toast.error("Failed to fetch vendor details");
         });
     }
-  }, [id]);
+  }, [decryptedId]);
 
   // Handle form submission
   const onSubmit = (e) => {
@@ -96,7 +103,7 @@ const EditVendors = () => {
       setIsButtonDisabled(true);
 
       axios({
-        url: `${BaseUrl}/update-vendor/${id}`,
+        url: `${BaseUrl}/update-vendor/${decryptedId}`,
         method: "PUT",
         data,
         headers: {
@@ -128,13 +135,9 @@ const EditVendors = () => {
 
   return (
     <Layout>
-      <div>
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
         {/* Title */}
-        <div className="flex mb-4 mt-6">
-          <MdKeyboardBackspace
-            onClick={handleBackButton}
-            className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-          />
+        <div className="flex mb-4">
           <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
             Edit Vendor
           </h1>
@@ -212,7 +215,7 @@ const EditVendors = () => {
           <div className="mt-4 text-center">
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+              className={inputClass}
               disabled={isButtonDisabled}
             >
               Update
@@ -220,7 +223,7 @@ const EditVendors = () => {
             <button
               onClick={handleBackButton}
               type="button" // Changed type to button to avoid form submission
-              className="bg-red-500 text-white px-4 py-2 rounded-md"
+              className={inputClassBack}
             >
               Back
             </button>

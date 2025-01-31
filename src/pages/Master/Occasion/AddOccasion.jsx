@@ -1,12 +1,16 @@
-import {  useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { MdKeyboardBackspace } from "react-icons/md";
 import axios from "axios";
-import  { BaseUrl } from "../../../base/BaseUrl";
+import { BaseUrl } from "../../../base/BaseUrl";
 import Layout from "../../../layout/Layout";
 import Fields from "../../../components/common/TextField/TextField";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
 
 const AddOccasion = () => {
   const navigate = useNavigate();
@@ -69,7 +73,7 @@ const AddOccasion = () => {
         .then((res) => {
           if (res.data.code == "200") {
             toast.success(res.data.msg || "Item is Created Successfully");
-            console.log()
+            console.log();
             navigate("/occasion");
           } else if (res.data.code == "403") {
             toast.error("Duplicate Entry");
@@ -88,17 +92,14 @@ const AddOccasion = () => {
     <Layout>
       <div>
         {/* Title */}
-        <div className="flex mb-4 mt-6">
-          <MdKeyboardBackspace
-            onClick={handleBackButton}
-            className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-          />
-          <h1 className="text-2xl text-[#464D69] font-semibold ml-2 content-center">
-            Create Occasion
-          </h1>
-        </div>
 
         <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+          <div className="flex mb-4">
+            <h1 className="text-2xl text-[#464D69] font-semibold ml-2 content-center">
+              Create Occasion
+            </h1>
+          </div>
+
           <form autoComplete="off" id="addIndiv" onSubmit={onSubmit}>
             <div className="md:flex gap-2 justify-start mb-5">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full justify-between">
@@ -119,15 +120,12 @@ const AddOccasion = () => {
             <div className="mt-4 text-center">
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+                className={inputClass}
                 disabled={isButtonDisabled}
               >
                 Submit
               </button>
-              <button
-                onClick={handleBackButton}
-                className="bg-red-500 text-white px-4 py-2 rounded-md"
-              >
+              <button onClick={handleBackButton} className={inputClassBack}>
                 Back
               </button>
             </div>

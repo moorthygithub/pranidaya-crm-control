@@ -18,6 +18,10 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import Dropdown from "../../../components/common/DropDown";
 import moment from "moment";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
 
 // Unit options for dropdown
 const AnimalGender = [
@@ -183,13 +187,7 @@ const CreateBornArrival = () => {
   const handleBackButton = () => {
     navigate("/animal-born-arrival");
   };
-  //   useEffect(() => {
-  //     if (AnimalBornArrivalData?.length === 0) {
-  //       setIsButtonDisabled(true);
-  //     } else {
-  //       setIsButtonDisabled(false);
-  //     }
-  //   }, [AnimalBornArrivalData]);
+
   useEffect(() => {
     if (AnimalBornArrivalData?.length === 0) {
       setIsButtonDisabled(true);
@@ -207,17 +205,12 @@ const CreateBornArrival = () => {
   return (
     <Layout>
       <div>
-        <div className="flex mb-4 mt-6">
-          <MdKeyboardBackspace
-            onClick={handleBackButton}
-            className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-          />
-          <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
-            Create Animal Born or Arrival
-          </h1>
-        </div>
-
         <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+          <div className="flex mb-4">
+            <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
+              Create Animal Born or Arrival
+            </h1>
+          </div>
           <form id="addIndiv" onSubmit={onSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 my-4">
               <div>
@@ -339,17 +332,19 @@ const CreateBornArrival = () => {
             </div>
 
             <div className="flex justify-center mt-4 space-x-4">
-              <Button
+              <button
                 type="submit"
                 disabled={isButtonDisabled}
-                className="mt-4  bg-blue-400"
+                className={`${inputClass} ${
+                  isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
-                Submit
-              </Button>
+                {isButtonDisabled ? "Submitting..." : "Submit"}
+              </button>
 
-              <Button className="mt-4 bg-red-400" onClick={handleBackButton}>
+              <button className={inputClassBack} onClick={handleBackButton}>
                 Back
-              </Button>
+              </button>
             </div>
           </form>
         </div>

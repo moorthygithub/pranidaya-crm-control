@@ -4,6 +4,7 @@ import TaskManagerFilter from "../../../components/TaskManagerFilter";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Input, Button } from "@material-tailwind/react";
+import { inputClass } from "../../../components/common/Buttoncss";
 
 const DonationSummary = () => {
   const navigate = useNavigate();
@@ -68,9 +69,9 @@ const DonationSummary = () => {
             </div>
 
             <div className="w-full">
-              <Button color="blue" fullWidth onClick={onReportView}>
+              <button className={inputClass} onClick={onReportView}>
                 View
-              </Button>
+              </button>
             </div>
           </div>
         </form>

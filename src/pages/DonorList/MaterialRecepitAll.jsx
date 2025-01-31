@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import { BaseUrl } from "../../base/BaseUrl";
 import { Button } from "@material-tailwind/react";
 import { Autocomplete, TextField } from "@mui/material";
+import { inputClass, inputClassBack } from "../../components/common/Buttoncss";
+import { AddDonor } from "../../components/ButtonComponents";
 
 const unitOptions = [
   { value: "Kg", label: "Kg" },
@@ -421,13 +423,9 @@ const MaterialRecepitAll = () => {
 
   return (
     <Layout>
-      <div>
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
         <div className="flex flex-col md:flex-row items-center justify-between mb-4 mt-6">
           <div className="flex items-center">
-            <MdKeyboardBackspace
-              onClick={handleBackButton}
-              className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-            />
             <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
               Material Receipt
             </h1>
@@ -435,26 +433,32 @@ const MaterialRecepitAll = () => {
 
           <div className="flex flex-col md:flex-row items-center md:space-x-4 mt-4 md:mt-0">
             {localStorage.getItem("user_type_id") === "2" && (
-              <Button
-                onClick={(e) => onDayOpen(e)}
-                className="mb-2 md:mb-0  bg-red-400"
-              >
+              <button onClick={(e) => onDayOpen(e)} className={inputClass}>
                 + Day Open
-              </Button>
+              </button>
             )}
 
-            <Button
+            {/* <Button
               disabled={dayClose === todayback}
               onClick={dayClose !== todayback ? (e) => onDayClose(e) : null}
               className="btn-get-started  bg-red-400"
               color="danger"
             >
               + Day Close
-            </Button>
+            </Button> */}
+            <button
+              disabled={dayClose === todayback}
+              onClick={dayClose !== todayback ? onDayClose : null}
+              className={`${inputClass} ${
+                dayClose === todayback ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              + Day Close
+            </button>
           </div>
         </div>
 
-        <div className="p-6  bg-white shadow-md rounded-lg">
+        <div className="p-6 ">
           <form id="addIndiv" onSubmit={onSubmit}>
             <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
@@ -468,6 +472,15 @@ const MaterialRecepitAll = () => {
                     id: donor.donor_fts_id,
                   }))}
                   loading={donorListData.length === 0}
+                  noOptionsText={
+                    <span className="flex items-center justify-between w-full">
+                      No Donor
+                      <AddDonor
+                        onClick={() => navigate("/add-donor")}
+                        className={inputClass}
+                      />
+                    </span>
+                  }
                   renderOption={(props, option) => (
                     <li {...props} key={option.id}>
                       {option.label}
@@ -617,32 +630,25 @@ const MaterialRecepitAll = () => {
             ))}
 
             <div className="display-flex justify-start ">
-              <Button
+              <button
                 onClick={addItem}
-                className="mt-4 bg-blue-400"
+                className={inputClass}
                 // disabled={isAddMoreDisabled()}
               >
                 Add More
-              </Button>
+              </button>
             </div>
             <div className="flex justify-center mt-4 space-x-4">
-              <Button
+              <button
                 type="submit"
-                variant="contained"
-                color="primary"
                 disabled={isButtonDisabled}
-                className="mt-4 bg-blue-400"
+                className={inputClass}
               >
                 Submit
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                className="mt-4 bg-red-400"
-                onClick={handleBackButton}
-              >
+              </button>
+              <button onClick={handleBackButton} className={inputClassBack}>
                 Back
-              </Button>
+              </button>
             </div>
           </form>
         </div>

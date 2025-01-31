@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Layout from "../../../layout/Layout";
 import RequestFilter from "../../../components/RequestFilter";
-import { ContextPanel } from "../../../utils/ContextPanel";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BaseUrl } from "../../../base/BaseUrl";
@@ -14,6 +13,7 @@ import {
   ViewDonationReceipt,
 } from "../../../components/ButtonComponents";
 import { useQuery } from "@tanstack/react-query";
+import { encryptId } from "../../../components/common/EncryptDecrypt";
 
 const fetchCashRecepitData = async () => {
   const token = localStorage.getItem("token");
@@ -23,39 +23,9 @@ const fetchCashRecepitData = async () => {
   return response.data?.receipts ?? [];
 };
 const RecepitCashRecepit = () => {
-  // const [pendingRListData, setPendingRListData] = useState(null);
-  // const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  // const [userType, setUserType] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchPendingRData = async () => {
-  //     const userTypeId = localStorage.getItem("user_type_id");
-
-  //     setUserType(userTypeId);
-
-  //     try {
-  //       setLoading(true);
-  //       const token = localStorage.getItem("token");
-  //       const response = await axios.get(`${BaseUrl}/fetch-c-receipt-list`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-
-  //       const res = response.data?.receipts;
-  //       console.log(res);
-  //       setPendingRListData(res);
-  //     } catch (error) {
-  //       console.error("Error fetching pending list request data", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchPendingRData();
-  // }, []);
-
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["fetchrecepitdata"],
     queryFn: fetchCashRecepitData,
   });
@@ -70,16 +40,50 @@ const RecepitCashRecepit = () => {
         sort: false,
       },
     },
+    //1
     {
       name: "donor_full_name",
+      label: "Name",
+      options: {
+        filter: false,
+        display: "exclude",
+        viewColumns: false,
+        searchable: true,
+        sort: true,
+      },
+    },
+    //2
+    {
+      name: "family_full_name",
+      label: "Name",
+      options: {
+        filter: false,
+        display: "exclude",
+        viewColumns: false,
+        searchable: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "full_name",
       label: "Name",
       options: {
         filter: false,
         print: true,
         download: true,
         sort: false,
+        customBodyRender: (value, tableMeta) => {
+          const donorName = tableMeta.rowData[1];
+          const familyName = tableMeta.rowData[2];
+
+          return familyName && familyName.trim() !== ""
+            ? familyName
+            : donorName;
+        },
       },
     },
+
     {
       name: "c_receipt_date",
       label: "Date",
@@ -132,31 +136,21 @@ const RecepitCashRecepit = () => {
         customBodyRender: (id) => {
           return (
             <div className="flex items-center space-x-2">
-              {/* <div
-                
-                onClick={() => navigate(`/recepit-view/${id}`)}
-                style={{ display: userType === "4" ? "none" : "" }}
-              >
-                <MdOutlineRemoveRedEye
-                  title="View"
-                  className="h-5 w-5 cursor-pointer text-blue-500"
-                />
-              </div> */}
               <ViewDonationReceipt
                 onClick={() => navigate(`/recepit-view/${id}`)}
+                // onClick={() => {
+                //   const encryptedId = encryptId(id); // Encrypt the ID
+                //   navigate(`/recepit-view/${encodeURIComponent(encryptedId)}`);
+                // }}
                 className="h-5 w-5 cursor-pointer text-blue-500"
               />
-              {/* <Link
-                to={`/recepit-edit/${id}`}
-                style={{ display: userType === "2" ? "" : "none" }}
-              >
-                <MdEdit
-                  title="Edit"
-                  className="h-5 w-5 cursor-pointer text-blue-500"
-                />
-              </Link> */}
+
               <EditDonationReceipt
-                onClick={() => navigate(`/recepit-edit/${id}`)}
+                // onClick={() => navigate(`/recepit-edit/${id}`)}
+                onClick={() => {
+                  const encryptedId = encryptId(id); // Encrypt the ID
+                  navigate(`/recepit-edit/${encodeURIComponent(encryptedId)}`);
+                }}
                 className="h-5 w-5 cursor-pointer text-blue-500"
               />
             </div>
@@ -178,18 +172,26 @@ const RecepitCashRecepit = () => {
   return (
     <Layout>
       <RequestFilter />
-      <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-2 rounded-lg space-y-4 md:space-y-0">
-        <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
-          Donation Receipts List
-        </h3>
-      </div>
+
       <div className="mt-5">
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
             <Spinner className="h-6 w-6" />
           </div>
         ) : (
-          <MUIDataTable data={data || []} columns={columns} options={options} />
+          <MUIDataTable
+            title={
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-semibold">
+                  {" "}
+                  Donation Receipts List
+                </span>
+              </div>
+            }
+            data={data || []}
+            columns={columns}
+            options={options}
+          />
         )}
       </div>
     </Layout>

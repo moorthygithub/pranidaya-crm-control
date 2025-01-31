@@ -14,6 +14,8 @@ import { Spinner } from "@material-tailwind/react";
 import { BaseUrl } from "../../../base/BaseUrl";
 import AnimalStockFilter from "../../../components/common/AnimalStockFilter";
 import moment from "moment";
+import { inputClass } from "../../../components/common/Buttoncss";
+import { encryptId } from "../../../components/common/EncryptDecrypt";
 
 const fetchAnimalMeetList = async () => {
   const token = localStorage.getItem("token");
@@ -94,7 +96,13 @@ const AnimalMeat = () => {
         customBodyRender: (id) => (
           <div className="flex items-center space-x-2">
             <EditAnimalMeet
-              onClick={() => navigate(`/edit-animal-meet/${id}`)}
+              // onClick={() => navigate(`/edit-animal-meet/${id}`)}
+              onClick={() => {
+                const encryptedId = encryptId(id); // Encrypt the ID
+                navigate(
+                  `/edit-animal-meet/${encodeURIComponent(encryptedId)}`
+                );
+              }}
               className="h-5 w-5 cursor-pointer text-blue-500"
             />
           </div>
@@ -111,20 +119,19 @@ const AnimalMeat = () => {
     download: false,
     print: false,
     filter: false,
+    customToolbar: () => {
+      return (
+        <AddAnimalMeet
+          onClick={() => navigate("/add-animal-meet")}
+          className={inputClass}
+        />
+      );
+    },
   };
 
   return (
     <Layout>
       <AnimalStockFilter />
-      <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-2 rounded-lg space-y-4 md:space-y-0">
-        <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
-          Animal Meet List
-        </h3>
-        <AddAnimalMeet
-          onClick={() => navigate("/add-animal-meet")}
-          className="flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-        />
-      </div>
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
@@ -135,6 +142,11 @@ const AnimalMeat = () => {
       ) : (
         <div className="mt-5">
           <MUIDataTable
+            title={
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-semibold"> Animal Meet List</span>
+              </div>
+            }
             data={AnimalMeetData || []}
             columns={columns}
             options={options}

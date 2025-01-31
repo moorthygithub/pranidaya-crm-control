@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import moment from "moment/moment";
 import html2pdf from "html2pdf.js";
+import { inputClass } from "../../../components/common/Buttoncss";
 
 const TABLE_HEAD = ["Donation Trans Type", "Amount"];
 const TABLE_HEAD1 = ["Donation Trans Type", "Count", "Amount"];
@@ -118,219 +119,188 @@ function DonationSummaryView() {
   return (
     <Layout>
       <ToastContainer />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 p-2 bg-white rounded-lg">
-        <div className="flex flex-row justify-start p-2">
-          <MdKeyboardBackspace
-            className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-            onClick={() => navigate("/d-summary")}
-          />
-          <h1 className="text-xl md:text-2xl text-[#464D69] font-semibold ml-2">
-            Donation Summary
-          </h1>
-        </div>
-        <div className="flex flex-col md:flex-row justify-center md:justify-end items-center space-y-4 md:space-y-0 md:space-x-4">
-          <Button
-            variant="text"
-            className="flex items-center space-x-2"
-            onClick={handlePrint}
-          >
-            <LuDownload className="text-lg" />
-            <span>PDF</span>
-          </Button>
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4p-2">
+          <div className="flex flex-row justify-start p-2">
+            <h1 className="text-xl md:text-2xl text-[#464D69] font-semibold ml-2">
+              Donation Summary
+            </h1>
+          </div>
+          <div className="flex flex-col md:flex-row justify-center md:justify-end items-center space-y-4 md:space-y-0 md:space-x-4">
+            <button
+              className={`${inputClass} flex items-center gap-1 justify-center text-center w-[80px]`}
+              onClick={handlePrint}
+            >
+              <LuDownload className="text-lg mr-1" />
+              <span className="mr-2">PDF</span>
+            </button>
 
-          {/* Custom Print Button */}
-          <Button
-            variant="text"
-            className="flex items-center space-x-2"
-            onClick={PrintRecepit}
-          >
-            <IoIosPrint className="text-lg" />
-            <span>Print Receipt</span>
-          </Button>
+            {/* Custom Print Button */}
+            <button
+              variant="text"
+              className={`${inputClass} flex items-center gap-1 justify-center text-center`}
+              onClick={PrintRecepit}
+            >
+              <IoIosPrint className="text-lg " />
+              <span>Print Receipt</span>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div className="flex justify-center mt-4">
-        <Card ref={componentRef} className="p-4 w-full overflow-x-auto">
-          {loader ? (
+        <div className="flex justify-center mt-4">
+          <div ref={componentRef} className="p-4 w-full overflow-x-auto">
+            {loader ? (
               <div className="flex justify-center items-center h-64">
-              <Spinner className="h-6 w-6"/>
-            </div>
-          ) : (
-            <div className="overflow-x-auto print-container">
-              <div className="flex justify-center">
-                <div className="p-4 text-xl md:text-2xl flex justify-center font-bold">
-                  Donation Summary - From: {from_date} To: {to_date}
-                </div>
+                <Spinner className="h-6 w-6" />
               </div>
-              <table className="min-w-full text-left border-collapse border border-gray-300">
-                <thead>
-                  <tr>
-                    {TABLE_HEAD.map((head) => (
-                      <th
-                        key={head}
-                        className="border-b border-gray-300 bg-blue-gray-50 p-4"
-                      >
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal leading-none opacity-70"
-                        >
-                          {head}
-                        </Typography>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {donationSummaryTrans.length > 0 ? (
-                    donationSummaryTrans.map((stockItem, index) => (
-                      <tr key={index}>
-                        <td className="border border-gray-300 p-4">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {stockItem.c_receipt_tran}
-                          </Typography>
-                        </td>
-                        <td className="border border-gray-300 p-4 bg-blue-gray-50/50">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {stockItem.total_amount}
-                          </Typography>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={5} className="p-4 text-center">
-                        No data available
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td
-                      colSpan={TABLE_HEAD.length - 1}
-                      className="border border-gray-300 p-4 bg-blue-gray-50/50 text-right"
-                    >
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        Total:
-                      </Typography>
-                    </td>
-                    <td className="border border-gray-300 p-4 bg-blue-gray-50/50">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {donationSummaryTransSum?.total_amount || "0"}
-                      </Typography>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
-              {/* SECOND TABLE  */}
+            ) : (
+              <div className="overflow-x-auto print-container">
+                <div className="flex justify-center">
+                  <div className="p-4 text-xl md:text-2xl flex justify-center font-bold">
+                    Donation Summary - From: {from_date} To: {to_date}
+                  </div>
+                </div>
 
-              <table className="min-w-full text-left border-collapse border border-gray-300 mt-5">
-                <thead>
-                  <tr>
-                    {TABLE_HEAD1.map((head) => (
-                      <th
-                        key={head}
-                        className="border-b border-gray-300 bg-blue-gray-50 p-4"
+                <table className="w-full border-collapse border border-gray-200 mb-[10px] text-sm">
+                  <thead>
+                    <tr className="bg-gray-200">
+                      {TABLE_HEAD.map((head) => (
+                        <th key={head} className="border p-2">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal leading-none opacity-70"
+                          >
+                            {head}
+                          </Typography>
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {donationSummaryTrans.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan="5"
+                          className="border p-2 text-center text-gray-500"
+                        >
+                          No data available
+                        </td>
+                      </tr>
+                    ) : (
+                      donationSummaryTrans.map((stockItem, index) => (
+                        <tr key={index} className="border">
+                          <td className="border p-2">
+                            {stockItem.c_receipt_tran}
+                          </td>
+                          <td className="border p-2 text-center">
+                            {stockItem.total_amount}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td
+                        colSpan={TABLE_HEAD.length - 1}
+                        className="border p-2 text-right bg-gray-50"
                       >
                         <Typography
                           variant="small"
                           color="blue-gray"
-                          className="font-normal leading-none opacity-70"
+                          className="font-normal"
                         >
-                          {head}
+                          Total:
                         </Typography>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {donationSummary.length > 0 ? (
-                    donationSummary.map((stockItem, index) => (
-                      <tr key={index}>
-                        <td className="border border-gray-300 p-4">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {stockItem.c_receipt_sub_donation_type}
-                          </Typography>
-                        </td>
-                        <td className="border border-gray-300 p-4 bg-blue-gray-50/50">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {stockItem.total_recipt_count}
-                          </Typography>
-                        </td>
-                        <td className="border border-gray-300 p-4 bg-blue-gray-50/50">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {stockItem.total_amount}
-                          </Typography>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={5} className="p-4 text-center">
-                        No data available
+                      </td>
+                      <td className="border p-2 text-center bg-gray-50">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          {donationSummaryTransSum?.total_amount || "0"}
+                        </Typography>
                       </td>
                     </tr>
-                  )}
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td
-                      colSpan={TABLE_HEAD1.length - 1}
-                      className="border border-gray-300 p-4 bg-blue-gray-50/50 text-right"
-                    >
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
+                  </tfoot>
+                </table>
+
+                {/* SECOND TABLE  */}
+
+                <table className="w-full border-collapse border border-gray-200 mb-[10px] text-sm">
+                  <thead>
+                    <tr className="bg-gray-200">
+                      {TABLE_HEAD1.map((head) => (
+                        <th key={head} className="border p-2">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal leading-none opacity-70"
+                          >
+                            {head}
+                          </Typography>
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {donationSummary.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan="5"
+                          className="border p-2 text-center text-gray-500"
+                        >
+                          No data available
+                        </td>
+                      </tr>
+                    ) : (
+                      donationSummary.map((stockItem, index) => (
+                        <tr key={index} className="border">
+                          <td className="border p-2">
+                            {stockItem.c_receipt_sub_donation_type}
+                          </td>
+                          <td className="border p-2 text-center">
+                            {stockItem.total_recipt_count}
+                          </td>
+                          <td className="border p-2 text-center">
+                            {stockItem.total_amount}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td
+                        colSpan={TABLE_HEAD1.length - 1}
+                        className="border p-2 text-right bg-gray-50"
                       >
-                        Total:
-                      </Typography>
-                    </td>
-                    <td className="border border-gray-300 p-4 bg-blue-gray-50/50">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {donationSummarySum?.total_amount || "0"}
-                      </Typography>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-          )}
-        </Card>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          Total:
+                        </Typography>
+                      </td>
+                      <td className="border p-2 text-center bg-gray-50">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          {donationSummarySum?.total_amount || "0"}
+                        </Typography>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </Layout>
   );

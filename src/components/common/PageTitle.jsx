@@ -4,13 +4,23 @@ import { useNavigate } from "react-router-dom";
 function PageTitle({ title, icon: Icon, backLink }) {
   const navigate = useNavigate();
 
+  // const handleBackClick = () => {
+  //   console.log("Back link clicked:", backLink);
+  //   if (backLink == "-1") {
+  //     navigate(-1);
+  //   } else {
+  //     navigate(backLink);
+  //   }
+  // };
   const handleBackClick = () => {
     console.log("Back link clicked:", backLink);
-    if (backLink === "-1") {
-      navigate(-1);
-    } else {
-      navigate(backLink);
-    }
+    setTimeout(() => {
+      if (backLink === "-1") {
+        navigate(-1);
+      } else {
+        navigate(backLink);
+      }
+    }, 50); // Short delay to allow ContextPanel's effect to settle
   };
 
   return (

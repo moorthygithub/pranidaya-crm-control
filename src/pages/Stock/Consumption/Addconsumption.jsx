@@ -8,6 +8,10 @@ import { toast } from "react-toastify";
 import { Button, IconButton } from "@mui/material";
 import { BaseUrl } from "../../../base/BaseUrl";
 import { Input } from "@material-tailwind/react";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
 
 const unitOptions = [
   { value: "Kg", label: "Kg" },
@@ -125,19 +129,13 @@ const AddConsumption = () => {
   return (
     <Layout>
       <div>
-        <div className="flex mb-4 mt-6">
-          <MdKeyboardBackspace
-            onClick={handleBackButton}
-            className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-          />
-          <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
-            Create Consumption
-          </h1>
-        </div>
-
         <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+          <div className="flex mb-4">
+            <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
+              Create Consumption
+            </h1>
+          </div>
           <form id="addIndiv" onSubmit={onSubmit}>
-            {/* Consumption Details */}
             <div className="mb-4">
               <Input
                 type="date"
@@ -204,33 +202,21 @@ const AddConsumption = () => {
             ))}
 
             <div className="display-flex justify-start">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={addItem}
-                className="mt-4"
-              >
+              <button type="button" className={inputClass} onClick={addItem}>
                 Add More
-              </Button>
+              </button>
             </div>
             <div className="flex justify-center mt-4 space-x-4">
-              <Button
+              <button
                 type="submit"
-                variant="contained"
-                color="primary"
+                className={inputClass}
                 disabled={isButtonDisabled}
-                className="mt-4"
               >
                 Submit
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                className="mt-4"
-                onClick={handleBackButton}
-              >
+              </button>
+              <button onClick={handleBackButton} className={inputClassBack}>
                 Back
-              </Button>
+              </button>
             </div>
           </form>
         </div>

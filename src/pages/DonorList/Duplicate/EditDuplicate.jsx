@@ -16,10 +16,17 @@ import {
   Input,
 } from "@material-tailwind/react";
 import MUIDataTable from "mui-datatables";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
+import { decryptId } from "../../../components/common/EncryptDecrypt";
 
 const EditDuplicate = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const decryptedId = decryptId(id);
+
   const [donorName, setDonorName] = useState("");
   const [donor, setDonor] = useState({
     donor_fts_id: "",
@@ -32,7 +39,6 @@ const EditDuplicate = () => {
     indicomp_donor_type: "",
     indicomp_related_id: "",
   });
-  console.log(id, "Params");
   // States to control the dialog
   const [showDialog, setShowDialog] = useState(false);
   const [donorData, setDonorData] = useState([]);
@@ -48,7 +54,12 @@ const EditDuplicate = () => {
         sort: false,
 
         customBodyRender: (value) => (
-          <Button onClick={() => addDonorToReceipt(value)}>Select</Button>
+          <button
+            onClick={() => addDonorToReceipt(value)}
+            className={inputClass}
+          >
+            Select
+          </button>
         ),
       },
     },
@@ -78,7 +89,7 @@ const EditDuplicate = () => {
     };
 
     axios
-      .put(`${BaseUrl}/update-donors-duplicate/${id}`, data, {
+      .put(`${BaseUrl}/update-donors-duplicate/${decryptedId}`, data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -115,7 +126,7 @@ const EditDuplicate = () => {
 
   useEffect(() => {
     axios
-      .get(`${BaseUrl}/fetch-donors-duplicate-by-id/${id}`, {
+      .get(`${BaseUrl}/fetch-donors-duplicate-by-id/${decryptedId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
       .then((res) => setDonor(res.data.individualCompanies));
@@ -125,21 +136,17 @@ const EditDuplicate = () => {
 
   return (
     <Layout>
-      <div>
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
         <div className="flex flex-col md:flex-row items-center justify-between mb-4 mt-6">
           <div className="flex items-center">
-            <MdKeyboardBackspace
-              onClick={handleBackButton}
-              className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-            />
             <h1 className="text-2xl text-[#464D69] font-semibold ml-2 mb-2 md:mb-0">
               Donation Receipt
             </h1>
           </div>
         </div>
 
-        <Card className="p-6 mt-5 bg-white shadow-md rounded-lg">
-          <CardBody>
+        <div>
+          <div>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-4">
               <div className="text-gray-700">
                 <strong>Donor Name:</strong>
@@ -166,10 +173,10 @@ const EditDuplicate = () => {
                 {donor.donor_email}
               </div>
             </div>
-          </CardBody>
-        </Card>
+          </div>
+        </div>
 
-        <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+        <div>
           <form id="addIndiv" onSubmit={onSubmit}>
             <div>
               <Fields
@@ -183,12 +190,12 @@ const EditDuplicate = () => {
             </div>
 
             <div className="flex justify-center mt-4 space-x-4">
-              <Button type="submit" className="bg-blue-400">
+              <button type="submit" className={inputClass}>
                 Submit
-              </Button>
-              <Button className="bg-red-400" onClick={handleBackButton}>
+              </button>
+              <button className={inputClassBack} onClick={handleBackButton}>
                 Back
-              </Button>
+              </button>
             </div>
           </form>
         </div>
@@ -209,39 +216,6 @@ const EditDuplicate = () => {
           </DialogHeader>{" "}
           <DialogBody>
             <div className="max-h-[500px] overflow-y-auto">
-              {/* <MUIDataTable
-                title={"Donor List"}
-                data={donorData}
-                columns={columns}
-                // options={{
-                //   filterType: "textField",
-                //   print: false,
-                //   viewColumns: false,
-                //   filter: false,
-                //   searchOpen: true,
-                //   download: false,
-                //   selectableRows: false,
-                //   responsive: "standard",
-                //   search: false,
-                //   pagination: true,
-                //   rowsPerPageOptions: [5, 10, 50],
-                //   rowsPerPage: 10,
-                // }}
-                options={{
-                  filterType: "textField",
-                  print: false,
-                  viewColumns: false,
-                  filter: false,
-                  searchOpen: true,
-                  download: false,
-                  selectableRows: "none",
-                  responsive: "standard",
-                  search: false,
-                  pagination: true, // Enable pagination
-                  rowsPerPageOptions: [5, 10, 50], // Set pagination options
-                  rowsPerPage: 10, // Set default rows per page (optional)
-                }}
-              /> */}
               <MUIDataTable
                 title={"Donor List"}
                 data={donorData}
@@ -258,8 +232,7 @@ const EditDuplicate = () => {
                   search: false,
                   pagination: true, // Enable pagination
                   rowsPerPageOptions: [10, 25, 50], // Options for rows per page
-                  rowsPerPage: 10, 
-
+                  rowsPerPage: 10,
                 }}
               />
             </div>

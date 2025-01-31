@@ -10,6 +10,11 @@ import { BaseUrl } from "../../../base/BaseUrl";
 
 // import { ToastContainer } from "react-toastify";
 import { Input } from "@material-tailwind/react";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
+import { decryptId } from "../../../components/common/EncryptDecrypt";
 
 const unitOptions = [
   { value: "Kg", label: "Kg" },
@@ -20,6 +25,8 @@ const unitOptions = [
 const EditConsumption = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const decryptedId = decryptId(id);
+
   const [items, setItems] = useState([]);
   const [cons, setCons] = useState({
     cons_date: "",
@@ -38,9 +45,12 @@ const EditConsumption = () => {
     };
 
     const fetchConsumptionData = async () => {
-      const response = await axios.get(`${BaseUrl}/fetch-cons-by-id/${id}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await axios.get(
+        `${BaseUrl}/fetch-cons-by-id/${decryptedId}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
       setCons(response.data.cons);
       setUsers(response.data.consSub);
     };
@@ -76,9 +86,13 @@ const EditConsumption = () => {
 
     setIsButtonDisabled(true);
     try {
-      const response = await axios.put(`${BaseUrl}/update-cons/${id}`, data, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await axios.put(
+        `${BaseUrl}/update-cons/${decryptedId}`,
+        data,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
       if (response.data.code == 200) {
         toast.success("Consumption is Updated Successfully");
         navigate("/consumption");
@@ -96,18 +110,14 @@ const EditConsumption = () => {
   return (
     <Layout>
       {/* <ToastContainer /> */}
-      <div>
-        <div className="flex mb-4 mt-6">
-          <MdKeyboardBackspace
-            onClick={handleBackButton}
-            className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-          />
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+        <div className="flex mb-4">
           <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
             Edit Consumption
           </h1>
         </div>
 
-        <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+        <div className="p-6 mt-5 ">
           <form id="addIndiv" onSubmit={onSubmit}>
             {/* Consumption Details */}
             <div className="mb-4">
@@ -169,23 +179,16 @@ const EditConsumption = () => {
             )}
 
             <div className="flex justify-center mt-4 space-x-4">
-              <Button
+              <button
                 type="submit"
-                variant="contained"
-                color="primary"
+                className={inputClass}
                 disabled={isButtonDisabled}
-                className="mt-4"
               >
-                Update
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                className="mt-4"
-                onClick={handleBackButton}
-              >
+                Submit
+              </button>
+              <button onClick={handleBackButton} className={inputClassBack}>
                 Back
-              </Button>
+              </button>
             </div>
           </form>
         </div>

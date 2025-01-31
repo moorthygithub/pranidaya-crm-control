@@ -13,6 +13,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { CircularProgress, FormLabel } from "@mui/material";
 import Dropdown from "../../components/common/DropDown";
 import FamilyDropDown from "../../components/common/TextField/FamilyDropDown";
+import { inputClass, inputClassBack } from "../../components/common/Buttoncss";
+import { AddDonor } from "../../components/ButtonComponents";
 
 // Unit options for dropdown
 const unitOptions = [
@@ -635,13 +637,9 @@ const CashRecepitAll = () => {
   return (
     <Layout>
       <Toaster position="top-right" reverseOrder={false} />
-      <div>
+      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
         <div className="flex flex-col md:flex-row items-center justify-between mb-4 mt-6">
           <div className="flex items-center">
-            <MdKeyboardBackspace
-              onClick={handleBackButton}
-              className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-            />
             <h1 className="text-2xl text-[#464D69] font-semibold ml-2 mb-2 md:mb-0">
               Direct Donation Receipt
             </h1>
@@ -649,31 +647,31 @@ const CashRecepitAll = () => {
 
           <div className="flex flex-col md:flex-row md:ml-auto md:space-x-2">
             {localStorage.getItem("user_type_id") === "2" ? (
-              <Button
-                onClick={(e) => onDayOpen(e)}
-                className="mb-2 md:mb-0 bg-red-400"
-              >
+              <button onClick={(e) => onDayOpen(e)} className={inputClass}>
                 + Day Open
-              </Button>
+              </button>
             ) : (
               ""
             )}
             {dayClose === todayback ? (
-              <Button disabled className="bg-red-400">
-                + Day Close
-              </Button>
-            ) : (
-              <Button
-                onClick={dayClose === todayback ? null : (e) => onDayClose(e)}
-                className="btn-get-started bg-red-400"
+              <button
+                disabled
+                className={`${inputClass} bg-gray-500 text-white cursor-not-allowed opacity-50`}
               >
                 + Day Close
-              </Button>
+              </button>
+            ) : (
+              <button
+                onClick={dayClose === todayback ? null : (e) => onDayClose(e)}
+                className={inputClass}
+              >
+                + Day Close
+              </button>
             )}
           </div>
         </div>
 
-        <div className="p-6  bg-white shadow-md rounded-lg">
+        <div className="p-6  ">
           <form id="addIndiv" onSubmit={onSubmit}>
             <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
@@ -686,6 +684,15 @@ const CashRecepitAll = () => {
                     id: donor.donor_fts_id,
                   }))}
                   loading={donorListData.length === 0}
+                  noOptionsText={
+                    <span className="flex items-center justify-between w-full">
+                      No Donor
+                      <AddDonor
+                        onClick={() => navigate("/add-donor")}
+                        className={inputClass}
+                      />
+                    </span>
+                  }
                   renderOption={(props, option) => (
                     <li {...props} key={option.id}>
                       {option.label}
@@ -725,38 +732,6 @@ const CashRecepitAll = () => {
                 </h3>
               </div>
             </div>
-            {/* <div className="mb-4">
-              <Autocomplete
-                disablePortal
-                options={donorListData.map((donor) => ({
-                  label: donor.donor_full_name,
-                  id: donor.donor_fts_id,
-                }))}
-                loading={donorListData.length === 0}
-                renderOption={(props, option) => (
-                  <li {...props} key={option.id}>
-                    {option.label}
-                  </li>
-                )}
-                isOptionEqualToValue={(option, value) => option.id === value.id}
-                onChange={(event, selectedOption) =>
-                  handleDonorChange(selectedOption)
-                }
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Select Donor"
-                    sx={{
-                      "& .MuiInputBase-root": {
-                        height: 40,
-                        fontSize: "1rem",
-                      },
-                    }}
-                  />
-                )}
-                loadingText="Loading donors..."
-              />
-            </div> */}
 
             <div className="grid grid-cols-1 gap-20 md:gap-4 lg:grid-cols-2">
               <div className="col-span-1">
@@ -780,7 +755,6 @@ const CashRecepitAll = () => {
                 )}
               </div>
 
-              {/* <div className="flex flex-wrap gap-5 lg:gap-4 lg:flex-nowrap"> */}
               <div
                 className={`flex flex-wrap gap-5 lg:gap-4 lg:flex-nowrap ${
                   typeof donor.donor_fts_id === "string" &&
@@ -905,13 +879,17 @@ const CashRecepitAll = () => {
             <div className="flex flex-wrap gap-4 mt-4">
               {/* Add More Button */}
               <div className="w-full sm:w-auto flex justify-center sm:justify-start">
-                <Button
+                <button
                   onClick={addItem}
-                  className="bg-blue-400 flex justify-center"
+                  className={`${inputClass} ${
+                    isAddMoreDisabled()
+                      ? "bg-gray-500 cursor-not-allowed opacity-50"
+                      : "bg-blue-600 hover:bg-blue-700"
+                  } text-white p-2 rounded-lg shadow-md`}
                   disabled={isAddMoreDisabled()}
                 >
                   Add More
-                </Button>
+                </button>
               </div>
 
               {/* Total Amount Input */}
@@ -932,16 +910,16 @@ const CashRecepitAll = () => {
             </div>
 
             <div className="flex justify-center mt-4 space-x-4">
-              <Button
+              <button
                 type="submit"
                 disabled={isButtonDisabled}
-                className="mt-4  bg-blue-400"
+                className={inputClass}
               >
                 Submit
-              </Button>
-              <Button className="mt-4 bg-red-400" onClick={handleBackButton}>
+              </button>
+              <button className={inputClassBack} onClick={handleBackButton}>
                 Back
-              </Button>
+              </button>
             </div>
           </form>
         </div>

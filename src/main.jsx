@@ -9,11 +9,11 @@ import AppProvider from "./utils/ContextPanel.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <AppProvider>
-        <ThemeProvider>
+      <ThemeProvider>
+        <AppProvider>
           <App />
-        </ThemeProvider>
-      </AppProvider>
+        </AppProvider>
+      </ThemeProvider>
     </BrowserRouter>
   </StrictMode>
 );

@@ -8,6 +8,10 @@ import { BaseUrl } from "../../../base/BaseUrl";
 import { Button, Input, Textarea } from "@material-tailwind/react";
 import { useQuery } from "@tanstack/react-query";
 import Dropdown from "../../../components/common/DropDown";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
 
 const AnimalTypeSource = [
   { value: "Death", label: "Death" },
@@ -115,17 +119,12 @@ const CreateAnimalDead = () => {
   return (
     <Layout>
       <div>
-        <div className="flex mb-4 mt-6">
-          <MdKeyboardBackspace
-            onClick={handleBackButton}
-            className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-          />
-          <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
-            Create Animal Death /Given
-          </h1>
-        </div>
-
         <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+          <div className="flex mb-4 ">
+            <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
+              Create Animal Death /Given
+            </h1>
+          </div>
           <form id="addIndiv" onSubmit={onSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-3 my-4">
               <div>
@@ -181,17 +180,18 @@ const CreateAnimalDead = () => {
             </div>
 
             <div className="flex justify-center mt-4 space-x-4">
-              <Button
+              <button
                 type="submit"
                 disabled={isButtonDisabled}
-                className="mt-4  bg-blue-400"
+                className={`${inputClass} ${
+                  isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
-                Submit
-              </Button>
-
-              <Button className="mt-4 bg-red-400" onClick={handleBackButton}>
+                {isButtonDisabled ? "Submitting..." : "Submit"}
+              </button>
+              <button className={inputClassBack} onClick={handleBackButton}>
                 Back
-              </Button>
+              </button>
             </div>
           </form>
         </div>

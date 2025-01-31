@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import Layout from "../../layout/Layout";
 import TaskManagerFilter from "../../components/TaskManagerFilter";
-import { ContextPanel } from "../../utils/ContextPanel";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Input, Button } from "@material-tailwind/react";
+import { inputClass } from "../../components/common/Buttoncss";
 
 const PendingListTask = () => {
   const navigate = useNavigate();
@@ -69,9 +69,9 @@ const PendingListTask = () => {
             </div>
 
             <div className="w-full">
-              <Button color="blue" fullWidth onClick={onReportView}>
+              <button className={inputClass} onClick={onReportView}>
                 View
-              </Button>
+              </button>
             </div>
           </div>
         </form>

@@ -8,9 +8,11 @@ import {
 } from "react-icons/md";
 import { IoEye } from "react-icons/io5";
 import { PiNotebook } from "react-icons/pi";
-import { FaUsers } from "react-icons/fa6";
+import { FaUsers, FaWhatsapp } from "react-icons/fa6";
 import Button from "@mui/material/Button";
 import { GrGroup } from "react-icons/gr";
+import { LuDownload } from "react-icons/lu";
+import { inputClass } from "./common/Buttoncss";
 
 const getUserControlData = () => {
   const userControl = localStorage.getItem("userControl");
@@ -23,9 +25,17 @@ const getUserControlData = () => {
 };
 
 const shouldRenderButton = (buttonName, userType, status) => {
+  if (!userType) {
+    console.warn(`User type is ${userType} for button ${buttonName}`);
+    return false;
+  }
   const data = getUserControlData();
-  // console.log("danjks", data);
+  if (!Array.isArray(data)) {
+    console.warn("Invalid userControl data ");
+    return false;
+  }
   return data.some((item) => {
+    if (!item?.usertype) return false;
     const userTypes = item.usertype.split(",");
     return (
       item.button == buttonName &&
@@ -34,7 +44,6 @@ const shouldRenderButton = (buttonName, userType, status) => {
     );
   });
 };
-
 //   master -list item
 
 export const AddListItem = ({ onClick, className }) => {
@@ -217,6 +226,19 @@ export const AddCashReceipt = ({ onClick, className }) => {
   );
 };
 AddCashReceipt.page = "Donor";
+export const AddMaterialReceipt = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("AddMaterialReceipt", userType, "active"))
+    return null;
+
+  return (
+    <button onClick={onClick} className={` ${className}`}>
+      + MaterialRecepit
+    </button>
+  );
+};
+AddMaterialReceipt.page = "Donor";
 export const AddDonor = ({ onClick, className }) => {
   const userType = localStorage.getItem("user_type_id");
 
@@ -485,6 +507,87 @@ export const EditMaterialReceipt = ({ onClick, className }) => {
   );
 };
 EditMaterialReceipt.page = "Receipts";
+
+export const WhatsappIncashRecepit = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("WhatsappIncashRecepit", userType, "active"))
+    return null;
+
+  return (
+    <button
+      variant="ghost"
+      size="icon"
+      onClick={onClick}
+      className={`flex items-center space-x-2 ${className}`}
+      title="Whatsapp"
+    >
+      <FaWhatsapp className="h-4 w-4" />
+      <span>WhatsApp</span>
+    </button>
+  );
+};
+WhatsappIncashRecepit.page = "Receipts";
+export const PdfDownloadIncashRecepit = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("PdfDownloadIncashRecepit", userType, "active"))
+    return null;
+
+  return (
+    <button
+      variant="ghost"
+      size="icon"
+      onClick={onClick}
+      className={`flex items-center space-x-2 ${className}`}
+      title="Pdf"
+    >
+      <LuDownload className="h-4 w-4" />
+      <span>Pdf</span>
+    </button>
+  );
+};
+PdfDownloadIncashRecepit.page = "Receipts";
+export const WhatsappInMaterialRecepit = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("WhatsappInMaterialRecepit", userType, "active"))
+    return null;
+
+  return (
+    <button
+      variant="ghost"
+      size="icon"
+      onClick={onClick}
+      className={`flex items-center space-x-2 ${className}`}
+      title="Whatsapp"
+    >
+      <FaWhatsapp className="h-4 w-4" />
+      <span>WhatsApp</span>
+    </button>
+  );
+};
+WhatsappInMaterialRecepit.page = "Receipts";
+export const PdfDownloadInMaterialRecepit = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("PdfDownloadInMaterialRecepit", userType, "active"))
+    return null;
+
+  return (
+    <button
+      variant="ghost"
+      size="icon"
+      onClick={onClick}
+      className={`flex items-center space-x-2 ${className}`}
+      title="Pdf"
+    >
+      <LuDownload className="h-4 w-4" />
+      <span>Pdf</span>
+    </button>
+  );
+};
+PdfDownloadInMaterialRecepit.page = "Receipts";
 //create animal stock button
 export const AddAnimal = ({ onClick, className }) => {
   const userType = localStorage.getItem("user_type_id");
@@ -581,15 +684,9 @@ export const CreateUserButton = ({ onClick, className }) => {
   if (!shouldRenderButton("CreateUserButton", userType, "active")) return null;
 
   return (
-    <Button
-      variant="contained"
-      color="inherit"
-      onClick={onClick}
-      className={className}
-      title="Create Roles"
-    >
+    <button onClick={onClick} className={inputClass} title="Create Roles">
       Create Roles
-    </Button>
+    </button>
   );
 };
 CreateUserButton.page = "UserManagement";
@@ -607,6 +704,7 @@ export default {
   ViewDonor,
   AddDonor,
   AddCashReceipt,
+  AddMaterialReceipt,
   EditDonor,
   CashReceiptDonor,
   MaterialReceiptDonor,
@@ -619,6 +717,10 @@ export default {
   EditDonationReceipt,
   EditMaterialReceipt,
   ViewMaterialReceipt,
+  WhatsappIncashRecepit,
+  PdfDownloadIncashRecepit,
+  WhatsappInMaterialRecepit,
+  PdfDownloadInMaterialRecepit,
   AddAnimal,
   EditAnimal,
   AddAnimalMeet,

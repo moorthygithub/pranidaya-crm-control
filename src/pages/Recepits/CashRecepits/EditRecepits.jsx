@@ -9,6 +9,11 @@ import { toast } from "react-toastify";
 import { BaseUrl } from "../../../base/BaseUrl";
 import moment from "moment/moment";
 import { Button, Card, CardBody, Input } from "@material-tailwind/react";
+import {
+  inputClass,
+  inputClassBack,
+} from "../../../components/common/Buttoncss";
+import { decryptId } from "../../../components/common/EncryptDecrypt";
 
 const exemption = [
   {
@@ -140,9 +145,10 @@ const EditRecepit = () => {
   const navigate = useNavigate();
   const [userfamilydata, setUserfFamilydata] = React.useState("");
   const { id } = useParams();
+  const decryptedId = decryptId(id);
+
   const [userdata, setUserdata] = useState("");
 
-  console.log(id);
 
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
@@ -304,7 +310,7 @@ const EditRecepit = () => {
       setIsButtonDisabled(true);
 
       axios
-        .put(`${BaseUrl}/update-c-receipt/${id}`, data, {
+        .put(`${BaseUrl}/update-c-receipt/${decryptedId}`, data, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -346,7 +352,7 @@ const EditRecepit = () => {
 
   useEffect(() => {
     axios({
-      url: BaseUrl + "/fetch-c-receipt-by-id/" + id,
+      url: BaseUrl + "/fetch-c-receipt-by-id/" + decryptedId,
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -358,84 +364,71 @@ const EditRecepit = () => {
       setUserdata(res.data.donor);
       console.log("datatable", res.data.donor);
     });
-  }, [id]);
+  }, [decryptedId]);
   //DAY CLOSE
   console.log(users, "sers");
 
   return (
     <Layout>
       <div>
-        <div className="flex mb-4 mt-6">
-          <MdKeyboardBackspace
-            onClick={handleBackButton}
-            className="text-white bg-[#464D69] p-1 w-10 h-8 cursor-pointer rounded-2xl"
-          />
-          <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
-            Cash Receipt
-          </h1>
-        </div>
-        <Card className=" mt-5 bg-white shadow-md rounded-lg">
-          <CardBody>
-            <div className="grid grid-cols-1 md:grid-cols-3  lg:grid-cols-5 gap-4 mb-4">
-              <div className="text-gray-700">
-                <strong>Name:</strong>
-                <div className="text-blue-400 inline-flex ml-1">
-                  {" "}
-                  {userdata.donor_full_name}
-                </div>
-              </div>
-              <div className="text-gray-700">
-                <strong>PDS ID:</strong>
-                <div className="text-blue-400 inline-flex ml-1">
-                  {" "}
-                  {userdata.donor_fts_id}
-                </div>
-              </div>
-              <div className="text-gray-700">
-                <strong>Pan No:</strong>
-                <div className="text-blue-400 inline-flex ml-1"> {pan}</div>
-              </div>
-              <div className="text-gray-700">
-                <strong>Receipt Date:</strong>{" "}
-                <div className="text-blue-400 inline-flex ml-1">
-                  {" "}
-                  {moment(check ? dayClose : dayClose).format(
-                    "DD-MM-YYYY"
-                  )}{" "}
-                </div>
-              </div>
-              <div className="text-gray-700">
-                <strong>Year:</strong>
-                <div className="text-blue-400 inline-flex ml-1">
-                  {" "}
-                  {finalyear}
-                </div>
-              </div>
-            </div>
-            {donor.c_receipt_total_amount > 2000 &&
-            donor.c_receipt_exemption_type == "80G" &&
-            pan == "NA" ? (
-              <span className="amounterror">
-                Max amount allowedwithout Pan card is 2000
-              </span>
-            ) : (
-              ""
-            )}
-          </CardBody>
-        </Card>
         <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
+          <div className="flex mb-4 ">
+            <h1 className="text-2xl text-[#464D69] font-semibold ml-2">
+              Cash Receipt
+            </h1>
+          </div>
+          <div className=" my-5">
+            <div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-5 gap-4 mb-4">
+                <div className="text-gray-700">
+                  <strong>Name:</strong>
+                  <div className="text-blue-400 inline-flex ml-1">
+                    {" "}
+                    {userdata.donor_full_name}
+                  </div>
+                </div>
+                <div className="text-gray-700">
+                  <strong>PDS ID:</strong>
+                  <div className="text-blue-400 inline-flex ml-1">
+                    {" "}
+                    {userdata.donor_fts_id}
+                  </div>
+                </div>
+                <div className="text-gray-700">
+                  <strong>Pan No:</strong>
+                  <div className="text-blue-400 inline-flex ml-1"> {pan}</div>
+                </div>
+                <div className="text-gray-700">
+                  <strong>Receipt Date:</strong>{" "}
+                  <div className="text-blue-400 inline-flex ml-1">
+                    {" "}
+                    {moment(check ? dayClose : dayClose).format(
+                      "DD-MM-YYYY"
+                    )}{" "}
+                  </div>
+                </div>
+                <div className="text-gray-700">
+                  <strong>Year:</strong>
+                  <div className="text-blue-400 inline-flex ml-1">
+                    {" "}
+                    {finalyear}
+                  </div>
+                </div>
+              </div>
+              {donor.c_receipt_total_amount > 2000 &&
+              donor.c_receipt_exemption_type == "80G" &&
+              pan == "NA" ? (
+                <span className="amounterror">
+                  Max amount allowedwithout Pan card is 2000
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
           <form id="addIndiv" onSubmit={onSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
               <div>
-                {/* <label
-                  className={`${
-                    donor?.c_receipt_total_amount
-                      ? "label-active"
-                      : "label-inactive"
-                  } text-xs text-gray-500`}
-                >
-                  Total Amount*
-                </label> */}
                 <Input
                   type="text"
                   label="Total Amount"
@@ -586,16 +579,19 @@ const EditRecepit = () => {
               </div>
             ))}
             <div className="flex justify-center mt-4 space-x-4">
-              <Button
+              <button
                 type="submit"
                 disabled={isButtonDisabled}
-                className="mt-4 bg-blue-400"
+                className={`${inputClass} ${
+                  isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
                 Update
-              </Button>
-              <Button className="mt-4 bg-red-400" onClick={handleBackButton}>
+              </button>
+
+              <button className={inputClassBack} onClick={handleBackButton}>
                 Back
-              </Button>
+              </button>
             </div>
           </form>
         </div>

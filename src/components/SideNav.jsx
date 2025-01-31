@@ -84,6 +84,9 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
           <div className="flex items-center text-white mt-4">
             <div className="bg-white p-2 rounded-md">
               <img src={image} alt="Logo" className="h-12 w-auto" />
+              {/* <h2 className="flex justify-center font-extrabold text-5xl bg-gradient-to-b from-[#32e432] via-[#1f1f75] to-[#FF8C00] bg-clip-text text-transparent">
+                GAUSHALA
+              </h2> */}
             </div>{" "}
           </div>
         </Link>
@@ -129,7 +132,7 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
         </ul>
       </div>
       <div className="text-white flex justify-center text-[0.8rem]">
-        <h3>Updated on : 28-Jan-2025</h3>
+        <h3>Updated on : 31-Jan-2025</h3>
       </div>
     </aside>
   );

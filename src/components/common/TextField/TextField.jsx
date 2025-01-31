@@ -437,38 +437,7 @@ const Fields = (props) => {
       )}
 
       {/* //Family DROP DOWN  */}
-      {/* {props.type === "maleDropdown" && (
-        <>
-          <FormControl fullWidth sx={props.sx}>
-            <InputLabel id="service-select-label" className="mt-2">
-              <span className="text-sm relative bottom-[6px]">
-                {props.title} <span className="text-red-700">*</span>
-              </span>
-            </InputLabel>
-            <Select
-              sx={{
-                height: "40px",
-                borderRadius: "5px",
-                marginTop: "12px",
-              }}
-              labelId="service-select-label"
-              id="service-select"
-              name={props.name}
-              value={props.value}
-              label={props.title}
-              onChange={props.onChange}
-              {...props}
-              required={props.required === true || props.required === "true"}
-            >
-              {props.options?.map((data, key) => (
-                <MenuItem key={key} value={data.animal_type_no}>
-                  {data.animal_type_no}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </>
-      )} */}
+
       {props.type === "familyDropdown" && (
         <>
           <FormControl fullWidth>
@@ -762,41 +731,6 @@ const Fields = (props) => {
         </>
       )}
       {/* //only name */}
-      {/* {props.type === "itemdropdown" && (
-        <>
-          <FormControl fullWidth>
-            <InputLabel id="service-select-label">
-              <span className="text-sm relative bottom-[6px]">
-                {props.title} <span className="text-red-700">*</span>
-              </span>
-            </InputLabel>
-            <Select
-              sx={{ height: "40px", borderRadius: "5px" }}
-              labelId="service-select-label"
-              id="service-select"
-              name={props.name}
-              value={
-                props.value !== null &&
-                props.options?.some(
-                  (option) => option.purchase_sub_item === props.value
-                )
-                  ? props.value
-                  : ""
-              }
-              label={props.title}
-              onChange={props.onchange}
-              {...props}
-              required={props.required === true || props.required === "true"}
-            >
-              {props.options?.map((data, key) => (
-                <MenuItem key={key} value={data.item_name}>
-                  {data.item_name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </>
-      )} */}
 
       {props.type === "itemdropdown" && (
         <FormControl fullWidth>

@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../../layout/Layout";
-import { ContextPanel } from "../../../utils/ContextPanel";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BaseUrl } from "../../../base/BaseUrl";
-import { MdEdit } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import EnquiryFilter from "../../../components/EnquiryFilter";
 import { Spinner } from "@material-tailwind/react";
@@ -12,6 +10,8 @@ import {
   AddOccassionItem,
   EditOccassionItem,
 } from "../../../components/ButtonComponents";
+import { inputClass } from "../../../components/common/Buttoncss";
+import { encryptId } from "../../../components/common/EncryptDecrypt";
 
 const ListOccasion = () => {
   const [openListData, setOpenListData] = useState([]);
@@ -31,18 +31,7 @@ const ListOccasion = () => {
 
         const responseData = response.data.occasion;
 
-        if (Array.isArray(responseData)) {
-          const tempRows = responseData.map((item, index) => [
-            index + 1,
-            item.occasion_name,
-            item.occasion_status,
-            item.id,
-          ]);
-          setOpenListData(tempRows);
-        } else {
-          console.error("Expected an array but received", responseData);
-          setOpenListData([]);
-        }
+        setOpenListData(responseData);
       } catch (error) {
         console.error("Error fetching open list enquiry data", error);
       } finally {
@@ -55,15 +44,16 @@ const ListOccasion = () => {
 
   const columns = [
     {
-      name: "SlNo",
-      label: "SlNo",
+      name: "sno",
+      label: "S.No",
       options: {
         filter: false,
         sort: false,
+        customBodyRender: (value, tableMeta) => tableMeta.rowIndex + 1,
       },
     },
     {
-      name: "Name",
+      name: "occasion_name",
       label: "Name",
       options: {
         filter: false,
@@ -71,7 +61,7 @@ const ListOccasion = () => {
       },
     },
     {
-      name: "Status",
+      name: "occasion_status",
       label: "Status",
       options: {
         filter: false,
@@ -87,13 +77,12 @@ const ListOccasion = () => {
         customBodyRender: (id) => {
           return (
             <div className="flex items-center space-x-2">
-              {/* <MdEdit
-                onClick={() => navigate(`/edit-occasion/${id}`)}
-                title="edit item"
-                className="h-5 w-5 cursor-pointer text-blue-500"
-              /> */}
               <EditOccassionItem
-                onClick={() => navigate(`/edit-occasion/${id}`)}
+                // onClick={() => navigate(`/edit-occasion/${id}`)}
+                onClick={() => {
+                  const encryptedId = encryptId(id); // Encrypt the ID
+                  navigate(`/edit-occasion/${encodeURIComponent(encryptedId)}`);
+                }}
                 className="h-5 w-5 cursor-pointer text-blue-500"
               />
             </div>
@@ -112,35 +101,20 @@ const ListOccasion = () => {
     download: false,
     print: false,
     filter: false,
+    customToolbar: () => {
+      return (
+        <AddOccassionItem
+          onClick={() => navigate("/add-occasion")}
+          className={inputClass}
+        />
+      );
+    },
   };
   let usertype = localStorage.getItem("user_type_id");
 
   return (
     <Layout>
       <EnquiryFilter />
-      <div className="flex flex-col md:flex-row justify-between items-center bg-white mt-5 p-2 rounded-lg space-y-4 md:space-y-0">
-        <h3 className="text-center md:text-left text-lg md:text-xl font-bold">
-          Occasions List
-        </h3>
-        {/* <Link
-          to="/add-occasion"
-          className="btn btn-primary text-center md:text-right text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg shadow-md"
-          style={{ display: usertype == 2 ? "inline-block" : "none" }}
-        >
-          + Add Occasion
-        </Link> */}
-        {/* <button
-              onClick={()=>navigate('/add-occasion')}
-                className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-              
-              >
-                 + Add Occasion
-              </button> */}
-        <AddOccassionItem
-          onClick={() => navigate("/add-occasion")}
-          className=" flex flex-row items-center gap-1 text-center text-sm font-[400] cursor-pointer   text-white bg-blue-600 hover:bg-red-700 p-2 rounded-lg shadow-md"
-        />
-      </div>
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
@@ -149,6 +123,11 @@ const ListOccasion = () => {
       ) : (
         <div className="mt-5">
           <MUIDataTable
+            title={
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-semibold"> Occasions List</span>
+              </div>
+            }
             data={openListData}
             columns={columns}
             options={options}

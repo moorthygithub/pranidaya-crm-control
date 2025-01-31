@@ -3,10 +3,9 @@ import Home from "./pages/dashboard/Home";
 import SignIn from "./pages/auth/SignIn";
 import SIgnUp from "./pages/auth/SIgnUp";
 import Maintenance from "./pages/maintenance/Maintenance";
-import ProtectedRoute from "./components/ProtectedRoute";
 import ForgetPassword from "./pages/auth/ForgetPassword";
-import Profile from "./pages/profile/Profile";
-import ChangePassword from "./pages/profile/ChangePassword";
+// import Profile from "./pages/profile/Profile";
+// import ChangePassword from "./pages/profile/ChangePassword";
 import WebDonation from "./pages/WebDonation/WebDonation";
 import DonorList from "./pages/DonorList/DonorList";
 import OpenListEnquiry from "./pages/Master/ListItem/List Item";
@@ -76,19 +75,21 @@ import CreateAnimalDead from "./pages/AnimalStock/AnimalDead/CreateAnimalDead";
 import AnimalStocks from "./pages/AnimalStock/AnimalStocks/AnimalStocks";
 import AnimalStocksView from "./pages/AnimalStock/AnimalStocks/AnimalStocksView";
 const queryClient = new QueryClient();
-import { useQuery } from "@tanstack/react-query";
+import DisableRightClick from "./components/common/DisableRightClick";
 
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <>
+        <DisableRightClick />
+
         <ToastContainer />
         <Routes>
           <Route path="/" element={<SignIn />} />
           <Route path="/register" element={<SIgnUp />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
           {/* <Route path="/enquiry-now" element={<EnquiryNow />} /> */}
-          <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/maintenance" element={<Maintenance />} />
           <Route path="/donor-list" element={<DonorList />} />
           <Route path="/add-donor/:id?" element={<AddDonorList />} />
@@ -132,84 +133,29 @@ const App = () => {
           <Route path="/d-summary-view" element={<DonationSummaryView />} />
           <Route path="/view-stock" element={<ViewStockSummary />} />
           <Route path="/download-enquiry" element={<EnquiryDownload />} />
-          <Route
-            path="/profile"
-            element={<ProtectedRoute element={<Profile />} />}
-          />
-          <Route
-            path="/change-password"
-            element={<ProtectedRoute element={<ChangePassword />} />}
-          />
+          {/* <Route path="/profile" element={<Profile />} /> */}
+          {/* <Route path="/change-password" element={<ChangePassword />} /> */}
           {/* Download  */}
-          <Route
-            path="/donor"
-            element={<ProtectedRoute element={<Donor />} />}
-          />
-          <Route
-            path="/cashpurchase"
-            element={<ProtectedRoute element={<Students />} />}
-          />
-          <Route path="/cash" element={<ProtectedRoute element={<Cash />} />} />
-          <Route
-            path="/M-recepit"
-            element={<ProtectedRoute element={<Exam />} />}
-          />
-          <Route
-            path="/D-consumption"
-            element={<ProtectedRoute element={<DowloadConsumption />} />}
-          />
-          {/* ///NEW  */}
-          <Route
-            path="/VendorList"
-            element={<ProtectedRoute element={<VendorList />} />}
-          />
-          <Route
-            path="/EditVendors/:id"
-            element={<ProtectedRoute element={<EditVendors />} />}
-          />
-          <Route
-            path="/add-purchase"
-            element={<ProtectedRoute element={<AddPurchase />} />}
-          />
-          <Route
-            path="/edit-purchase/:id"
-            element={<ProtectedRoute element={<EditPurchase />} />}
-          />
-          <Route
-            path="/add-consumption"
-            element={<ProtectedRoute element={<AddConsumption />} />}
-          />
-          <Route
-            path="/edit-consumption/:id"
-            element={<ProtectedRoute element={<EditConsumption />} />}
-          />
+          <Route path="/donor" element={<Donor />} />
+          <Route path="/cashpurchase" element={<Students />} />
+          <Route path="/cash" element={<Cash />} />
+          <Route path="/M-recepit" element={<Exam />} />
+          <Route path="/D-consumption" element={<DowloadConsumption />} />
+          <Route path="/VendorList" element={<VendorList />} />
+          <Route path="/EditVendors/:id" element={<EditVendors />} />
+          <Route path="/add-purchase" element={<AddPurchase />} />
+          <Route path="/edit-purchase/:id" element={<EditPurchase />} />
+          <Route path="/add-consumption" element={<AddConsumption />} />
+          <Route path="/edit-consumption/:id" element={<EditConsumption />} />
           {/* //STOCK */}
-          <Route
-            path="/stock"
-            element={<ProtectedRoute element={<Stock />} />}
-          />
-          <Route
-            path="/recepit-edit/:id"
-            element={<ProtectedRoute element={<EditRecepit />} />}
-          />
-          <Route
-            path="/recepit-view/:id"
-            element={<ProtectedRoute element={<ViewCashRecepit />} />}
-          />
+          <Route path="/stock" element={<Stock />} />
+          <Route path="/recepit-edit/:id" element={<EditRecepit />} />
+          <Route path="/recepit-view/:id" element={<ViewCashRecepit />} />
           {/* //MATERIAL Recepits */}
-          <Route
-            path="/material-edit/:id"
-            element={<ProtectedRoute element={<EditMaterial />} />}
-          />
-          <Route
-            path="/material-view/:id"
-            element={<ProtectedRoute element={<ViewMaterial />} />}
-          />
+          <Route path="/material-edit/:id" element={<EditMaterial />} />
+          <Route path="/material-view/:id" element={<ViewMaterial />} />
           {/* //DOWLOAD */}
-          <Route
-            path="/web-donation"
-            element={<ProtectedRoute element={<DownloadWebDonation />} />}
-          />
+          <Route path="/web-donation" element={<DownloadWebDonation />} />
           <Route path="/webdonation" element={<WebDonation />} />
           <Route path="/test" element={<Test />} />
           <Route path="/userManagement" element={<TabIndex />} />
