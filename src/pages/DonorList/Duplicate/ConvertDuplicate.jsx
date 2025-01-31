@@ -196,7 +196,7 @@ const ConvertDuplicate = () => {
         <Dialog
           open={showDialog}
           handler={() => setShowDialog(false)}
-          size="lg"
+          size="md"
         >
           <DialogHeader className="flex justify-between items-center">
             <span>Select a Donor</span>
