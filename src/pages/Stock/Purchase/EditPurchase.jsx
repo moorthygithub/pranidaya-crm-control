@@ -32,6 +32,7 @@ const EditPurchase = () => {
     purchase_date: "",
     purchase_vendor: "",
     purchase_bill_no: "",
+    purchase_count: "",
     purchase_total_bill: "",
   });
 
@@ -122,6 +123,7 @@ const EditPurchase = () => {
       purchase_vendor: purchase.purchase_vendor,
       purchase_bill_no: purchase.purchase_bill_no,
       purchase_total_bill: purchase.purchase_total_bill,
+      purchase_count: purchase.purchase_count,
       purchase_sub_data: users,
     };
 
