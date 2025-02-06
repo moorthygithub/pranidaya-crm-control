@@ -451,7 +451,7 @@ const CashRecepitAll = () => {
           },
         })
         .then((res) => {
-          if (res.status === 200 || res.data.code === "200") {
+          if (res.status == 200 || res.data.code == "200") {
             toast.success("Donor Created Successfully");
             setTimeout(() => {
               navigate(`/recepit-view/${res.data?.latestid?.id}`);
