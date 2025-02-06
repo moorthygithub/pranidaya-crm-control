@@ -249,6 +249,20 @@ const DonorDonationReceipt = () => {
   const [occasion, setOccasion] = useState([]);
 
   useEffect(() => {
+    axios({
+      url: BaseUrl + "/fetch-donor-by-id/" + decryptedId,
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }).then((res) => {
+      setUserdata(res.data.donor);
+      setUserfFamilydata(res.data.familyMember);
+      // console.log("datatable", res.data.donor);
+    });
+  }, []);
+
+  useEffect(() => {
     var theLoginToken = localStorage.getItem("token");
     const requestOptions = {
       method: "GET",
@@ -286,7 +300,7 @@ const DonorDonationReceipt = () => {
 
     const dateField = document.getElementById("datefield");
     if (dateField) {
-      dateField.setAttribute("max", todayback); // Set max attribute for date input
+      dateField.setAttribute("max", todayback);
     }
   }, [todayback]);
 
@@ -332,7 +346,7 @@ const DonorDonationReceipt = () => {
 
     setDonor((prevDonor) => ({
       ...prevDonor,
-      family_full_name: value, // Tailwind Select provides value directly
+      family_full_name: value,
     }));
   };
 
@@ -390,6 +404,7 @@ const DonorDonationReceipt = () => {
     const requiredFields = [
       { field: donor.c_receipt_exemption_type, name: "Category" },
       { field: donor.c_receipt_tran_pay_mode, name: "Transaction Type" },
+      { field: userdata?.donor_fts_id, name: "Donor ID Is Missing" },
     ];
 
     const emptyFields = requiredFields.filter((item) => !item.field);
@@ -400,7 +415,7 @@ const DonorDonationReceipt = () => {
     }
 
     let data = {
-      donor_fts_id: userdata.donor_fts_id,
+      donor_fts_id: userdata?.donor_fts_id,
       c_receipt_financial_year: currentYear,
       c_receipt_date: check ? dayClose : dayClose,
       c_receipt_exemption_type: donor.c_receipt_exemption_type,
@@ -466,19 +481,6 @@ const DonorDonationReceipt = () => {
     navigate("/donor-list");
   };
 
-  useEffect(() => {
-    axios({
-      url: BaseUrl + "/fetch-donor-by-id/" + decryptedId,
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }).then((res) => {
-      setUserdata(res.data.donor);
-      setUserfFamilydata(res.data.familyMember);
-      // console.log("datatable", res.data.donor);
-    });
-  }, []);
   //DAY CLOSE
 
   //DAY close
