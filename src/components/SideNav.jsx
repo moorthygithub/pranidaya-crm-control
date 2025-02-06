@@ -132,7 +132,7 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
         </ul>
       </div>
       <div className="text-white flex justify-center text-[0.8rem]">
-        <h3>Updated on : 31-Jan-2025</h3>
+        <h3>Updated on : 06-Feb-2025</h3>
       </div>
     </aside>
   );
