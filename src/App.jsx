@@ -81,7 +81,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <>
-        {/* <DisableRightClick /> */}
+        <DisableRightClick />
 
         <ToastContainer />
         <Routes>
