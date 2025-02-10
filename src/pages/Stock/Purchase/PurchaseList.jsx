@@ -64,7 +64,7 @@ const PurchaseList = () => {
       },
     },
     {
-      name: "Date",
+      name: "purchase_date",
       label: " Date ",
       options: {
         filter: false,
