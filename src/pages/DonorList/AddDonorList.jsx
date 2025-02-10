@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import Dropdown from "../../components/common/DropDown";
 import InputMask from "react-input-mask";
 import { inputClass, inputClassBack } from "../../components/common/Buttoncss";
+import { encryptId } from "../../components/common/EncryptDecrypt";
 
 const gender = [
   {
@@ -223,7 +224,9 @@ const AddDonorList = () => {
 
       if (response.data.code == 201) {
         // toast.success("Data Updated Successfully");
-        navigate(`/createrecepit-donor/${response.data.latestid.id}`);
+        // navigate(`/createrecepit-donor/${response.data.latestid.id}`);
+        const encryptedId = encryptId(response.data.latestid.id); // Encrypt the ID
+        navigate(`/createrecepit-donor/${encodeURIComponent(encryptedId)}`);
       } else {
         if (response.data.code == 404) {
           toast.error(" Duplicate Entry");
