@@ -11,6 +11,7 @@ import { FaCodePullRequest } from "react-icons/fa6";
 import { GrStorage, GrTasks } from "react-icons/gr";
 import { PiDownloadSimpleBold } from "react-icons/pi";
 import { GrUserSettings } from "react-icons/gr";
+import { Upgrade } from "./common/Upgrade";
 
 const SideNav = ({ openSideNav, setOpenSideNav }) => {
   const sidenavRef = useRef(null);
@@ -131,9 +132,10 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
           )}
         </ul>
       </div>
-      <div className="text-white flex justify-center text-[0.8rem]">
-        <h3>Updated on : 10-Feb-2025</h3>
-      </div>
+      {/* <div className="text-white flex justify-center text-[0.8rem]">
+        <h3>Updated on : 11-Feb-2025</h3>
+      </div> */}
+      <Upgrade />
     </aside>
   );
 };
