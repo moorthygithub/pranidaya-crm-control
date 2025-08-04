@@ -50,6 +50,14 @@ function Cash() {
       value: "General Fund/Others",
       label: "General Fund/Others",
     },
+    {
+      value: "Milk",
+      label: "Milk",
+    },
+    {
+      value: "Manure",
+      label: "Manure",
+    },
   ];
   const exemption = [
     {
