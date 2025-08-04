@@ -233,7 +233,25 @@ function AnimalStocksView() {
           </div>
         ) : (
           <div ref={componentRef}>
-            {/* Total Active Animal Count */}
+            <div className="flex justify-end gap-4 text-sm text-gray-700">
+              <span>
+                From Date:{" "}
+                {localStorage.getItem("from_date-animal")
+                  ? moment(localStorage.getItem("from_date-animal")).format(
+                      "DD-MM-YYYY"
+                    )
+                  : ""}
+              </span>
+              <span>
+                To Date:{" "}
+                {localStorage.getItem("to_date-animal")
+                  ? moment(localStorage.getItem("to_date-animal")).format(
+                      "DD-MM-YYYY"
+                    )
+                  : ""}
+              </span>
+            </div>
+
             <div className="p-6 shadow-lg my-6   rounded-lg   overflow-hidden ">
               <div className="flex justify-between">
                 <Typography
@@ -257,7 +275,7 @@ function AnimalStocksView() {
               </div>
             </div>
 
-            <div className="grid  grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-4 mb-6 mx-2">
+            <div className="grid  grid-cols-5 lg:grid-cols-6  gap-4 mb-6 mx-2">
               {animalcount.map((animal, index) => (
                 <Card
                   key={index}
@@ -311,13 +329,41 @@ function AnimalStocksView() {
                       <tr key={index} className="border">
                         <td className="border p-2 ">{item.animal_type}</td>
                         <td className="border p-2 text-center">
-                          {item.arrival}
+                          {Number(item.openarrival) + Number(item.arrival)}
                         </td>
-                        <td className="border p-2 text-center">{item.born}</td>
-                        <td className="border p-2 text-center">{item.dead}</td>
+                        <td className="border p-2 text-center">
+                          {Number(item.openborn) + Number(item.born)}
+                        </td>
+                        <td className="border p-2 text-center">
+                          {Number(item.opendead) + Number(item.dead)}
+                        </td>
                       </tr>
                     ))
                   )}
+                  <tr className="font-semibold bg-gray-100">
+                    <td className="border p-2 text-right">Total</td>
+                    <td className="border p-2 text-center">
+                      {stock.reduce(
+                        (sum, item) =>
+                          sum + Number(item.openarrival) + Number(item.arrival),
+                        0
+                      )}
+                    </td>
+                    <td className="border p-2 text-center">
+                      {stock.reduce(
+                        (sum, item) =>
+                          sum + Number(item.openborn) + Number(item.born),
+                        0
+                      )}
+                    </td>
+                    <td className="border p-2 text-center">
+                      {stock.reduce(
+                        (sum, item) =>
+                          sum + Number(item.opendead) + Number(item.dead),
+                        0
+                      )}
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
