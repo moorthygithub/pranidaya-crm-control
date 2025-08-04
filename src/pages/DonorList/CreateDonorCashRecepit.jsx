@@ -119,6 +119,14 @@ const donation_type = [
     value: "General Fund/Others",
     label: "General Fund/Others",
   },
+  {
+    value: "Milk",
+    label: "Milk",
+  },
+  {
+    value: "Manure",
+    label: "Manure",
+  },
 ];
 
 const donation_type_2 = [
@@ -149,6 +157,14 @@ const donation_type_2 = [
   {
     value: "General Fund/Others",
     label: "General Fund/Others",
+  },
+  {
+    value: "Milk",
+    label: "Milk",
+  },
+  {
+    value: "Manure",
+    label: "Manure",
   },
 ];
 

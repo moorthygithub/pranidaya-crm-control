@@ -108,6 +108,14 @@ const donation_type = [
     value: "General Fund/Others",
     label: "General Fund/Others",
   },
+  {
+    value: "Milk",
+    label: "Milk",
+  },
+  {
+    value: "Manure",
+    label: "Manure",
+  },
 ];
 
 const donation_type_2 = [
@@ -139,6 +147,14 @@ const donation_type_2 = [
     value: "General Fund/Others",
     label: "General Fund/Others",
   },
+  {
+    value: "Milk",
+    label: "Milk",
+  },
+  {
+    value: "Manure",
+    label: "Manure",
+  },
 ];
 
 const EditRecepit = () => {
@@ -148,7 +164,6 @@ const EditRecepit = () => {
   const decryptedId = decryptId(id);
 
   const [userdata, setUserdata] = useState("");
-
 
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
