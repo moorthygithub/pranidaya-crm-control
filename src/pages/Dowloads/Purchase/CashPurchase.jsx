@@ -13,7 +13,8 @@ import DownloadCommon from "../../download/DeliveryDownload";
 import { inputClass } from "../../../components/common/Buttoncss";
 
 function CashPurchase() {
-  const navigate = useNavigate();
+  const twoMonthsAgo = Moment().subtract(2, "months").format("YYYY-MM-DD");
+  const userType = localStorage.getItem("user_type_id");
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [isButtonDisableds, setIsButtonDisableds] = useState(false);
 
@@ -143,6 +144,7 @@ function CashPurchase() {
       .then((data) => setItem(data.item));
   }, []);
 
+
   return (
     <Layout>
       <DownloadCommon />
@@ -167,6 +169,7 @@ function CashPurchase() {
                   label="From Date"
                   name="purchase_from_date"
                   className="required"
+                  min={userType == 5 ? twoMonthsAgo : undefined}
                   value={receiptsdwn.purchase_from_date}
                   onChange={(e) => onInputChange(e)}
                 />

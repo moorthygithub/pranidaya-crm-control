@@ -1,88 +1,83 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/dashboard/Home";
+import ForgetPassword from "./pages/auth/ForgetPassword";
 import SignIn from "./pages/auth/SignIn";
 import SIgnUp from "./pages/auth/SIgnUp";
+import Home from "./pages/dashboard/Home";
 import Maintenance from "./pages/maintenance/Maintenance";
-import ForgetPassword from "./pages/auth/ForgetPassword";
-// import Profile from "./pages/profile/Profile";
-// import ChangePassword from "./pages/profile/ChangePassword";
-import WebDonation from "./pages/WebDonation/WebDonation";
-import DonorList from "./pages/DonorList/DonorList";
-import OpenListEnquiry from "./pages/Master/ListItem/List Item";
-import PurchaseList from "./pages/Stock/Purchase/PurchaseList";
-import RecepitCashRecepit from "./pages/Recepits/CashRecepits/CashRecepit";
-import PendingListTask from "./pages/Reports/StockReport";
-import EnquiryDownload from "./pages/download/EnquiryDownload";
-import VendorList from "./pages/Master/Vendors List/VendorList";
-import Consumption from "./pages/Stock/Consumption/consumption";
-import MaterialRecepits from "./pages/Recepits/MaterialRecepits/MaterialRecepits";
-import Donor from "./pages/Dowloads/Donor/Donor";
-import Students from "./pages/Dowloads/Purchase/CashPurchase";
-import Cash from "./pages/Dowloads/Delivery/Cash";
-import Exam from "./pages/Dowloads/MaterialReceipts/MaterialReceipts";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AddEnquiry from "./pages/Master/ListItem/AddItem";
-import EditList from "./pages/Master/ListItem/EditList";
-import AddVendors from "./pages/Master/Vendors List/AddVendors";
-import EditVendors from "./pages/Master/Vendors List/EditVendors";
-import AddPurchase from "./pages/Stock/Purchase/AddPurchase";
-import EditPurchase from "./pages/Stock/Purchase/EditPurchase";
-import AddConsumption from "./pages/Stock/Consumption/Addconsumption";
-import EditConsumption from "./pages/Stock/Consumption/EditConsumption";
-import Stock from "./pages/Stock/StockList/StockList";
-import EditRecepit from "./pages/Recepits/CashRecepits/EditRecepits";
-import ViewCashRecepit from "./pages/Recepits/CashRecepits/ViewRecepit";
 import EditMaterial from "././pages/Recepits/MaterialRecepits/EditMaterial";
-import ViewMaterial from "./pages/Recepits/MaterialRecepits/ViewMaterial";
-import ViewStockSummary from "./pages/Reports/ViewStockSummary";
-import DowloadConsumption from "./pages/Dowloads/Consumption/DowloadConsumption";
-import DownloadWebDonation from "./pages/Dowloads/WebDonation/DownloadWebDonation";
-import AddDonorList from "./pages/DonorList/AddDonorList";
-import EditDonorList from "./pages/DonorList/EditDonorList";
-import CreateDonor from "./pages/DonorList/CreateDonorMaterialRecepit";
-import CreateDonorRecepit from "./pages/DonorList/CreateDonorCashRecepit";
-import ViewDonorDetails from "./pages/DonorList/ViewDonorDetails";
-import DonorReceiptsDetails from "./pages/DonorList/DonorReceiptsDetails";
-import FamilyList from "./pages/DonorList/FamilyMembers/FamilyList";
-import AddFamilyMembers from "./pages/DonorList/FamilyMembers/AddFamilyMembers";
-import DonationSummary from "./pages/Reports/DonationSummary/DonationSummary";
-import DonationSummaryView from "./pages/Reports/DonationSummary/DonationSummaryView";
-import DuplicateDonorList from "./pages/DonorList/Duplicate/DuplicateDonorList";
-import ListOccasion from "./pages/Master/Occasion/Listoccasion";
-import AddOccasion from "./pages/Master/Occasion/Addoccasion";
-import EditOccasion from "./pages/Master/Occasion/Editoccasion";
-import EditDuplicate from "./pages/DonorList/Duplicate/EditDuplicate";
-import Test from "./pages/test";
-import MaterialRecepitAll from "./pages/DonorList/MaterialRecepitAll";
-import CashRecepitAll from "./pages/DonorList/CashRecepitAll";
-import TabIndex from "./pages/userManagement/TabIndex";
-import CreateButton from "./pages/userManagement/CreateButton";
-import ConvertDuplicate from "./pages/DonorList/Duplicate/ConvertDuplicate";
-import FamilyDonorDuplicate from "./pages/DonorList/Duplicate/FamilyDonorDuplicate";
-import AnimalStockFilter from "./components/common/AnimalStockFilter";
+import DisableRightClick from "./components/common/DisableRightClick";
 import Animal from "./pages/AnimalStock/Animal/Animal";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import CreateAnimal from "./pages/AnimalStock/Animal/CreateAnimal";
 import EditAnimal from "./pages/AnimalStock/Animal/EditAnimal";
-import AnimalMeat from "./pages/AnimalStock/AnimalMeat/AnimalMeat";
-import CreateAnimalMeat from "./pages/AnimalStock/AnimalMeat/CreateAnimalMeat";
-import EditAnimalMeat from "./pages/AnimalStock/AnimalMeat/EditAnimalMeat";
 import AnimalBornArrival from "./pages/AnimalStock/AnimalBornArrival/AnimalBornArrival";
 import CreateBornArrival from "./pages/AnimalStock/AnimalBornArrival/CreateBornArrival";
 import AnimalDead from "./pages/AnimalStock/AnimalDead/AnimalDead";
 import CreateAnimalDead from "./pages/AnimalStock/AnimalDead/CreateAnimalDead";
+import AnimalMeat from "./pages/AnimalStock/AnimalMeat/AnimalMeat";
+import CreateAnimalMeat from "./pages/AnimalStock/AnimalMeat/CreateAnimalMeat";
+import EditAnimalMeat from "./pages/AnimalStock/AnimalMeat/EditAnimalMeat";
 import AnimalStocks from "./pages/AnimalStock/AnimalStocks/AnimalStocks";
 import AnimalStocksView from "./pages/AnimalStock/AnimalStocks/AnimalStocksView";
+import AddDonorList from "./pages/DonorList/AddDonorList";
+import CashRecepitAll from "./pages/DonorList/CashRecepitAll";
+import CreateDonorRecepit from "./pages/DonorList/CreateDonorCashRecepit";
+import CreateDonor from "./pages/DonorList/CreateDonorMaterialRecepit";
+import DonorList from "./pages/DonorList/DonorList";
+import DonorReceiptsDetails from "./pages/DonorList/DonorReceiptsDetails";
+import ConvertDuplicate from "./pages/DonorList/Duplicate/ConvertDuplicate";
+import DuplicateDonorList from "./pages/DonorList/Duplicate/DuplicateDonorList";
+import EditDuplicate from "./pages/DonorList/Duplicate/EditDuplicate";
+import FamilyDonorDuplicate from "./pages/DonorList/Duplicate/FamilyDonorDuplicate";
+import EditDonorList from "./pages/DonorList/EditDonorList";
+import AddFamilyMembers from "./pages/DonorList/FamilyMembers/AddFamilyMembers";
+import FamilyList from "./pages/DonorList/FamilyMembers/FamilyList";
+import MaterialRecepitAll from "./pages/DonorList/MaterialRecepitAll";
+import ViewDonorDetails from "./pages/DonorList/ViewDonorDetails";
+import DowloadConsumption from "./pages/Dowloads/Consumption/DowloadConsumption";
+import Cash from "./pages/Dowloads/Delivery/Cash";
+import Donor from "./pages/Dowloads/Donor/Donor";
+import Exam from "./pages/Dowloads/MaterialReceipts/MaterialReceipts";
+import Students from "./pages/Dowloads/Purchase/CashPurchase";
+import DownloadWebDonation from "./pages/Dowloads/WebDonation/DownloadWebDonation";
+import EnquiryDownload from "./pages/download/EnquiryDownload";
+import AddEnquiry from "./pages/Master/ListItem/AddItem";
+import EditList from "./pages/Master/ListItem/EditList";
+import OpenListEnquiry from "./pages/Master/ListItem/List Item";
+import AddOccasion from "./pages/Master/Occasion/Addoccasion";
+import EditOccasion from "./pages/Master/Occasion/Editoccasion";
+import ListOccasion from "./pages/Master/Occasion/Listoccasion";
+import AddVendors from "./pages/Master/Vendors List/AddVendors";
+import EditVendors from "./pages/Master/Vendors List/EditVendors";
+import VendorList from "./pages/Master/Vendors List/VendorList";
+import RecepitCashRecepit from "./pages/Recepits/CashRecepits/CashRecepit";
+import EditRecepit from "./pages/Recepits/CashRecepits/EditRecepits";
+import ViewCashRecepit from "./pages/Recepits/CashRecepits/ViewRecepit";
+import MaterialRecepits from "./pages/Recepits/MaterialRecepits/MaterialRecepits";
+import ViewMaterial from "./pages/Recepits/MaterialRecepits/ViewMaterial";
+import DonationSummary from "./pages/Reports/DonationSummary/DonationSummary";
+import DonationSummaryView from "./pages/Reports/DonationSummary/DonationSummaryView";
+import PendingListTask from "./pages/Reports/StockReport";
+import ViewStockSummary from "./pages/Reports/ViewStockSummary";
+import AddConsumption from "./pages/Stock/Consumption/Addconsumption";
+import Consumption from "./pages/Stock/Consumption/consumption";
+import EditConsumption from "./pages/Stock/Consumption/EditConsumption";
+import AddPurchase from "./pages/Stock/Purchase/AddPurchase";
+import EditPurchase from "./pages/Stock/Purchase/EditPurchase";
+import PurchaseList from "./pages/Stock/Purchase/PurchaseList";
+import Stock from "./pages/Stock/StockList/StockList";
+import CreateButton from "./pages/userManagement/CreateButton";
+import TabIndex from "./pages/userManagement/TabIndex";
+import WebDonation from "./pages/WebDonation/WebDonation";
 const queryClient = new QueryClient();
-import DisableRightClick from "./components/common/DisableRightClick";
 
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <>
         <DisableRightClick />
-
         <ToastContainer />
         <Routes>
           <Route path="/" element={<SignIn />} />
@@ -133,9 +128,6 @@ const App = () => {
           <Route path="/d-summary-view" element={<DonationSummaryView />} />
           <Route path="/view-stock" element={<ViewStockSummary />} />
           <Route path="/download-enquiry" element={<EnquiryDownload />} />
-          {/* <Route path="/profile" element={<Profile />} /> */}
-          {/* <Route path="/change-password" element={<ChangePassword />} /> */}
-          {/* Download  */}
           <Route path="/donor" element={<Donor />} />
           <Route path="/cashpurchase" element={<Students />} />
           <Route path="/cash" element={<Cash />} />
@@ -157,7 +149,7 @@ const App = () => {
           {/* //DOWLOAD */}
           <Route path="/web-donation" element={<DownloadWebDonation />} />
           <Route path="/webdonation" element={<WebDonation />} />
-          <Route path="/test" element={<Test />} />
+          {/* <Route path="/test" element={<Test />} /> */}
           <Route path="/userManagement" element={<TabIndex />} />
           <Route path="/create-createMTest" element={<CreateButton />} />
           {/* ///animal stock */}

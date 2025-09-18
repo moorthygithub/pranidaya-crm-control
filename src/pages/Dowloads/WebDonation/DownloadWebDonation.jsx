@@ -1,31 +1,27 @@
-import Layout from "../../../layout/Layout";
-import PageTitle from "../../../components/common/PageTitle";
-import Dropdown from "../../../components/common/DropDown";
-import { useNavigate } from "react-router-dom";
-import { Button, Input, Card } from "@material-tailwind/react";
+import { Input } from "@material-tailwind/react";
+import axios from "axios";
 import Moment from "moment";
-import { useState, useEffect } from "react";
-import { BaseUrl } from "../../../base/BaseUrl";
+import { useContext, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import DownloadCommon from "../../download/DeliveryDownload";
+import { BaseUrl } from "../../../base/BaseUrl";
 import { inputClass } from "../../../components/common/Buttoncss";
+import Layout from "../../../layout/Layout";
+import DownloadCommon from "../../download/DeliveryDownload";
+import { ContextPanel } from "../../../utils/ContextPanel";
 
 function DownloadWebDonation() {
-  const navigate = useNavigate();
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-
-  const unit = [
-    { value: "Kg", label: "Kg" },
-    { value: "Ton", label: "Ton" },
-    { value: "Bag", label: "Bag" },
-  ];
+  const { dates } = useContext(ContextPanel);
+  const allowedDates = dates?.website_donation || [];
+  const userType = localStorage.getItem("user_type_id");
 
   // Get the first and last date
   const todayback = Moment().format("YYYY-MM-DD");
-  const firstdate = Moment().startOf("month").format("YYYY-MM-DD");
-
+  let firstdate = Moment().startOf("month").format("YYYY-MM-DD");
+  if (userType == 5 && allowedDates.length > 0) {
+    firstdate = allowedDates[allowedDates.length - 1];
+  }
   const [receiptsdwn, setWebsiteDonationDownload] = useState({
     payment_from_date: firstdate,
     payment_to_date: todayback,
@@ -109,6 +105,7 @@ function DownloadWebDonation() {
                   name="payment_from_date"
                   className="required"
                   value={receiptsdwn.payment_from_date}
+                  min={allowedDates[allowedDates.length - 1]}
                   onChange={(e) => onInputChange(e)}
                 />
               </div>

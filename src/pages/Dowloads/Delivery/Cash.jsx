@@ -1,114 +1,107 @@
-import Layout from "../../../layout/Layout";
-import PageTitle from "../../../components/common/PageTitle";
-import Dropdown from "../../../components/common/DropDown";
-import { FaArrowCircleLeft } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import { Button, Input } from "@material-tailwind/react";
-import { Card } from "@material-tailwind/react";
+import { Input } from "@material-tailwind/react";
 import Moment from "moment";
-import { useState, useEffect } from "react";
-import { BaseUrl } from "../../../base/BaseUrl";
+import { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
+import { BaseUrl } from "../../../base/BaseUrl";
+import Dropdown from "../../../components/common/DropDown";
+import Layout from "../../../layout/Layout";
 // import "react-hot-toast/dist/ReactToastify.css";
 import axios from "axios";
-import DownloadCommon from "../../download/DeliveryDownload";
 import { inputClass } from "../../../components/common/Buttoncss";
-
+import { ContextPanel } from "../../../utils/ContextPanel";
+import DownloadCommon from "../../download/DeliveryDownload";
+const donation_type = [
+  {
+    value: "Gopalak",
+    label: "Gopalak",
+  },
+  {
+    value: "Wet/Dry-Grass",
+    label: "Wet/Dry-Grass",
+  },
+  {
+    value: "FIne/Rough Bran",
+    label: "FIne/Rough Bran",
+  },
+  {
+    value: "Gou-Daan",
+    label: "Gou-Daan",
+  },
+  {
+    value: "Building Fund",
+    label: "Building Fund",
+  },
+  {
+    value: "Pigeon Feeds",
+    label: "Pigeon Feeds",
+  },
+  {
+    value: "General Fund/Others",
+    label: "General Fund/Others",
+  },
+  {
+    value: "Milk",
+    label: "Milk",
+  },
+  {
+    value: "Manure",
+    label: "Manure",
+  },
+];
+const exemption = [
+  {
+    value: "80G",
+    label: "80G",
+  },
+  {
+    value: "Non 80G",
+    label: "Non 80G",
+  },
+  {
+    value: "FCRA",
+    label: "FCRA",
+  },
+  {
+    value: "CSR",
+    label: "CSR",
+  },
+];
+const manual = [
+  {
+    value: "All",
+    label: "All",
+  },
+  {
+    value: "1",
+    label: "Manual",
+  },
+];
+const pay_mode = [
+  {
+    value: "Cash",
+    label: "Cash",
+  },
+  {
+    value: "Cheque",
+    label: "Cheque",
+  },
+  {
+    value: "Credit Card",
+    label: "Credit Card",
+  },
+  {
+    value: "Online",
+    label: "Online",
+  },
+  {
+    value: "Others",
+    label: "Others",
+  },
+];
 function Cash() {
-  const navigate = useNavigate();
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-
-  const handleClick = () => {
-    navigate("-1");
-  };
-  const donation_type = [
-    {
-      value: "Gopalak",
-      label: "Gopalak",
-    },
-    {
-      value: "Wet/Dry-Grass",
-      label: "Wet/Dry-Grass",
-    },
-    {
-      value: "FIne/Rough Bran",
-      label: "FIne/Rough Bran",
-    },
-    {
-      value: "Gou-Daan",
-      label: "Gou-Daan",
-    },
-    {
-      value: "Building Fund",
-      label: "Building Fund",
-    },
-    {
-      value: "Pigeon Feeds",
-      label: "Pigeon Feeds",
-    },
-    {
-      value: "General Fund/Others",
-      label: "General Fund/Others",
-    },
-    {
-      value: "Milk",
-      label: "Milk",
-    },
-    {
-      value: "Manure",
-      label: "Manure",
-    },
-  ];
-  const exemption = [
-    {
-      value: "80G",
-      label: "80G",
-    },
-    {
-      value: "Non 80G",
-      label: "Non 80G",
-    },
-    {
-      value: "FCRA",
-      label: "FCRA",
-    },
-    {
-      value: "CSR",
-      label: "CSR",
-    },
-  ];
-  const manual = [
-    {
-      value: "All",
-      label: "All",
-    },
-    {
-      value: "1",
-      label: "Manual",
-    },
-  ];
-  const pay_mode = [
-    {
-      value: "Cash",
-      label: "Cash",
-    },
-    {
-      value: "Cheque",
-      label: "Cheque",
-    },
-    {
-      value: "Credit Card",
-      label: "Credit Card",
-    },
-    {
-      value: "Online",
-      label: "Online",
-    },
-    {
-      value: "Others",
-      label: "Others",
-    },
-  ];
+  const { dates } = useContext(ContextPanel);
+  const userType = localStorage.getItem("user_type_id");
 
   //FROM AND TO DATE
   var today = new Date();
@@ -118,9 +111,13 @@ function Cash() {
 
   today = mm + "/" + dd + "/" + yyyy;
   var todayback = yyyy + "-" + mm + "-" + dd;
+  const allowedDates = dates?.c_receipts || [];
 
-  const firstdate = Moment().startOf("month").format("YYYY-MM-DD");
+  let firstdate = Moment().startOf("month").format("YYYY-MM-DD");
 
+  if (userType == 5 && allowedDates.length > 0) {
+    firstdate = allowedDates[allowedDates.length - 1];
+  }
   const [receiptsdwn, setReceiptDownload] = useState({
     receipt_from_date: firstdate,
     receipt_to_date: todayback,
@@ -129,13 +126,6 @@ function Cash() {
     c_manual_receipt_no: "",
     receipt_tran_pay_mode: "",
   });
-
-  const onInputChangeN = (e) => {
-    setReceiptDownload({
-      ...receiptsdwn,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   const onInputChange = (e) => {
     setReceiptDownload({
@@ -209,6 +199,7 @@ function Cash() {
                   className="required"
                   name="receipt_from_date"
                   value={receiptsdwn.receipt_from_date}
+                  min={allowedDates[allowedDates.length - 1]}
                   onChange={(e) => onInputChange(e)}
                 />
               </div>

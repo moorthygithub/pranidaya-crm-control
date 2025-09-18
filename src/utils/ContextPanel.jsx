@@ -7,12 +7,16 @@ export const ContextPanel = createContext();
 
 const AppProvider = ({ children }) => {
   const [isPanelUp, setIsPanelUp] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [dates, setDates] = useState({
+    c_receipts: [],
+    m_receipt: [],
+    website_donation: [],
+  });
+  const token = localStorage.getItem("token");
+  const userType = localStorage.getItem("user_type_id");
   const checkPanelStatus = async () => {
     try {
       const response = await axios.get(`${BaseUrl}/check-status`);
@@ -25,10 +29,6 @@ const AppProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    console.log("Current Route:", location.pathname);
-
     if (error) {
       localStorage.clear();
       navigate("/maintenance");
@@ -48,9 +48,26 @@ const AppProvider = ({ children }) => {
   useEffect(() => {
     console.log("Current Route:", location.pathname);
   }, [location.pathname]);
+
+  const fetchDates = async () => {
+    try {
+      const response = await fetch(BaseUrl + "/fetch-last-two-days-date", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const data = await response.json();
+      console.log(data, "datadata");
+
+      setDates(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const fetchPagePermission = async () => {
-    setIsLoading(true);
-    setIsError(false);
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
@@ -64,15 +81,11 @@ const AppProvider = ({ children }) => {
         JSON.stringify(response.data?.usercontrol)
       );
     } catch (error) {
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
+      console.error(error);
     }
   };
 
   const fetchPermissions = async () => {
-    setIsLoading(true);
-    setIsError(false);
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(`${BaseUrl}/panel-fetch-usercontrol`, {
@@ -83,23 +96,32 @@ const AppProvider = ({ children }) => {
         JSON.stringify(response.data?.usercontrol)
       );
     } catch (error) {
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
+      console.error(error);
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token) {
       fetchPermissions();
       fetchPagePermission();
     }
-  }, []);
+  }, [token]);
+
+  useEffect(() => {
+    if (token && Number(userType) == 5) {
+      fetchDates();
+    }
+  }, [token, userType]);
 
   return (
     <ContextPanel.Provider
-      value={{ isPanelUp, setIsPanelUp, fetchPermissions, fetchPagePermission }}
+      value={{
+        isPanelUp,
+        setIsPanelUp,
+        fetchPermissions,
+        fetchPagePermission,
+        dates,
+      }}
     >
       {children}
     </ContextPanel.Provider>
