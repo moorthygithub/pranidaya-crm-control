@@ -74,21 +74,76 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
   }, [pathname, setOpenSideNav]);
 
   return (
+    // <aside
+    //   ref={sidenavRef}
+    //   className={`${sidenavTypes[sidenavType]} ${
+    //     openSideNav ? "translate-x-0" : "-translate-x-80"
+    //   } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-[272px] rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100 overflow-y-auto`}
+    // >
+    //   <div className={`relative`}>
+    //     <Link to="/home" className="flex items-center justify-center p-4">
+    //       <div className="flex items-center text-white mt-4">
+    //         <div className="bg-white p-2 rounded-md">
+    //           <img src={image} alt="Logo" className="h-12 w-auto" />
+    //         </div>{" "}
+    //       </div>
+    //     </Link>
+    //     <IconButton
+    //       variant="text"
+    //       color="white"
+    //       size="sm"
+    //       ripple={false}
+    //       className="absolute right-0 top-0 grid rounded-br-none rounded-tl-none xl:hidden"
+    //       onClick={() => setOpenSideNav(false)}
+    //     >
+    //       <XMarkIcon strokeWidth={2.5} className="h-5 w-5 text-white" />
+    //     </IconButton>
+    //   </div>
+
+    //   <div className="m-4">
+    //     <ul className="mb-4 flex flex-col ">
+    //       {menuItems.map(
+    //         (item, index) =>
+    //           isMenuItemAllowed(item.path) && (
+    //             <li key={index}>
+    //               <NavLink to={item.path}>
+    //                 {({ isActive }) => (
+    //                   <Button
+    //                     variant={isActive ? "gradient" : "text"}
+    //                     color="white"
+    //                     className="flex items-center gap-4 px-4 capitalize"
+    //                     fullWidth
+    //                   >
+    //                     <item.icon className="w-5 h-5 text-inherit" />
+    //                     <Typography
+    //                       color="inherit"
+    //                       className="font-medium capitalize"
+    //                     >
+    //                       {item.label}
+    //                     </Typography>
+    //                   </Button>
+    //                 )}
+    //               </NavLink>
+    //             </li>
+    //           )
+    //       )}
+    //     </ul>
+    //     <Upgrade />
+    //   </div>
+    // </aside>
     <aside
       ref={sidenavRef}
       className={`${sidenavTypes[sidenavType]} ${
         openSideNav ? "translate-x-0" : "-translate-x-80"
-      } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-[272px] rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100 overflow-y-auto`}
+      } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-[272px] rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100 flex flex-col`}
     >
-      <div className={`relative`}>
+      {/* Logo + Close Button */}
+      <div className="relative">
         <Link to="/home" className="flex items-center justify-center p-4">
           <div className="flex items-center text-white mt-4">
             <div className="bg-white p-2 rounded-md">
               <img src={image} alt="Logo" className="h-12 w-auto" />
-              {/* <h2 className="flex justify-center font-extrabold text-5xl bg-gradient-to-b from-[#32e432] via-[#1f1f75] to-[#FF8C00] bg-clip-text text-transparent">
-                GAUSHALA
-              </h2> */}
-            </div>{" "}
+            </div>
           </div>
         </Link>
         <IconButton
@@ -103,8 +158,9 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
         </IconButton>
       </div>
 
-      <div className="m-4">
-        <ul className="mb-4 flex flex-col ">
+      {/* Scrollable Menu */}
+      <div className="flex-1 overflow-y-auto m-4 custom-scrollbar">
+        <ul className="mb-4 flex flex-col">
           {menuItems.map(
             (item, index) =>
               isMenuItemAllowed(item.path) && (
@@ -132,10 +188,11 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
           )}
         </ul>
       </div>
-      {/* <div className="text-white flex justify-center text-[0.8rem]">
-        <h3>Updated on : 11-Feb-2025</h3>
-      </div> */}
-      <Upgrade />
+
+      {/* Fixed Upgrade at Bottom */}
+      <div className="m-2">
+        <Upgrade />
+      </div>
     </aside>
   );
 };

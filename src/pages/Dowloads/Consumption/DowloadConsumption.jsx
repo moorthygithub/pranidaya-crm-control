@@ -1,21 +1,19 @@
-import Layout from "../../../layout/Layout";
-import PageTitle from "../../../components/common/PageTitle";
-import Dropdown from "../../../components/common/DropDown";
-import { useNavigate } from "react-router-dom";
-import { Button, Input, Card } from "@material-tailwind/react";
+import { Input } from "@material-tailwind/react";
+import axios from "axios";
 import Moment from "moment";
-import { useState, useEffect } from "react";
-import { BaseUrl } from "../../../base/BaseUrl";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import DownloadCommon from "../../download/DeliveryDownload";
+import { BaseUrl } from "../../../base/BaseUrl";
 import { inputClass } from "../../../components/common/Buttoncss";
+import Dropdown from "../../../components/common/DropDown";
+import Layout from "../../../layout/Layout";
+import DownloadCommon from "../../download/DeliveryDownload";
 
 function DowloadConsumption() {
-  const navigate = useNavigate();
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-
+  const twoMonthsAgo = Moment().subtract(2, "months").format("YYYY-MM-DD");
+  const userType = localStorage.getItem("user_type_id");
   const unit = [
     { value: "Kg", label: "Kg" },
     { value: "Ton", label: "Ton" },
@@ -127,6 +125,7 @@ function DowloadConsumption() {
                   label="From Date"
                   name="cons_from_date"
                   className="required"
+                  min={userType == 5 ? twoMonthsAgo : undefined}
                   value={receiptsdwn.cons_from_date}
                   onChange={(e) => onInputChange(e)}
                 />
