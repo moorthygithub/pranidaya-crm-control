@@ -270,21 +270,18 @@ function ViewCashRecepit() {
               ref={componentRef}
             >
               <div className="py-4 px-2 w-full max-w-[700px]">
-                {/* <div className="flex justify-between text-[18px] mb-3 px-12">
+                <div className="flex justify-between text-[18px] mb-3 px-12">
                   <h4>ESTD 1981</h4>
                   <h4>DONATION RECEIPT</h4>
                   <h4>Phone : 29532204</h4>
-                </div> */}
-                <div className="print:min-h-[40px]" />
-{/*  
+                </div>
                 <img
                   src="https://pranidaya.org/public/assets/images/panel/pranidaya.png"
                   alt="header logo"
                   className="mb-2"
-                />  */}
-                <div className="print:min-h-[170px]" />
+                />
                 <div className="border border-black text-[18px]">
-                  {/* <div className="border-b border-black ">
+                  <div className="border-b border-black">
                     <p className="text-justify px-3 py-1">
                       Donation is exempted u/s 80G of the Income Tax Act 1961
                       CIT (E)BLR/80G/S55/ AABAA6706H/1TO (E)-1/VOL 2017-2018{" "}
@@ -292,7 +289,7 @@ function ViewCashRecepit() {
                         PAN: AABAA6706H, CSR00008537
                       </span>
                     </p>
-                  </div> */}
+                  </div>
                   <div className="space-y-2 text-[18px] leading-relaxed w-full py-2">
                     {/* Row 1 */}
                     <div className="grid grid-cols-[130px_20px_1fr_80px_20px_1fr] items-center gap-2">
@@ -329,23 +326,23 @@ function ViewCashRecepit() {
                     <div className="grid grid-cols-[130px_20px_1fr] items-start gap-2">
                       <div className="ml-2">Address</div>
                       <div>:</div>
-                      <div className="border-b border-dashed border-black pb-1 text-black font-bold min-h-[46px]">
+                      <div className="border-b border-dashed border-black pb-1 text-black font-bold min-h-[24px]">
                         {donor?.donor_address || "\u00A0"}
                       </div>
                     </div>
                     {/* Row 4 */}
-                    <div className="grid grid-cols-[130px_20px_1fr] items-center gap-2 min-h-[40px]">
+                    <div className="grid grid-cols-[130px_20px_1fr] items-center gap-2">
                       <div className="ml-2">Occasion of</div>
                       <div>:</div>
-                      <div className="border-b border-dashed border-black pb-1 text-black font-bold ">
+                      <div className="border-b border-dashed border-black pb-1 text-black font-bold min-h-[24px]">
                         {receipts?.occasion || "\u00A0"}
                       </div>
                     </div>
                     {/* Row 5 */}
-                    <div className="grid grid-cols-[130px_20px_1fr] items-center gap-2 min-h-[40px]">
+                    <div className="grid grid-cols-[130px_20px_1fr] items-center gap-2">
                       <div className="ml-2">On Account of</div>
                       <div>:</div>
-                      <div className="border-b border-dashed border-black pb-1 text-black font-bold">
+                      <div className="border-b border-dashed border-black pb-1 text-black font-bold min-h-[24px]">
                         {recepitsub && recepitsub.length > 0 ? (
                           recepitsub.map((item, index) => (
                             <div key={index} className="flex items-center">
@@ -395,6 +392,7 @@ function ViewCashRecepit() {
                       </div>
                     </div>
 
+                    <div className="border-b  border-black">
                       <div className="grid grid-cols-12 gap-2 mx-6 mb-2 min-h-[100px] items-end text-[18px]">
                         <div className="col-span-6 flex flex-col items-end">
                           {donor?.donor_full_name && (
@@ -412,7 +410,14 @@ function ViewCashRecepit() {
                           <p>Receiver Sign</p>
                         </div>
                       </div>
-                  
+                    </div>
+                    <div className="mx-4">
+                      <img
+                        src="https://pranidaya.org/public/assets/images/panel/bank.png"
+                        alt="Fotter img"
+                        // className="mb-2"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
