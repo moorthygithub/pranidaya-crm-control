@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import { GrGroup } from "react-icons/gr";
 import { LuDownload } from "react-icons/lu";
 import { inputClass } from "./common/Buttoncss";
+import { IoIosPrint } from "react-icons/io";
 
 const getUserControlData = () => {
   const userControl = localStorage.getItem("userControl");
@@ -528,6 +529,45 @@ export const WhatsappIncashRecepit = ({ onClick, className }) => {
   );
 };
 WhatsappIncashRecepit.page = "Receipts";
+export const CashRecepitPrintOld = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("CashRecepitPrintOld", userType, "active"))
+    return null;
+
+  return (
+    <button
+      variant="ghost"
+      size="icon"
+      onClick={onClick}
+      className={`flex items-center space-x-2 ${className}`}
+      title="Print Old"
+    >
+      <IoIosPrint className="h-4 w-4" />
+      <span>Print Old</span>
+    </button>
+  );
+};
+CashRecepitPrintOld.page = "Receipts";
+export const CashRecepitPrint = ({ onClick, className }) => {
+  const userType = localStorage.getItem("user_type_id");
+
+  if (!shouldRenderButton("CashRecepitPrint", userType, "active")) return null;
+
+  return (
+    <button
+      variant="ghost"
+      size="icon"
+      onClick={onClick}
+      className={`flex items-center space-x-2 ${className}`}
+      title="Print"
+    >
+      <IoIosPrint className="h-4 w-4" />
+      <span>Print</span>
+    </button>
+  );
+};
+CashRecepitPrint.page = "Receipts";
 export const PdfDownloadIncashRecepit = ({ onClick, className }) => {
   const userType = localStorage.getItem("user_type_id");
 
@@ -718,6 +758,8 @@ export default {
   EditMaterialReceipt,
   ViewMaterialReceipt,
   WhatsappIncashRecepit,
+  CashRecepitPrintOld,
+  CashRecepitPrint,
   PdfDownloadIncashRecepit,
   WhatsappInMaterialRecepit,
   PdfDownloadInMaterialRecepit,
