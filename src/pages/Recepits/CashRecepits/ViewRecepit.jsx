@@ -15,6 +15,8 @@ import { useReactToPrint } from "react-to-print";
 import { toast, ToastContainer } from "react-toastify";
 import { BaseUrl } from "../../../base/BaseUrl";
 import {
+  CashRecepitPrint,
+  CashRecepitPrintOld,
   PdfDownloadIncashRecepit,
   WhatsappIncashRecepit,
 } from "../../../components/ButtonComponents";
@@ -95,18 +97,18 @@ function ViewCashRecepit() {
       });
   };
 
-  // const printReceipt = (e) => {
-  //   e.preventDefault();
-  //   axios({
-  //     url: BaseUrl + "/print-receiptc/" + id,
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //     },
-  //   }).then((res) => {
-  //     window.open(BaseUrl + "/print-receiptc/" + id, "_blank");
-  //   });
-  // };
+  const printReceiptOld = (e) => {
+    e.preventDefault();
+    axios({
+      url: BaseUrl + "/print-receiptc/" + id,
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }).then((res) => {
+      window.open(BaseUrl + "/print-receiptc/" + id, "_blank");
+    });
+  };
   const printReceipt = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: "Recepit Report",
@@ -183,13 +185,13 @@ function ViewCashRecepit() {
   return (
     <Layout>
       <ToastContainer />
-      <div className="p-6 mt-5 bg-white shadow-md rounded-lg">
-        <div className="flex flex-col md:flex-row justify-between items-center p-2 gap-4">
+      <div className="px-4 mt-5 bg-white shadow-md rounded-lg">
+        <div className="flex flex-col md:flex-row justify-between items-center  gap-4">
           <h1 className="text-2xl text-[#464D69] font-semibold">
             Cash Receipt
           </h1>
           <div className="flex space-x-3">
-            <div className="flex flex-col md:flex-row justify-center md:justify-end items-center space-y-4 md:space-y-0 md:space-x-4 p-3">
+            <div className="flex flex-col md:flex-row justify-center md:justify-end items-center space-y-4 md:space-y-0 md:space-x-4">
               <PdfDownloadIncashRecepit
                 onClick={downloadReceipt}
                 className={`${inputClass} w-[80px] flex items-center justify-center text-center`}
@@ -250,13 +252,22 @@ function ViewCashRecepit() {
                 </DialogFooter>
               </Dialog>
 
-              <button
+              {/* <button
                 className={`${inputClass} flex  justify-center items-center gap-1`}
                 onClick={printReceipt}
               >
                 <IoIosPrint className="text-lg" />
                 <span>Print</span>
-              </button>
+              </button> */}
+
+              <CashRecepitPrint
+                onClick={printReceipt}
+                className={`${inputClass} w-[80px] flex items-center justify-center text-center`}
+              />
+              <CashRecepitPrintOld
+                onClick={printReceiptOld}
+                className={`${inputClass}  flex items-center justify-center text-center`}
+              />
             </div>
           </div>
         </div>
@@ -276,14 +287,14 @@ function ViewCashRecepit() {
                   <h4>Phone : 29532204</h4>
                 </div> */}
                 <div className="print:min-h-[40px]" />
-{/*  
+                {/*  
                 <img
                   src="https://pranidaya.org/public/assets/images/panel/pranidaya.png"
                   alt="header logo"
                   className="mb-2"
                 />  */}
-                <div className="print:min-h-[170px]" />
-                <div className="border border-black text-[18px]">
+                <div className="print:min-h-[230px]" />
+                <div className="text-[18px]">
                   {/* <div className="border-b border-black ">
                     <p className="text-justify px-3 py-1">
                       Donation is exempted u/s 80G of the Income Tax Act 1961
@@ -395,24 +406,23 @@ function ViewCashRecepit() {
                       </div>
                     </div>
 
-                      <div className="grid grid-cols-12 gap-2 mx-6 mb-2 min-h-[100px] items-end text-[18px]">
-                        <div className="col-span-6 flex flex-col items-end">
-                          {donor?.donor_full_name && (
-                            <p>
-                              ({donor?.donor_title} {donor?.donor_full_name})
-                            </p>
-                          )}
-                          <p>Donor Sign</p>
-                        </div>
-
-                        <div className="col-span-6 flex flex-col items-end">
-                          {company?.company_authsign && (
-                            <p>({company.company_authsign})</p>
-                          )}
-                          <p>Receiver Sign</p>
-                        </div>
+                    <div className="grid grid-cols-12 gap-2 mx-6 mb-2 min-h-[100px] items-end text-[18px]">
+                      <div className="col-span-6 flex flex-col items-end">
+                        {donor?.donor_full_name && (
+                          <p>
+                            ({donor?.donor_title} {donor?.donor_full_name})
+                          </p>
+                        )}
+                        <p>Donor Sign</p>
                       </div>
-                  
+
+                      <div className="col-span-6 flex flex-col items-end">
+                        {company?.company_authsign && (
+                          <p>({company.company_authsign})</p>
+                        )}
+                        <p>Receiver Sign</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
