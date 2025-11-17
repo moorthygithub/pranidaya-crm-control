@@ -382,7 +382,7 @@ function ViewCashRecepit() {
                       <div>PAN No</div>
                       <div>:</div>
                       <div className="border-b border-dashed border-black pb-1 text-black font-bold min-h-[24px]">
-                        {company?.company_pan_no || "\u00A0"}
+                        {donor?.donor_pan_no || "\u00A0"}
                       </div>
                     </div>
                     {/* Row 7 */}
@@ -402,8 +402,9 @@ function ViewCashRecepit() {
                       <div className="ml-2">Reference</div>
                       <div>:</div>
                       <div className="border-b border-dashed border-black pb-1 text-black font-bold min-h-[24px]">
-                        {receipts.c_receipt_ref_no || "\u00A0"}
+                        {receipts.c_receipt_remarks || "\u00A0"}
                       </div>
+                      
                     </div>
 
                     <div className="grid grid-cols-12 gap-2 mx-6 mb-2 min-h-[100px] items-end text-[18px]">
@@ -420,6 +421,7 @@ function ViewCashRecepit() {
                         {company?.company_authsign && (
                           <p>({company.company_authsign})</p>
                         )}
+                        
                         <p>Receiver Sign</p>
                       </div>
                     </div>
