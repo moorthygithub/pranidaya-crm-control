@@ -421,6 +421,7 @@ function ViewCashRecepit() {
                         {company?.company_authsign && (
                           <p>({company.company_authsign})</p>
                         )}
+                        
                         <p>Receiver Sign</p>
                       </div>
                     </div>
